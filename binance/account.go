@@ -10,7 +10,7 @@ type Account struct {
     Address string
 }
 
-func CreatAccount(num int) (accounts []Account, addresses []string, err error) {
+func CreateAccount(num int) (accounts []Account, addresses []string, err error) {
     var ch = make(chan int)
     for i := 0; i < num; i++ {
         go func() {
