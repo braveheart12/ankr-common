@@ -25,8 +25,14 @@ func GetUserID(ctx context.Context) string{
 		token = meta["token"]
 	}
 	parts := strings.Split(token, ".")
+<<<<<<< HEAD
 
 	decoded, err := jwt_token.DecodeSegment(parts[1])
+=======
+	fmt.Println("Token", token)
+	fmt.Println("Parts", parts)
+	decoded, err := base64.StdEncoding.DecodeString(parts[1])
+>>>>>>> [SWDEV-220]update
 	if err != nil {
 		fmt.Println("decode error:", err)
 
