@@ -25,7 +25,8 @@ func GetUserID(ctx context.Context) string{
 		token = meta["token"]
 	}
 	parts := strings.Split(token, ".")
-
+	fmt.Println("Token", token)
+	fmt.Println("Parts", parts)
 	decoded, err := base64.StdEncoding.DecodeString(parts[1])
 	if err != nil {
 		fmt.Println("decode error:", err)
