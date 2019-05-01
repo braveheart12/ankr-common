@@ -26,9 +26,12 @@ func GetUserID(ctx context.Context) string{
 	}
 	parts := strings.Split(token, ".")
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	decoded, err := jwt_token.DecodeSegment(parts[1])
 =======
+=======
+>>>>>>> eb85461abf6caefccff2290578399af14a48f6a1
 	fmt.Println("Token", token)
 	fmt.Println("Parts", parts)
 	decoded, err := base64.StdEncoding.DecodeString(parts[1])
