@@ -25,7 +25,9 @@ service AppMgr {
     };
     }
     rpc PurgeApp (AppID) returns (common.proto.Empty) {
-        option (google.api.http).delete = "/app/purge";
+        option (google.api.http) = {
+             delete:"/app/purge/{app_id}"
+        };
     }
     rpc UpdateApp (UpdateAppRequest) returns (common.proto.Empty) {
         option (google.api.http) = {
