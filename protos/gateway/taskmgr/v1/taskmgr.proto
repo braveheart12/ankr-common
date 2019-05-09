@@ -85,7 +85,9 @@ service AppMgr {
     };
     }
     rpc DeleteNamespace (DeleteNamespaceRequest) returns (common.proto.Empty) {
-        option (google.api.http).delete = "/namespace/delete";
+        option (google.api.http) = {
+	        delete:"/namespace/delete/{ns_id}"
+	    };
     }
 }
 
