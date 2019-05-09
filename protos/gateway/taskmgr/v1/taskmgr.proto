@@ -20,12 +20,14 @@ service AppMgr {
     }
     rpc CancelApp (AppID) returns (common.proto.Empty) {
         option (google.api.http) = {
-            post: "/app/cancel"
+            post: "/app/cancel/{app_id}"
             body: "*"
     };
     }
     rpc PurgeApp (AppID) returns (common.proto.Empty) {
-        option (google.api.http).delete = "/app/purge";
+        option (google.api.http) = {
+	             delete:"/app/purge/{app_id}"
+	        };
     }
     rpc UpdateApp (UpdateAppRequest) returns (common.proto.Empty) {
         option (google.api.http) = {
@@ -49,7 +51,9 @@ service AppMgr {
         option (google.api.http).get = "/chart/list";
     }
     rpc ChartDetail (ChartDetailRequest) returns (ChartDetailResponse) {
-        option (google.api.http).get = "/chart/detail";
+        option (google.api.http) = {
+	            get:"/chart/detail/{chart_repo}/{chart_name}/{chart_ver}"
+	        };
     }
     rpc DeleteChart (DeleteChartRequest) returns (common.proto.Empty) {
         option (google.api.http).delete = "/chart/delete";
