@@ -16,7 +16,9 @@ service AppMgr {
       option (google.api.http).get = "/app/list";
     }
     rpc AppDetail (AppID) returns (AppDetailResponse) {
-        option (google.api.http).get = "/app/detail";
+        option (google.api.http) = {
+	             get:"/app/detail/{app_id}"
+	        };
     }
     rpc CancelApp (AppID) returns (common.proto.Empty) {
         option (google.api.http) = {
