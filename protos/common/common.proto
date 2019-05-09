@@ -92,32 +92,32 @@ message ChartDetail {
     string icon_url = 5; // Chart icon image url
 }
 
-message VersionDetail{
+message ChartVersionDetail{
     string version = 1; //chart version 
 	string app_version = 2; //application version 
 }
 
 message Namespace {
-    string id = 1; //short hash of uid+name+cluster_id
-	string name = 2;
+    string ns_id = 1; //short hash of uid+name+cluster_id
+	string ns_name = 2;
 	string cluster_id = 3; //id of cluster
     string cluster_name = 4; //name of cluster
 	uint64 creation_date = 5;
     uint64 last_modified_date = 6;
-    uint64 cpu_limit = 7;  // number of mcpu
-    uint64 mem_limit = 8; // number of Mi mem usage
-    uint64 storage_limit = 9; // number of Gi storage
+    uint64 ns_cpu_limit = 7;  // number of mcpu
+    uint64 ns_mem_limit = 8; // number of Mi mem usage
+    uint64 ns_storage_limit = 9; // number of Gi storage
 }
 
 
 // Used by appmgr
 message App {
-    string name = 2; // name of the app
+    string name = 1; // name of the app
     oneof namespace_data {
-        string namespace_id = 3; // namespace id
-        Namespace namespace = 4; // request for create new namespace
+        string ns_id = 2; // namespace id
+        Namespace namespace = 3; // request for create new namespace
     }
-    ChartDetail chart_detail = 8;
+    ChartDetail chart_detail = 4;
 }
 
 
