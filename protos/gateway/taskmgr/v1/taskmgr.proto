@@ -98,7 +98,8 @@ service AppMgr {
 }
 
 message AnkrPriceResponse{
-    string Price = 1;
+    string NowPrice = 1;
+    string P24hPrice = 2;
 }
 
 // The dccn client request message containing the user's token
