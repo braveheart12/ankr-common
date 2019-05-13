@@ -89,6 +89,16 @@ service AppMgr {
             delete: "/namespace/delete/{ns_id}"
     };
     }
+    rpc AnkrPrice (common.proto.Empty) returns (AnkrPriceResponse) {
+        option (google.api.http) = {
+            get: "/price"
+    };
+    
+    }
+}
+
+message AnkrPriceResponse{
+    string Price = 1;
 }
 
 // The dccn client request message containing the user's token
