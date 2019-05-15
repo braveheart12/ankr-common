@@ -172,8 +172,8 @@ message AppRunStatus {
     string          message     = 3;
 }
 
-enum TransanctionState {
-    TransactioUnknown = 0;
+enum TransactionState {
+    TransactionUnknown = 0;
     TransactionUnConfirmed = 1;
    TransactionPending = 2;
    TransactionConfirmed = 3;
@@ -188,5 +188,5 @@ message Deposit {
     string txHash = 6;
     string amount = 7;
     string confirmedBlockHeight = 8;
-    TransanctionState txState = 9;
+    TransactionState txState = 9;
 }

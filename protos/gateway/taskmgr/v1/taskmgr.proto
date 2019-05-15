@@ -201,10 +201,11 @@ message DeleteChartRequest {
 }
 
 message CreateNamespaceRequest {
-	string ns_name = 2;
-    uint32 ns_cpu_limit = 6;
-    uint32 ns_mem_limit = 7;
-    uint32 ns_storage_limit = 8;
+	string ns_name = 1;
+    string cluster_id = 2;
+    uint32 ns_cpu_limit = 3;
+    uint32 ns_mem_limit = 4;
+    uint32 ns_storage_limit = 5;
 }
 
 message CreateNamespaceResponse {
