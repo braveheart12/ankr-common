@@ -1,8 +1,8 @@
-.PHONY: all common micro grpc build test run deploy local clean echo
+.PHONY: all common micro grpc build test run deploy local clean echo monitor
 
 GOPATH:=$(shell go env GOPATH)
 
-all: micro grpc gateway
+all: micro grpc monitor
 # To do: there should be a script to loop through all the micro services.
 # To do: there should be only one copy of each proto file.
 common:
@@ -31,4 +31,8 @@ grpc: common
 			$$type/v1/grpc/*.proto; \
 		rm $$type/v1/grpc/*.proto; \
 	done
+
+monitor:
+	@echo "Generating monitor proto"
+	@cd monitor && make
 
