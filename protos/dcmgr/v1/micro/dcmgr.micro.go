@@ -8,6 +8,10 @@ It is generated from these files:
 	dcmgr/v1/micro/dcmgr.proto
 
 It has these top-level messages:
+	DashBoardRequest
+	DashBoardResponse
+	Income
+	Usage
 	MyDataCenterRequest
 	RegisterDataCenterRequest
 	RegisterDataCenterResponse
@@ -22,6 +26,7 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import common_proto1 "github.com/Ankr-network/dccn-common/protos/common"
+import _ "github.com/golang/protobuf/ptypes/timestamp"
 
 import (
 	context "context"
@@ -349,4 +354,63 @@ func (h *dCAPIHandler) ResetDataCenter(ctx context.Context, in *RegisterDataCent
 
 func (h *dCAPIHandler) MyDataCenter(ctx context.Context, in *MyDataCenterRequest, out *common_proto1.DataCenterStatus) error {
 	return h.DCAPIHandler.MyDataCenter(ctx, in, out)
+}
+
+// Client API for ClusterDashBoard service
+
+type ClusterDashBoardService interface {
+	DashBoard(ctx context.Context, in *DashBoardRequest, opts ...client.CallOption) (*DashBoardResponse, error)
+}
+
+type clusterDashBoardService struct {
+	c    client.Client
+	name string
+}
+
+func NewClusterDashBoardService(name string, c client.Client) ClusterDashBoardService {
+	if c == nil {
+		c = client.NewClient()
+	}
+	if len(name) == 0 {
+		name = "dcmgr"
+	}
+	return &clusterDashBoardService{
+		c:    c,
+		name: name,
+	}
+}
+
+func (c *clusterDashBoardService) DashBoard(ctx context.Context, in *DashBoardRequest, opts ...client.CallOption) (*DashBoardResponse, error) {
+	req := c.c.NewRequest(c.name, "ClusterDashBoard.DashBoard", in)
+	out := new(DashBoardResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for ClusterDashBoard service
+
+type ClusterDashBoardHandler interface {
+	DashBoard(context.Context, *DashBoardRequest, *DashBoardResponse) error
+}
+
+func RegisterClusterDashBoardHandler(s server.Server, hdlr ClusterDashBoardHandler, opts ...server.HandlerOption) error {
+	type clusterDashBoard interface {
+		DashBoard(ctx context.Context, in *DashBoardRequest, out *DashBoardResponse) error
+	}
+	type ClusterDashBoard struct {
+		clusterDashBoard
+	}
+	h := &clusterDashBoardHandler{hdlr}
+	return s.Handle(s.NewHandler(&ClusterDashBoard{h}, opts...))
+}
+
+type clusterDashBoardHandler struct {
+	ClusterDashBoardHandler
+}
+
+func (h *clusterDashBoardHandler) DashBoard(ctx context.Context, in *DashBoardRequest, out *DashBoardResponse) error {
+	return h.ClusterDashBoardHandler.DashBoard(ctx, in, out)
 }

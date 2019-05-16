@@ -65,8 +65,8 @@ message GeoLocation {
 
 message DataCenterAttributes {
     string wallet_address = 1;  //datacenter wallet address
-    uint64 creation_date = 2; //app creation date
-    uint64 last_modified_date = 3; //app creation date
+    google.protobuf.Timestamp creation_date = 2; //app creation date
+    google.protobuf.Timestamp last_modified_date = 3; //app creation date
 }
 
 message DCHeartbeatReport {
