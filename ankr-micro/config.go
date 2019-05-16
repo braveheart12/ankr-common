@@ -20,7 +20,7 @@ type Config struct {
 var config Config
 
 func init() {
-	config.DatabaseHost = "localhost:27018"
+	config.DatabaseHost = "localhost:27017"
 	config.Rabbitmq = "amqp://guest:guest@localhost:5672"
 	config.Listen = ":50051"
 	config.DatabaseName = "dccn"
