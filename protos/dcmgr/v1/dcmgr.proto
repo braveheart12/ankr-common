@@ -87,12 +87,12 @@ message NetworkInfoResponse {
   int32 ns_count = 3; // namespace
   int32 container_count = 4;
   int32 traffic = 5;   //0 unavailable 1 light 2 median 3. heavy
-  int32 cpu_total = 6;
-  int32 cpu_used = 7;
-  int32 memory_total = 8;
-  int32 memory_used = 9;
-  int32 storage_total = 10;
-  int32 storage_used = 11;
+  string cpu_total = 6;
+  string cpu_used = 7;
+  string memory_total = 8; // MB
+  string memory_used = 9;  // MB
+  string storage_total = 10;  // MB
+  string storage_used = 11;  // MB
   int32 network_count = 12;
 }
 

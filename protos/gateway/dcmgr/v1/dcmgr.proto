@@ -39,14 +39,21 @@ message DataCenterListResponse {
   repeated common.proto.DataCenterStatus dcList= 1; // repeated groups of DataCenterInfo list
 }
 
+
 message NetworkInfoResponse {
   int32 user_count = 1;
   int32 host_count = 2;
   int32 ns_count = 3; // namespace
   int32 container_count = 4;
   int32 traffic = 5;   //0 unavailable 1 light 2 median 3. heavy
+  string cpu_total = 6;
+  string cpu_used = 7;
+  string memory_total = 8; // MB
+  string memory_used = 9;  // MB
+  string storage_total = 10;  // MB
+  string storage_used = 11;  // MB
+  int32 network_count = 12;
 }
-
 
 message DataCenterLeaderBoardDetail {
   string name = 1;
