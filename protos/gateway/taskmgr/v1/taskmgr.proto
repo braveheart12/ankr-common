@@ -58,7 +58,9 @@ service AppMgr {
 	        };
     }
     rpc DeleteChart (DeleteChartRequest) returns (common.proto.Empty) {
-        option (google.api.http).delete = "/chart/delete";
+        option (google.api.http) = {
+	            delete:"/chart/delete/{chart_repo}/{chart_name}/{chart_ver}"
+	        };
     }
     rpc SaveAsChart (SaveAsChartRequest) returns (common.proto.Empty) {
         option (google.api.http) = {
@@ -67,7 +69,9 @@ service AppMgr {
     };
     }
     rpc DownloadChart (DownloadChartRequest) returns (DownloadChartResponse) {
-        option (google.api.http).get = "/chart/download";
+        option (google.api.http) = {
+	            get:"/chart/download/{chart_repo}/{chart_name}/{chart_ver}"
+	        };
     }  
     rpc CreateNamespace (CreateNamespaceRequest) returns (CreateNamespaceResponse) {
         option (google.api.http) = {
@@ -93,8 +97,28 @@ service AppMgr {
         option (google.api.http) = {
             get: "/price"
     };
-    
     }
+    rpc AnkrPriceHistory (AnkrPriceHistoryRequest) returns (history) {
+        option (google.api.http) = {
+            get: "/price/history/{history_request}"
+    };
+    }
+}
+message AnkrPriceHistoryRequest{
+    string history_request = 1;
+}
+message trade {
+	double time = 1;
+	double high = 2;
+	double low = 3;
+	double open = 4;
+	double volumefrom = 5;
+	double volumeto = 6;
+	double close = 7;
+}
+
+message history {
+	repeated trade data = 1;
 }
 
 message AnkrPriceResponse{

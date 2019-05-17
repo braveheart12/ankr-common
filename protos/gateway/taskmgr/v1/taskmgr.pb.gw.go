@@ -328,16 +328,48 @@ func request_AppMgr_ChartDetail_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-var (
-	filter_AppMgr_DeleteChart_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_AppMgr_DeleteChart_0(ctx context.Context, marshaler runtime.Marshaler, client AppMgrClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DeleteChartRequest
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_AppMgr_DeleteChart_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["chart_repo"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chart_repo")
+	}
+
+	protoReq.ChartRepo, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chart_repo", err)
+	}
+
+	val, ok = pathParams["chart_name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chart_name")
+	}
+
+	protoReq.ChartName, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chart_name", err)
+	}
+
+	val, ok = pathParams["chart_ver"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chart_ver")
+	}
+
+	protoReq.ChartVer, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chart_ver", err)
 	}
 
 	msg, err := client.DeleteChart(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -362,16 +394,48 @@ func request_AppMgr_SaveAsChart_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-var (
-	filter_AppMgr_DownloadChart_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_AppMgr_DownloadChart_0(ctx context.Context, marshaler runtime.Marshaler, client AppMgrClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq DownloadChartRequest
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_AppMgr_DownloadChart_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["chart_repo"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chart_repo")
+	}
+
+	protoReq.ChartRepo, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chart_repo", err)
+	}
+
+	val, ok = pathParams["chart_name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chart_name")
+	}
+
+	protoReq.ChartName, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chart_name", err)
+	}
+
+	val, ok = pathParams["chart_ver"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chart_ver")
+	}
+
+	protoReq.ChartVer, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chart_ver", err)
 	}
 
 	msg, err := client.DownloadChart(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -454,6 +518,33 @@ func request_AppMgr_AnkrPrice_0(ctx context.Context, marshaler runtime.Marshaler
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.AnkrPrice(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func request_AppMgr_AnkrPriceHistory_0(ctx context.Context, marshaler runtime.Marshaler, client AppMgrClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq AnkrPriceHistoryRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["history_request"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "history_request")
+	}
+
+	protoReq.HistoryRequest, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "history_request", err)
+	}
+
+	msg, err := client.AnkrPriceHistory(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
@@ -876,6 +967,26 @@ func RegisterAppMgrHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 
 	})
 
+	mux.Handle("GET", pattern_AppMgr_AnkrPriceHistory_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AppMgr_AnkrPriceHistory_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AppMgr_AnkrPriceHistory_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -902,11 +1013,11 @@ var (
 
 	pattern_AppMgr_ChartDetail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"chart", "detail", "chart_repo", "chart_name", "chart_ver"}, ""))
 
-	pattern_AppMgr_DeleteChart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chart", "delete"}, ""))
+	pattern_AppMgr_DeleteChart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"chart", "delete", "chart_repo", "chart_name", "chart_ver"}, ""))
 
 	pattern_AppMgr_SaveAsChart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chart", "saveas"}, ""))
 
-	pattern_AppMgr_DownloadChart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"chart", "download"}, ""))
+	pattern_AppMgr_DownloadChart_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"chart", "download", "chart_repo", "chart_name", "chart_ver"}, ""))
 
 	pattern_AppMgr_CreateNamespace_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"namespace", "create"}, ""))
 
@@ -917,6 +1028,8 @@ var (
 	pattern_AppMgr_DeleteNamespace_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"namespace", "delete", "ns_id"}, ""))
 
 	pattern_AppMgr_AnkrPrice_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"price"}, ""))
+
+	pattern_AppMgr_AnkrPriceHistory_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"price", "history", "history_request"}, ""))
 )
 
 var (
@@ -957,4 +1070,6 @@ var (
 	forward_AppMgr_DeleteNamespace_0 = runtime.ForwardResponseMessage
 
 	forward_AppMgr_AnkrPrice_0 = runtime.ForwardResponseMessage
+
+	forward_AppMgr_AnkrPriceHistory_0 = runtime.ForwardResponseMessage
 )
