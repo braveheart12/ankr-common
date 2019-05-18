@@ -1,11 +1,12 @@
 import session25519 from 'session25519';
-import { sha256 } from 'js-sha256';
+import {
+    sha256
+} from 'js-sha256';
 
 
-const sum = (email, password, callback) => {
-    let keys = {};
-
-    session25519(email, password, (err, keys) => {
+const sum = (salt, callback) => {
+    let key = Math.random().toString()
+    session25519(salt, key, (err, keys) => {
         if (err !== null) {
             throw err;
         }
@@ -15,8 +16,8 @@ const sum = (email, password, callback) => {
 }
 
 
-export const gen_key = (email, password, callback) => {
-    sum(email, password, (keys) => {
+export const gen_key = (salt, callback) => {
+    sum(salt, (keys) => {
         console.log(sha256(keys.publicSignKey).substr(0, 40))
         const addr = sha256(keys.publicSignKey).substr(0, 40).toUpperCase();
 
