@@ -16,4 +16,5 @@ message TransactionStateChangeEvent {
     string amount = 4;
     uint64 confirmedBlockHeight = 5;
     TransactionState txState = 6;
+    string memo = 7;
 }
