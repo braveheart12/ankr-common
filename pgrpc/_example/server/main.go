@@ -8,7 +8,6 @@ import (
 
 	"github.com/Ankr-network/dccn-common/pgrpc"
 	"github.com/Ankr-network/dccn-common/pgrpc/_example/api"
-	"google.golang.org/grpc"
 )
 
 func main() {
@@ -31,25 +30,14 @@ func (*hook) OnAccept(key *string, conn *net.Conn) error {
 }
 
 func server(ip string) {
-	conn, err := pgrpc.NewServer(ip+":8899", &hook{}, nil)
-	if err != nil {
-		log.Fatalln("FAIL:", err)
-	}
-
 	log.Println("Server started")
 
-	server := grpc.NewServer()
-	api.RegisterPingServer(server, &Server{})
-	api.RegisterStreamPingServer(server, &StreamServer{})
+	s := pgrpc.NewServer(ip+":8899", &hook{}, nil)
+	api.RegisterPingServer(s.Server, &Server{})
+	api.RegisterStreamPingServer(s.Server, &StreamServer{})
 
 	for {
-		ln, err := conn.Session()
-		if err != nil {
-			log.Println("FAIL:", err)
-			time.Sleep(2 * time.Second)
-			continue
-		}
-		if err := server.Serve(ln); err != nil {
+		if err := s.Serve(); err != nil {
 			log.Println("FAIL:", err)
 		}
 		time.Sleep(2 * time.Second)

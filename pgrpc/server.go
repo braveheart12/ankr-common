@@ -5,77 +5,77 @@ import (
 
 	"github.com/hashicorp/yamux"
 	"github.com/pkg/errors"
+	"google.golang.org/grpc"
 )
 
 type Server struct {
+	*grpc.Server
+	sess *Session
+
 	addr   string
-	conn   net.Conn
 	config *yamux.Config
 	hook   Hook
 }
 
-func NewServer(addr string, hook Hook, conf *yamux.Config) (*Server, error) {
-	conn, err := net.Dial("tcp", addr)
-	if err != nil {
-		return nil, errors.Wrap(err, "tcp dail")
-	}
-
-	if hook != nil {
-		if err := hook.OnAccept(&addr, &conn); err != nil {
-			conn.Close()
-			return nil, errors.Wrap(err, "on accept hook")
-		}
-	}
-
-	if conf == nil {
-		conf = yamux.DefaultConfig()
-	}
-
+func NewServer(addr string, hook Hook, conf *yamux.Config, opt ...grpc.ServerOption) *Server {
 	return &Server{
+		Server: grpc.NewServer(opt...),
 		addr:   addr,
-		conn:   conn,
 		config: conf,
 		hook:   hook,
-	}, nil
+	}
 }
 
-func (s *Server) Session() (net.Listener, error) {
-	session, err := yamux.Server(s.conn, s.config)
-	if err == nil {
-		_, err = session.Ping()
+func (s *Server) Serve() error {
+	if err := s.dial(); err != nil {
+		return err
 	}
+
+	RegisterStreamPingServer(s.Server, &ping{s.addr, s.sess, s.hook})
+
+	return errors.Wrap(s.Server.Serve(s.sess), "serve grpc")
+}
+
+func (s *Server) dial() (err error) {
+	var conn net.Conn
+	conn, err = net.Dial("tcp", s.addr)
 	if err != nil {
-		s.conn.Close()
-		s, err = NewServer(s.addr, s.hook, s.config)
-		if err != nil {
-			return nil, errors.Wrap(err, "session")
-		}
-
-		// retry
-		session, err = yamux.Server(s.conn, s.config)
-		if err != nil {
-			return nil, errors.Wrap(err, "session")
-		} else if _, err = session.Ping(); err != nil {
-			return nil, errors.Wrap(err, "session")
-		}
+		return errors.Wrap(err, "tcp dail")
 	}
 
-	sess := &Session{
-		Session: session,
-		Name:    s.addr,
-	}
+	defer func() {
+		if err != nil {
+			conn.Close()
+		}
+	}()
+
 	if s.hook != nil {
-		if err := s.hook.OnBuild(&s.addr, sess); err != nil {
-			return nil, errors.Wrap(err, "on build hook")
+		if err := s.hook.OnAccept(&s.addr, &conn); err != nil {
+			return errors.Wrap(err, "on accept hook")
+		}
+	}
+
+	session, err := yamux.Server(conn, s.config)
+	if err != nil {
+		return errors.Wrap(err, "build sess")
+	} else if _, err = session.Ping(); err != nil {
+		return errors.Wrap(err, "ping session")
+	}
+
+	s.sess = &Session{Session: session, Name: s.addr}
+
+	if s.hook != nil {
+		if err := s.hook.OnBuild(&s.addr, s.sess); err != nil {
+			return errors.Wrap(err, "build hook")
 		}
 	}
 
 	go func() {
-		<-sess.CloseChan()
+		<-s.sess.CloseChan()
 		if s.hook != nil {
-			s.hook.OnClose(s.addr, sess)
+			s.hook.OnClose(s.addr, s.sess)
 		}
 	}()
 
-	return sess, nil
+	return nil
 }
