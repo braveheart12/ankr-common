@@ -104,6 +104,7 @@ func NewClient(port string, conf *yamux.Config, hook Hook, opts ...grpc.DialOpti
 				continue
 			}
 
+			pgrpcKeepalive(sess, conf.Logger)
 			if conf.Logger != nil {
 				conf.Logger.Println("new connection from:", host)
 			}
@@ -180,6 +181,15 @@ func (c *Client) Dial(key string, opts ...grpc.DialOption) (*grpc.ClientConn, er
 	}))
 
 	return grpc.DialContext(context.Background(), key, opts...)
+}
+
+func GoAway(key string) {
+	DefaultClient.GoAway(key)
+}
+func (c *Client) GoAway(key string) {
+	if val, ok := c.conns.Load(key); ok {
+		val.(*Session).GoAway()
+	}
 }
 
 func Each(fn func(key string, conn *grpc.ClientConn, err error), opts ...grpc.DialOption) {
