@@ -102,8 +102,32 @@ service UserMgr {
         option (google.api.http).get = "/user/detail";
     }
 
-
+    rpc ApplyBecomeClusterProvider(ClusterProviderApplyRequest) returns (common.proto.Empty) {
+        option (google.api.http) = { 
+            post: "/user/applyprovider"
+            body: "*"
+        };
+    }
 }
+
+ // cluster provider status
+enum ClusterProviderStatus {
+     NOT_PROVIDER = 0;
+     PENDING = 1;  // waiting for passing
+     PROVIDER = 2; //
+}
+
+
+message ClusterProviderApplyRequest{
+      string name = 1;
+      string email = 2;
+      string phone = 3;
+      string job_title = 4;
+      string company = 5;
+      string country = 6;
+      string cluster_name = 7;
+}
+
 message SearchDepositRequest {
     google.protobuf.Timestamp start = 1;
     google.protobuf.Timestamp end = 2;
@@ -154,6 +178,7 @@ message UserAttributes {
     uint64 creation_date = 3; //app creation date
     uint64 last_modified_date = 4; //app creation date
     repeated UserAttribute extra_fields = 5; // extra field
+    ClusterProviderStatus cluster_provider_status = 6; // 0 not provider 2 is provider
 }
 
 message RegisterRequest {
