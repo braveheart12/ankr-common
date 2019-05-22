@@ -3,17 +3,24 @@ package ankr_default
 import "errors"
 
 // List execution errors
+const (
+	AuthError = "AuthError:"
+	MarshalError = "MarshalError:"
+	NotFoundError = "NotFoundError:"
+	TokenError = "TokenError:"
+	LogicError = "LogicError:"
+)
 var (
-	ErrDataCenterNotExist        = errors.New("dataCenter does not exist")
-	ErrUserNotExist              = errors.New("token error, can not find user")
-	ErrAppNotExist              = errors.New("app does not exist")
-	ErrUserNotOwn                = errors.New("user does not own this app")
-	ErrUpdateFailed              = errors.New("app can not be updated")
-	ErrUserAlreadyExist          = errors.New("user already existed")
-	ErrPasswordError             = errors.New("password does not match")
-	ErrHashPassword              = errors.New("hash password failed")
-	ErrNamePasswordEmpty         = errors.New("name or Password is empty")
-	ErrStatusNotSupportOperation = errors.New("current status not support operation")
+	ErrDataCenterNotExist        = errors.New(NotFoundError+"DataCenter does not exist")
+	ErrUserNotExist              = errors.New(TokenError+"Can not find user")
+	ErrAppNotExist              = errors.New(NotFoundError+"App does not exist")
+	ErrUserNotOwn                = errors.New(AuthError+"User does not own this app")
+	ErrUpdateFailed              = errors.New(LogicError+"App can not be updated")
+	ErrUserAlreadyExist          = errors.New(LogicError+"User already existed")
+	ErrPasswordError             = errors.New(LogicError+"Password does not match")
+	ErrHashPassword              = errors.New(MarshalError+"Hash password failed")
+	ErrNamePasswordEmpty         = errors.New(NotFoundError+"Name or Password is empty")
+	ErrStatusNotSupportOperation = errors.New("Current status not support operation")
 	ErrAppStatusCanNotUpdate    = errors.New("app status is done or cancelled, can not update")
 	ErrReplicaTooMany            = errors.New("replica too many")
 	ErrUnknown                   = errors.New("unknown operation or code")
@@ -37,9 +44,9 @@ var (
 	ErrAccessTokenExpired        = errors.New("access_token expired")
 	ErrCanceledTwice             = errors.New("can not cancel twice")
 	ErrPurgedTwice               = errors.New("can not purge twice")
-	ErrAuthNotAllowed            = errors.New("auth not allow")
+	ErrAuthNotAllowed            = errors.New("AuthError:Auth not allow")
 	ErrUnexpectedChar            = errors.New("unexpected char")
-	ErrPasswordSame              = errors.New("password must be not same as before")
+	ErrPasswordSame              = errors.New("Password must be not same as before")
 	ErrOldPassword               = errors.New("old password does not match")
 	ErrEmailSame                 = errors.New("email must be not same as before")
 	ErrUserNotVariyEmail         = errors.New("user's email has not been varified, please verify email first")
