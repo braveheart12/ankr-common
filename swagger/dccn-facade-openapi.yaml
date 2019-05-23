@@ -1,0 +1,1236 @@
+openapi: 3.0.0
+info:
+  title: dccn/facade open api
+  version: 2.0.0
+servers:
+  - url: http://a14da5fc250ea11e9830d06bbae7419f-1468944597.us-west-1.elb.amazonaws.com
+  - url: http://gateway-dev.dccn.ankr.com
+  - url: http://gateway-stage.dccn.ankr.com
+paths:
+  /signup:
+    post:
+      summary: Sends a register request
+      requestBody:
+        description: Request for signup
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      operationId: register
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /logout:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a logout request
+      requestBody:
+        description: Request for refreshtoken
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+      operationId: logout
+      responses:
+        "200":
+          description: "Empty response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /login:
+    post:
+      summary: Sends a login request
+      requestBody:
+        description: Request for login
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      operationId: login
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+      
+      tags:
+        - Usermgr
+  /refresh:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a refresh request
+      operationId: refresh
+      requestBody:
+        description: Request for refreshtoken
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /confirm_email:
+    post:
+      summary: Sends a confirm email request
+      operationId: comfirmemail
+      requestBody:
+        description: Request for confirm email
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmEmailRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /change_email:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a change email request
+      operationId: changeemail
+      requestBody:
+        description: Request for change email
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeEmailRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /forgot_password:
+    post:
+      summary: Sends a forgot password request
+      operationId: forgotpassoword
+      requestBody:
+        description: Request for forgot password
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /confirm_password:
+    post:
+      summary: Sends a confirm password request
+      operationId: comfirmpassword
+      requestBody:
+        description: Request for confirm password
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmPasswordRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /change_password:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a change password request
+      operationId: changepassword
+      requestBody:
+        description: Request for change password
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /update_attribute:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends an update attribute request
+      operationId: updateattribute
+      requestBody:
+        description: Request for update user attribute
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAttributesRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+      tags:
+        - Usermgr
+  /create_address:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a create address request
+      operationId: createaddress
+      requestBody:
+        description: Request for update user attribute
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAddressRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /deposit/erc:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a create address request
+      operationId: depositerc
+      requestBody:
+        description: Request for update user attribute
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmptyResponse'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Usermgr
+  /dc/list:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a list datacenter request
+      operationId: datacenterlist
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DcListResponse"
+      tags:
+        - Dcmgr
+
+  /dc/networkinfo:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a newwork information request
+      operationId: dcnetworkinfo
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DcNetworkInfoResponse"
+      tags:
+        - Dcmgr
+  /app/create:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a create app request
+      operationId: createapp
+      requestBody:
+        description: Request for create user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAppRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateAppResponse"
+      tags:
+        - Appmgr
+  /app/update/{app_id}:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends an update app request
+      operationId: updateapp
+      parameters:
+        - in: path
+          name: app_id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request for update user attribute
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAppRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+  /app/detail/{app_id}:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a cancel app request
+      operationId: appdetail
+      parameters:
+        - in: path
+          name: app_id
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppDetailResponse"
+      tags:
+        - Appmgr
+  /app/cancel/{app_id}:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a cancel app request
+      operationId: cancelapp
+      parameters:
+        - in: path
+          name: app_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+  /app/purge/{app_id}:
+    delete:
+      security:
+        - Bearer:
+            []
+      summary: Sends a purge app request
+      parameters:
+        - in: path
+          name: app_id
+          required: true
+          schema:
+            type: string
+      operationId: purgeapp
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+  /app/list:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a list apps request
+      operationId: applist
+
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppListResponse"
+      tags:
+        - Appmgr
+  /app/overview:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a app overview request
+      operationId: appoverview
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppOverviewResponse"
+      tags:
+        - Appmgr
+  
+  /namespace/create:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a create namespace request
+      operationId: createnamespace
+      requestBody:
+        description: Request for create namespace
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNamespaceRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+
+      tags:
+        - Appmgr
+  /namespace/list:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a list namespaces request
+      operationId: namespacelist
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NamespaceListResponse"
+      tags:
+        - Appmgr
+  /namespace/update:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends an update namespace request
+      operationId: updatenamespace
+      requestBody:
+        description: Request for update namespace
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNamespaceRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+  /namespace/delete/{ns_id}:
+    delete:
+      security:
+        - Bearer:
+            []
+      summary: Sends a delete namespace request
+      operationId: deletenamespace
+      parameters:
+        - in: path
+          name: ns_id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+  /chart/upload/{chart_repo}/{chart_name}/{chart_ver}:
+    post:
+      security:
+        - Bearer:
+            []
+      summary: Sends a create chart request
+      operationId: uploadchart
+      requestBody:
+        description: Request for create namespace
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChartReqeust'
+      parameters:
+        - in: path
+          name: chart_repo
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: chart_name
+          required: true
+          schema:
+            type: string    
+        - in: path
+          name: chart_ver
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+  /chart/list:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a list charts request
+      operationId: chartlist
+      parameters:
+        - in: query
+          name: chart_repo
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChartListResponse"
+      tags:
+        - Appmgr
+  /chart/detail/{chart_repo}/{chart_name}/{chart_ver}:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a request for spectific chart detail
+      operationId: chartdetail
+      parameters:
+        - in: path
+          name: chart_repo
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: chart_name
+          required: true
+          schema:
+            type: string    
+        - in: path
+          name: chart_ver
+          required: true
+          schema:
+            type: string  
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChartDetailResponse"
+      tags:
+        - Appmgr
+  /chart/delete/{chart_repo}/{chart_name}/{chart_ver}:
+    delete:
+      security:
+        - Bearer:
+            []
+      summary: Sends a delete chart request
+      operationId: deletechart
+      parameters:
+        - in: path
+          name: chart_repo
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: chart_name
+          required: true
+          schema:
+            type: string    
+        - in: path
+          name: chart_ver
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+  /chart/download/{chart_repo}/{chart_name}/{chart_ver}:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a download chart request
+      operationId: downloadchart
+      parameters:
+        - in: path
+          name: chart_repo
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: chart_name
+          required: true
+          schema:
+            type: string    
+        - in: path
+          name: chart_ver
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadChartResponse'
+      tags:
+        - Appmgr
+  /chart/saveas:
+    put:
+      security:
+        - Bearer:
+            []
+      summary: Sends a save chart request
+      operationId: savechart
+      requestBody:
+        description: Request for save chart
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveChartRequest'
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmptyResponse"
+      tags:
+        - Appmgr
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    chart:
+      type: object
+      properties:
+        name:
+          type: string
+        repo:
+          type: string
+        description:
+          type: string
+        icon_url:
+          type: string
+        latest_version:
+          type: string
+        latest_app_version:
+          type: string
+      description: This component serve as chart.
+    chartdetail:
+      type: object
+      properties:
+        name:
+          type: string
+        repo:
+          type: string
+        version:
+          type: string
+        app_version:
+          type: string
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+        email: 
+          type: string
+        status:
+          type: string
+          enum:
+          - CONFIRMING
+          - CONFIRMED
+          - DEACTIVATED
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+            pub_key:
+              type: string
+            creation_date:
+              type: integer
+            last_modified_date:
+              type: integer
+            extra_fields:
+              type: array
+              items:
+                $ref: "#/components/schemas/userattribute"
+    userattribute:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      description: This message serve as userattribute.
+    dcdetail:
+      type: object
+      properties:
+        name:
+          type: string
+        number:
+          type: number
+      description: This message containing datacenterdetail.
+    app:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        data_center_name:
+          type: string
+        status:
+         type: string
+        app_attributes:
+          type: object
+          properties:
+            replica:
+              type: integer
+            creation_date:
+              type: integer
+            last_modified_date:
+              type: integer
+        environments:
+          type: object
+          properties:
+            cpu:
+              type: integer
+            memory:
+              type: integer
+            disk:
+             type: integer
+        uid:
+          type: string
+        chart_name:
+          type: string
+        chart_ver:
+         type: string
+        chart_repo:
+         type: string
+    app_report:
+      type: object
+      properties:
+        app_deployment: 
+          $ref: "#/components/schemas/app"
+        report:
+          type: string
+        app_status:
+          type: string
+          enum:
+          - APP_FAILED
+          - APP_DISPATCHING
+          - APP_LAUNCHING
+          - APP_RUNNING
+          - APP_UPDATING
+          - APP_UPDATE_FAILED
+          - APP_CANCELING
+          - APP_CANCELED
+
+    namespace:
+      type: object
+      properties:
+        ns_id:
+          type: string
+        ns_name:
+          type: string
+        geo_location:
+          type: string
+        ns_status:
+          type: string
+    datacenterstatus:
+      type: object
+      properties:
+        dc_id:
+          type: string
+        dc_name:
+          type: string
+        geo_location:
+          type: string
+        status:
+          type: string
+        dc_attributes:
+          type: object
+          properties:
+            wallet_address:
+              type: string
+            creation_date:
+              type: integer
+            last_modified_date:
+              type: integer
+        dc_heartbeat_report:
+          type: object
+          properties:
+            metrics:
+              type: string
+            report:
+              type: string
+            report_time:
+              type: integer
+      description: This message containing datacenter.
+    EmptyResponse:
+      type: object
+      properties:
+        {}
+      description: The request message containing Empty.
+    CreateAddressRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        propose:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        status:
+          type: string
+        attribute:
+          type: object
+          properties:
+            name:
+              type: string
+            pub_key:
+              type: string
+            creation_date:
+              type: integer
+            last_modified_date:
+              type: integer
+            extra_fields:
+              type: array
+              items:
+                $ref: '#/components/schemas/userattribute'
+      title: User Information
+      description: The response message containing the User information
+    RegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      title: Login Information
+      description: The response message containing the login information
+    LogoutRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        authentication_result:
+          type: object
+          properties:
+            expiration:
+              type: string
+            issued_at:
+              type: string
+            access_token:
+              type: string
+            refresh_token:
+              type: string
+        user:
+          $ref: "#/components/schemas/user"
+          
+      title: Login Information
+      description: The response message containing the login information
+    ConfirmEmailRequest:
+      type: object
+      properties:
+        confirmation_code:
+          type: string
+        new_email:
+          type: string
+    ChangeEmailRequest:
+      type: object
+      properties:
+        new_email:
+          type: string
+    ForgotPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+    ConfirmPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        new_password:
+          type: string
+        confirmation_code:
+          type: string
+    ChangePasswordRequest:
+      type: object
+      properties:
+        old_password:
+          type: string
+        new_password:
+          type: string
+    CreateAppChart:
+      type: object
+      properties:
+        chart_name:
+          type: string
+        chart_repo:
+          type: string
+        chart_ver:
+          type: string
+    UpdateAppRequest:
+      type: object
+      properties:
+        app_name:
+          type: string
+        chart_name:
+          type: string
+        chart_repo:
+          type: string
+        chart_ver:
+          type: string
+    CreateAppNamespace:
+      type: object
+      properties:
+        ns_name:
+          type: string
+        ns_cpu_limit:
+          type: integer
+        ns_mem_limit:
+          type: integer
+        ns_storage_limit:
+          type: integer
+    CreateAppRequest:
+      type: object
+      properties:
+        app_name:
+          type: string
+        chart:
+          $ref: "#/components/schemas/CreateAppChart"
+        namespace:
+          $ref: "#/components/schemas/CreateAppNamespace"
+        ns_id:
+          type: string
+    AppIDRequest:
+      type: object
+      properties:
+        app_id:
+          type: string
+    DcNetworkInfoResponse:
+      type: object
+      properties:
+        user_count:
+          type: integer
+        host_count:
+          type: integer
+        ns_count:
+          type: integer
+        container_count:
+          type: integer
+        traffic:
+          type: integer
+      title: DcNetwork information
+      description: The response message containing the DcNetwork information
+    UpdateAttributesRequest:
+      type: array
+      items:
+        $ref: "#/components/schemas/userattribute"
+      
+    DcLeaderboardResponse:
+      type: object
+      properties:
+        datacenter_leader_board_detail:
+          type: array
+          items:
+            $ref: "#/components/schemas/dcdetail"
+      title: DcLeaderBoard information
+      description: The response message containing the DcLeaderboard information
+    AppLeaderboardResponse:
+      type: object
+      properties:
+        app_leader_board_detail:
+          type: array
+          items:
+            $ref: "#/components/schemas/dcdetail"
+      title: The response message containing the DcLeaderboard information
+    DcListResponse:
+      type: object
+      properties:
+        dclist:
+          type: array
+          items:
+            $ref: "#/components/schemas/datacenterstatus"
+      title: DcList Information
+      description: The response message containing the DcList information
+    CreateNamespaceRequest:
+      type: object
+      properties:
+        ns_name:
+          type: string
+        ns_cpu_limit:
+          type: integer
+        ns_mem_limit:
+          type: integer
+        ns_storage_limit:
+          type: integer
+    NamespaceListResponse:
+      type: object
+      properties:
+        Namespaces:
+          type: array
+          items:
+            $ref: "#/components/schemas/namespace"
+      title: Namespace Information
+      description: The response message containing the Namespaces information
+    CreateChartReqeust:
+      type: object
+      properties:
+        chart_file:
+          type: string
+          format: byte
+    ChartListResponse:
+      type: object
+      properties:
+        Charts:
+          type: array
+          items:
+            $ref: "#/components/schemas/chart"
+      title: DcList Information
+      description: The response message containing the DcList information
+    ChartDetailRequest:
+      type: object
+      properties:
+        chart:
+          $ref: "#/components/schemas/chart"
+        show_version:
+          type: string
+    ChartDetailResponse:
+      type: object
+      properties:
+        chartdetails:
+          $ref: "#/components/schemas/chartdetail"
+        show_readme:
+          type: string
+        show_values:
+          type: string
+    Source: 
+      type: object
+      properties:
+        chart_repo:
+          type: string
+        chart_ver:
+          type: string
+        chart_name:
+          type: string
+    Destination:
+      type: object
+      properties:
+        saveas_ver:
+          type: string
+        saveas_name:
+          type: string
+    SaveChartRequest:
+      type: object
+      properties:
+        source:
+          $ref: "#/components/schemas/Source"
+        destination:
+          $ref: "#/components/schemas/Destination"
+        values_file:
+          type: string
+          format: byte
+    ChartListRequest:
+      type: object
+      properties:
+        chart_repo:
+          type: string
+        filter:
+          type: string
+    DownloadChartRequest:
+      type: object
+      properties:
+        chart_repo:
+          type: string
+        chart_ver:
+          type: string
+        chart_name:
+          type: string
+    DownloadChartResponse:
+      type: object
+      properties:
+        chart_file:
+          type: string
+          format: byte
+    AppListResponse:
+      type: object
+      properties:
+        applist:
+          type: array
+          items:
+            $ref: "#/components/schemas/app"
+      title: AppList Information
+      description: The response message containing the AppList information
+    AppOverviewResponse:
+      type: object
+      properties:
+        cluster_count:
+          type: integer
+        environment_count:
+          type: integer
+        region_count:
+          type: integer
+        total_app_count:
+          type: integer
+        health_app_count:
+          type: integer
+      title: AppOverview Information
+      description: The response message containing the AppOverview information
+    CreateAppResponse:
+      type: object
+      properties:
+        app_id:
+          type: string
+      title: Create App Response
+      description: The response message containing the returned appid
+    AppDetailResponse:
+      $ref: "#/components/schemas/app_report"

@@ -1,0 +1,78 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+import "common/common.proto";
+
+package gwexdcmgr;
+
+// The k8s service definition.
+service DCStreamer {
+    rpc ServerStream(stream common.proto.DCStream) returns (stream common.proto.DCStream) {} // k8s app stream
+}
+
+// The dclist service definition.
+service DCAPI {
+      rpc DataCenterList (common.proto.Empty) returns (DataCenterListResponse) {
+        option (google.api.http).get = "/dc/list";
+      }
+      rpc NetworkInfo(common.proto.Empty) returns (NetworkInfoResponse){
+        option (google.api.http).get = "/dc/networkinfo";
+      }
+      rpc RegisterDataCenter(RegisterDataCenterRequest) returns (RegisterDataCenterResponse){
+        option (google.api.http) = {
+            post: "/dc/register"
+            body: "*"
+    };
+      }
+      rpc ResetDataCenter(RegisterDataCenterRequest) returns (RegisterDataCenterResponse){
+        option (google.api.http) = {
+            post: "/dc/reset"
+            body: "*"
+    };
+      }
+      rpc MyDataCenter(MyDataCenterRequest) returns (common.proto.DataCenterStatus){
+        option (google.api.http).get = "/dc/mydc";
+      }
+
+}
+
+message DataCenterListResponse {
+  repeated common.proto.DataCenterStatus dcList= 1; // repeated groups of DataCenterInfo list
+}
+
+
+message NetworkInfoResponse {
+  int32 user_count = 1;
+  int32 host_count = 2;
+  int32 ns_count = 3; // namespace
+  int32 container_count = 4;
+  int32 traffic = 5;   //0 unavailable 1 light 2 median 3. heavy
+  string cpu_total = 6;
+  string cpu_used = 7;
+  string memory_total = 8; // MB
+  string memory_used = 9;  // MB
+  string storage_total = 10;  // MB
+  string storage_used = 11;  // MB
+  int32 network_count = 12;
+}
+
+message DataCenterLeaderBoardDetail {
+  string name = 1;
+  double number = 2;
+}
+
+
+message MyDataCenterRequest {
+  string user_id = 1;
+}
+
+message RegisterDataCenterRequest {
+  string user_id = 1;
+  string cluster_name = 2;
+}
+
+
+message RegisterDataCenterResponse {
+  string client_key = 1;
+  string client_csr_cert = 2;
+  string ca_cert = 3;
+}

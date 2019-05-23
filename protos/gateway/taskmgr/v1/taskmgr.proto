@@ -1,0 +1,280 @@
+syntax = "proto3";
+import "google/api/annotations.proto";
+import "common/common.proto";
+
+package gwappmgr;
+
+service AppMgr {
+    // Sends request to start a app and list app
+    rpc CreateApp (CreateAppRequest) returns (CreateAppResponse) {
+        option (google.api.http) = {
+            post: "/app/create"
+            body: "*"
+    };
+    }
+    rpc AppList (common.proto.Empty) returns (AppListResponse) {
+      option (google.api.http).get = "/app/list";
+    }
+    rpc AppDetail (AppID) returns (AppDetailResponse) {
+        option (google.api.http) = {
+	             get:"/app/detail/{app_id}"
+	        };
+    }
+    rpc CancelApp (AppID) returns (common.proto.Empty) {
+        option (google.api.http) = {
+            post: "/app/cancel/{app_id}"
+            body: "*"
+    };
+    }
+    rpc PurgeApp (AppID) returns (common.proto.Empty) {
+        option (google.api.http) = {
+	             delete:"/app/purge/{app_id}"
+	        };
+    }
+    rpc UpdateApp (UpdateAppRequest) returns (common.proto.Empty) {
+        option (google.api.http) = {
+            post: "/app/update/{app_id}"
+            body: "*"
+    };
+    }
+    rpc AppCount (AppCountRequest) returns (AppCountResponse){
+        option (google.api.http).get = "/app/count";
+    }
+    rpc AppOverview (common.proto.Empty) returns (AppOverviewResponse) {
+        option (google.api.http).get = "/app/overview";
+    }
+    rpc UploadChart (UploadChartRequest) returns (common.proto.Empty) {
+        option (google.api.http) = {
+            post: "/chart/upload/{chart_repo}/{chart_name}/{chart_ver}"
+            body: "*"
+    };
+    }
+    rpc ChartList (ChartListRequest) returns (ChartListResponse) {
+        option (google.api.http).get = "/chart/list";
+    }
+    rpc ChartDetail (ChartDetailRequest) returns (ChartDetailResponse) {
+        option (google.api.http) = {
+	            get:"/chart/detail/{chart_repo}/{chart_name}/{chart_ver}"
+	        };
+    }
+    rpc DeleteChart (DeleteChartRequest) returns (common.proto.Empty) {
+        option (google.api.http) = {
+	            delete:"/chart/delete/{chart_repo}/{chart_name}/{chart_ver}"
+	        };
+    }
+    rpc SaveAsChart (SaveAsChartRequest) returns (common.proto.Empty) {
+        option (google.api.http) = {
+            put: "/chart/saveas"
+            body: "*"
+    };
+    }
+    rpc DownloadChart (DownloadChartRequest) returns (DownloadChartResponse) {
+        option (google.api.http) = {
+	            get:"/chart/download/{chart_repo}/{chart_name}/{chart_ver}"
+	        };
+    }  
+    rpc CreateNamespace (CreateNamespaceRequest) returns (CreateNamespaceResponse) {
+        option (google.api.http) = {
+            post: "/namespace/create"
+            body: "*"
+    };
+    }
+    rpc NamespaceList (common.proto.Empty) returns (NamespaceListResponse) {
+        option (google.api.http).get = "/namespace/list";
+    }
+    rpc UpdateNamespace (UpdateNamespaceRequest) returns (common.proto.Empty) {
+        option (google.api.http) = {
+            post: "/namespace/update"
+            body: "*"
+    };
+    }
+    rpc DeleteNamespace (DeleteNamespaceRequest) returns (common.proto.Empty) {
+        option (google.api.http) = {
+            delete: "/namespace/delete/{ns_id}"
+    };
+    }
+    rpc AnkrPrice (common.proto.Empty) returns (AnkrPriceResponse) {
+        option (google.api.http) = {
+            get: "/price"
+    };
+    }
+    rpc AnkrPriceHistory (AnkrPriceHistoryRequest) returns (history) {
+        option (google.api.http) = {
+            get: "/price/history/{history_request}"
+    };
+    }
+}
+message AnkrPriceHistoryRequest{
+    string history_request = 1;
+}
+message trade {
+	double time = 1;
+	double high = 2;
+	double low = 3;
+	double open = 4;
+	double volumefrom = 5;
+	double volumeto = 6;
+	double close = 7;
+}
+
+message history {
+	repeated trade data = 1;
+}
+
+message AnkrPriceResponse{
+    double NowPrice = 1;
+    double P24hPrice = 2;
+}
+
+// The dccn client request message containing the user's token
+message Chart {
+    string chart_name = 1;
+    string chart_repo = 2;
+    string chart_ver = 3;
+}
+message Namespace {
+    string ns_name = 1;
+    string cluster_id = 2;
+	uint32 ns_cpu_limit = 3;
+    uint32 ns_mem_limit = 4;
+    uint32 ns_storage_limit = 5;
+}
+message CreateAppRequest {
+    string app_name = 1;
+    Chart chart = 2;
+    string ns_id = 3;
+	Namespace namespace = 4;
+}
+
+message CreateAppResponse {
+    string app_id = 1;
+}
+
+message AppListResponse {
+    repeated common.proto.AppReport app_reports = 1;
+}
+
+message AppDetailResponse {
+    common.proto.AppReport app_report = 1;
+}
+
+message AppID {
+    string app_id = 1;
+}
+
+message UpdateAppRequest{
+    string app_name = 1;
+    string app_id = 2;
+    string chart_ver = 5;
+}
+
+message AppCountRequest{
+  string uid = 1;
+  string cluster_id = 2;
+}
+
+message AppCountResponse{
+  uint32 app_count = 1;
+}
+
+message AppOverviewResponse{
+  uint32 cluster_count = 1;
+  uint32 namespace_count = 2;
+  uint32 network_count = 3;
+  uint32 total_app_count = 4;
+  float cpu_total = 5;
+  float cpu_usage = 6;
+  float mem_total = 7;
+  float mem_usage = 8;
+  float storage_total = 9;
+  float storage_usage = 10;
+}
+
+message UploadChartRequest {
+    string chart_repo = 1;
+    string chart_ver = 2;
+    string chart_name = 3;
+    bytes chart_file = 4;
+}
+
+message ChartListRequest {
+    string chart_repo = 1;
+}
+
+message ChartListResponse {
+    repeated common.proto.Chart charts = 1;
+}
+
+message ChartDetailRequest {
+    string chart_name = 1;
+    string chart_repo = 2;
+    string chart_ver = 3;
+}
+
+message ChartDetailResponse {
+    string chart_name = 1;
+    string chart_repo = 2;
+    repeated common.proto.ChartVersionDetail chart_version_details = 3; //for multiple version
+    string readme_md = 4; // readme.md for current version 
+	string values_yaml = 5; // value.yaml for current version 
+}
+
+message DeleteChartRequest {
+    string chart_repo = 1;
+    string chart_ver = 2;
+    string chart_name = 3;
+}
+
+message CreateNamespaceRequest {
+	string ns_name = 1;
+    string cluster_id = 2;
+    uint32 ns_cpu_limit = 3;
+    uint32 ns_mem_limit = 4;
+    uint32 ns_storage_limit = 5;
+}
+
+message CreateNamespaceResponse {
+    string ns_id = 1;
+}
+
+message NamespaceListResponse {
+    repeated common.proto.NamespaceReport ns_reports = 1;
+}
+
+message UpdateNamespaceRequest {
+    string ns_id = 1;
+    uint32 ns_cpu_limit = 2;
+    uint32 ns_mem_limit = 3;
+    uint32 ns_storage_limit = 4;
+}
+
+message DeleteNamespaceRequest {
+    string ns_id = 1;
+}
+
+message DownloadChartRequest {
+    string chart_repo = 1;
+    string chart_ver = 2;
+    string chart_name = 3;
+}
+
+message DownloadChartResponse {
+    bytes chart_file = 1;
+}
+
+message Source {
+    string chart_repo = 1;
+    string chart_ver = 2;
+    string chart_name = 3;
+}
+
+message Destination {
+    string saveas_ver = 1;
+    string saveas_name = 2;
+}
+
+message SaveAsChartRequest {
+    Source source = 1;
+    Destination destination = 2;
+    bytes values_yaml = 3;
+}
