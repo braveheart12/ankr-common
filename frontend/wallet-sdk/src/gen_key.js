@@ -18,8 +18,8 @@ const sum = (salt, callback) => {
 
 export const gen_key = (salt, callback) => {
     sum(salt, (keys) => {
-        console.log(sha256(keys.publicSignKey).substr(0, 40))
-        const addr = sha256(keys.publicSignKey).substr(0, 40).toUpperCase();
+        console.log(sha256(keys.publicSignKey).substr(0, 46))
+        const addr = sha256(keys.publicSignKey).substr(0, 46).toUpperCase();
 
         callback({
             public_key: keys.publicSignKeyBase64,
