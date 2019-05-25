@@ -44,7 +44,7 @@ func (p *ping) Ping(stream StreamPing_PingServer) error {
 
 	for range time.Tick(5 * time.Second) {
 		if err := stream.Send(&PingMessage{}); err != nil {
-			p.sess.GoAway()
+			p.sess.Close()
 			return err
 		}
 	}
