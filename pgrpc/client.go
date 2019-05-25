@@ -18,6 +18,7 @@ type Client struct {
 	config *yamux.Config
 	conns  *sync.Map
 	hook   Hook
+	mu     *sync.Mutex
 }
 
 var DefaultClient *Client
@@ -132,6 +133,7 @@ func NewClient(port string, conf *yamux.Config, hook Hook, opts ...grpc.DialOpti
 		config: conf,
 		conns:  conns,
 		hook:   hook,
+		mu:     &sync.Mutex{},
 	}, nil
 }
 
@@ -139,23 +141,26 @@ func Alias(key, alias string, force bool) error {
 	return DefaultClient.Alias(key, alias, force)
 }
 func (c *Client) Alias(key, alias string, force bool) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
 	val, ok := c.conns.Load(key)
 	if !ok {
 		return errors.New("alias key not found")
 	}
 
 	if _, ok = c.conns.LoadOrStore(alias, val); !ok {
-		val.(*Session).Name = alias // concurrent unsafe
+		val.(*Session).Name = alias
 	} else if force {
 		c.conns.Store(alias, val)
-		val.(*Session).Name = alias // concurrent unsafe
-		return nil                  // avoid rerun hook
+		val.(*Session).Name = alias
 	} else {
 		return errors.New("alias name has been occupied")
 	}
 
 	go func() {
 		<-val.(*Session).CloseChan()
+		// avoid rerun hook
 		if val, ok := c.conns.Load(alias); ok && val.(*Session).Name == alias {
 			c.hook.OnClose(alias, val.(*Session))
 		}
