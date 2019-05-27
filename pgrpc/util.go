@@ -44,7 +44,7 @@ func (p *ping) Ping(stream StreamPing_PingServer) error {
 
 	for range time.Tick(5 * time.Second) {
 		if err := stream.Send(&PingMessage{}); err != nil {
-			p.sess.GoAway()
+			p.sess.Close()
 			return err
 		}
 	}
@@ -59,7 +59,10 @@ func pgrpcKeepalive(sess *Session, logger yamux.Logger) {
 		}
 	}
 
-	conn, err := grpc.DialContext(context.Background(), sess.Name,
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	conn, err := grpc.DialContext(ctx, sess.Name,
 		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) {
 			return sess.Open()
 		}))
