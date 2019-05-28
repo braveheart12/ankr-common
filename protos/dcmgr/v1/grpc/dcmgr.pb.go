@@ -26,82 +26,248 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type GetClusterCertificateRequest struct {
-	ClusterId            string   `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+type DashBoardRequest struct {
+	Uid                  string   `protobuf:"bytes,1,opt,name=uid,proto3" json:"uid,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GetClusterCertificateRequest) Reset()         { *m = GetClusterCertificateRequest{} }
-func (m *GetClusterCertificateRequest) String() string { return proto.CompactTextString(m) }
-func (*GetClusterCertificateRequest) ProtoMessage()    {}
-func (*GetClusterCertificateRequest) Descriptor() ([]byte, []int) {
+func (m *DashBoardRequest) Reset()         { *m = DashBoardRequest{} }
+func (m *DashBoardRequest) String() string { return proto.CompactTextString(m) }
+func (*DashBoardRequest) ProtoMessage()    {}
+func (*DashBoardRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_37a452e4549c3bbc, []int{0}
 }
 
-func (m *GetClusterCertificateRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetClusterCertificateRequest.Unmarshal(m, b)
+func (m *DashBoardRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DashBoardRequest.Unmarshal(m, b)
 }
-func (m *GetClusterCertificateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetClusterCertificateRequest.Marshal(b, m, deterministic)
+func (m *DashBoardRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DashBoardRequest.Marshal(b, m, deterministic)
 }
-func (m *GetClusterCertificateRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetClusterCertificateRequest.Merge(m, src)
+func (m *DashBoardRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DashBoardRequest.Merge(m, src)
 }
-func (m *GetClusterCertificateRequest) XXX_Size() int {
-	return xxx_messageInfo_GetClusterCertificateRequest.Size(m)
+func (m *DashBoardRequest) XXX_Size() int {
+	return xxx_messageInfo_DashBoardRequest.Size(m)
 }
-func (m *GetClusterCertificateRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetClusterCertificateRequest.DiscardUnknown(m)
+func (m *DashBoardRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DashBoardRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetClusterCertificateRequest proto.InternalMessageInfo
+var xxx_messageInfo_DashBoardRequest proto.InternalMessageInfo
 
-func (m *GetClusterCertificateRequest) GetClusterId() string {
+func (m *DashBoardRequest) GetUid() string {
 	if m != nil {
-		return m.ClusterId
+		return m.Uid
 	}
 	return ""
 }
 
-type GetClusterCertificateResponse struct {
-	ClientCsrCert        string   `protobuf:"bytes,1,opt,name=client_csr_cert,json=clientCsrCert,proto3" json:"client_csr_cert,omitempty"`
+type DashBoardResponse struct {
+	TotalIncome          int32     `protobuf:"varint,1,opt,name=total_income,json=totalIncome,proto3" json:"total_income,omitempty"`
+	CurrentUsage         *Usage    `protobuf:"bytes,2,opt,name=current_usage,json=currentUsage,proto3" json:"current_usage,omitempty"`
+	Week                 []*Income `protobuf:"bytes,3,rep,name=week,proto3" json:"week,omitempty"`
+	Month                []*Income `protobuf:"bytes,4,rep,name=month,proto3" json:"month,omitempty"`
+	Year                 []*Income `protobuf:"bytes,5,rep,name=year,proto3" json:"year,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *DashBoardResponse) Reset()         { *m = DashBoardResponse{} }
+func (m *DashBoardResponse) String() string { return proto.CompactTextString(m) }
+func (*DashBoardResponse) ProtoMessage()    {}
+func (*DashBoardResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_37a452e4549c3bbc, []int{1}
+}
+
+func (m *DashBoardResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DashBoardResponse.Unmarshal(m, b)
+}
+func (m *DashBoardResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DashBoardResponse.Marshal(b, m, deterministic)
+}
+func (m *DashBoardResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DashBoardResponse.Merge(m, src)
+}
+func (m *DashBoardResponse) XXX_Size() int {
+	return xxx_messageInfo_DashBoardResponse.Size(m)
+}
+func (m *DashBoardResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DashBoardResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DashBoardResponse proto.InternalMessageInfo
+
+func (m *DashBoardResponse) GetTotalIncome() int32 {
+	if m != nil {
+		return m.TotalIncome
+	}
+	return 0
+}
+
+func (m *DashBoardResponse) GetCurrentUsage() *Usage {
+	if m != nil {
+		return m.CurrentUsage
+	}
+	return nil
+}
+
+func (m *DashBoardResponse) GetWeek() []*Income {
+	if m != nil {
+		return m.Week
+	}
+	return nil
+}
+
+func (m *DashBoardResponse) GetMonth() []*Income {
+	if m != nil {
+		return m.Month
+	}
+	return nil
+}
+
+func (m *DashBoardResponse) GetYear() []*Income {
+	if m != nil {
+		return m.Year
+	}
+	return nil
+}
+
+type Income struct {
+	Income               int32                `protobuf:"varint,1,opt,name=income,proto3" json:"income,omitempty"`
+	Date                 *timestamp.Timestamp `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	Usage                *Usage               `protobuf:"bytes,3,opt,name=usage,proto3" json:"usage,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *Income) Reset()         { *m = Income{} }
+func (m *Income) String() string { return proto.CompactTextString(m) }
+func (*Income) ProtoMessage()    {}
+func (*Income) Descriptor() ([]byte, []int) {
+	return fileDescriptor_37a452e4549c3bbc, []int{2}
+}
+
+func (m *Income) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Income.Unmarshal(m, b)
+}
+func (m *Income) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Income.Marshal(b, m, deterministic)
+}
+func (m *Income) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Income.Merge(m, src)
+}
+func (m *Income) XXX_Size() int {
+	return xxx_messageInfo_Income.Size(m)
+}
+func (m *Income) XXX_DiscardUnknown() {
+	xxx_messageInfo_Income.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Income proto.InternalMessageInfo
+
+func (m *Income) GetIncome() int32 {
+	if m != nil {
+		return m.Income
+	}
+	return 0
+}
+
+func (m *Income) GetDate() *timestamp.Timestamp {
+	if m != nil {
+		return m.Date
+	}
+	return nil
+}
+
+func (m *Income) GetUsage() *Usage {
+	if m != nil {
+		return m.Usage
+	}
+	return nil
+}
+
+type Usage struct {
+	CpuTotal             int32    `protobuf:"varint,1,opt,name=cpu_total,json=cpuTotal,proto3" json:"cpu_total,omitempty"`
+	CpuUsed              int32    `protobuf:"varint,2,opt,name=cpu_used,json=cpuUsed,proto3" json:"cpu_used,omitempty"`
+	MemoryTotal          int32    `protobuf:"varint,3,opt,name=memory_total,json=memoryTotal,proto3" json:"memory_total,omitempty"`
+	MemoryUsed           int32    `protobuf:"varint,4,opt,name=memory_used,json=memoryUsed,proto3" json:"memory_used,omitempty"`
+	StorageTotal         int32    `protobuf:"varint,5,opt,name=storage_total,json=storageTotal,proto3" json:"storage_total,omitempty"`
+	StorageUsed          int32    `protobuf:"varint,6,opt,name=storage_used,json=storageUsed,proto3" json:"storage_used,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *GetClusterCertificateResponse) Reset()         { *m = GetClusterCertificateResponse{} }
-func (m *GetClusterCertificateResponse) String() string { return proto.CompactTextString(m) }
-func (*GetClusterCertificateResponse) ProtoMessage()    {}
-func (*GetClusterCertificateResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{1}
+func (m *Usage) Reset()         { *m = Usage{} }
+func (m *Usage) String() string { return proto.CompactTextString(m) }
+func (*Usage) ProtoMessage()    {}
+func (*Usage) Descriptor() ([]byte, []int) {
+	return fileDescriptor_37a452e4549c3bbc, []int{3}
 }
 
-func (m *GetClusterCertificateResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetClusterCertificateResponse.Unmarshal(m, b)
+func (m *Usage) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Usage.Unmarshal(m, b)
 }
-func (m *GetClusterCertificateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetClusterCertificateResponse.Marshal(b, m, deterministic)
+func (m *Usage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Usage.Marshal(b, m, deterministic)
 }
-func (m *GetClusterCertificateResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetClusterCertificateResponse.Merge(m, src)
+func (m *Usage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Usage.Merge(m, src)
 }
-func (m *GetClusterCertificateResponse) XXX_Size() int {
-	return xxx_messageInfo_GetClusterCertificateResponse.Size(m)
+func (m *Usage) XXX_Size() int {
+	return xxx_messageInfo_Usage.Size(m)
 }
-func (m *GetClusterCertificateResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetClusterCertificateResponse.DiscardUnknown(m)
+func (m *Usage) XXX_DiscardUnknown() {
+	xxx_messageInfo_Usage.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GetClusterCertificateResponse proto.InternalMessageInfo
+var xxx_messageInfo_Usage proto.InternalMessageInfo
 
-func (m *GetClusterCertificateResponse) GetClientCsrCert() string {
+func (m *Usage) GetCpuTotal() int32 {
 	if m != nil {
-		return m.ClientCsrCert
+		return m.CpuTotal
 	}
-	return ""
+	return 0
+}
+
+func (m *Usage) GetCpuUsed() int32 {
+	if m != nil {
+		return m.CpuUsed
+	}
+	return 0
+}
+
+func (m *Usage) GetMemoryTotal() int32 {
+	if m != nil {
+		return m.MemoryTotal
+	}
+	return 0
+}
+
+func (m *Usage) GetMemoryUsed() int32 {
+	if m != nil {
+		return m.MemoryUsed
+	}
+	return 0
+}
+
+func (m *Usage) GetStorageTotal() int32 {
+	if m != nil {
+		return m.StorageTotal
+	}
+	return 0
+}
+
+func (m *Usage) GetStorageUsed() int32 {
+	if m != nil {
+		return m.StorageUsed
+	}
+	return 0
 }
 
 type MyDataCenterRequest struct {
@@ -115,7 +281,7 @@ func (m *MyDataCenterRequest) Reset()         { *m = MyDataCenterRequest{} }
 func (m *MyDataCenterRequest) String() string { return proto.CompactTextString(m) }
 func (*MyDataCenterRequest) ProtoMessage()    {}
 func (*MyDataCenterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{2}
+	return fileDescriptor_37a452e4549c3bbc, []int{4}
 }
 
 func (m *MyDataCenterRequest) XXX_Unmarshal(b []byte) error {
@@ -155,7 +321,7 @@ func (m *RegisterDataCenterRequest) Reset()         { *m = RegisterDataCenterReq
 func (m *RegisterDataCenterRequest) String() string { return proto.CompactTextString(m) }
 func (*RegisterDataCenterRequest) ProtoMessage()    {}
 func (*RegisterDataCenterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{3}
+	return fileDescriptor_37a452e4549c3bbc, []int{5}
 }
 
 func (m *RegisterDataCenterRequest) XXX_Unmarshal(b []byte) error {
@@ -196,7 +362,6 @@ type RegisterDataCenterResponse struct {
 	CaCert               string   `protobuf:"bytes,3,opt,name=ca_cert,json=caCert,proto3" json:"ca_cert,omitempty"`
 	ClusterId            string   `protobuf:"bytes,4,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	ClusterName          string   `protobuf:"bytes,5,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
-	Configmap            string   `protobuf:"bytes,6,opt,name=configmap,proto3" json:"configmap,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -206,7 +371,7 @@ func (m *RegisterDataCenterResponse) Reset()         { *m = RegisterDataCenterRe
 func (m *RegisterDataCenterResponse) String() string { return proto.CompactTextString(m) }
 func (*RegisterDataCenterResponse) ProtoMessage()    {}
 func (*RegisterDataCenterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{4}
+	return fileDescriptor_37a452e4549c3bbc, []int{6}
 }
 
 func (m *RegisterDataCenterResponse) XXX_Unmarshal(b []byte) error {
@@ -262,13 +427,6 @@ func (m *RegisterDataCenterResponse) GetClusterName() string {
 	return ""
 }
 
-func (m *RegisterDataCenterResponse) GetConfigmap() string {
-	if m != nil {
-		return m.Configmap
-	}
-	return ""
-}
-
 type DataCenterListResponse struct {
 	DcList               []*common.DataCenterStatus `protobuf:"bytes,1,rep,name=dcList,proto3" json:"dcList,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
@@ -280,7 +438,7 @@ func (m *DataCenterListResponse) Reset()         { *m = DataCenterListResponse{}
 func (m *DataCenterListResponse) String() string { return proto.CompactTextString(m) }
 func (*DataCenterListResponse) ProtoMessage()    {}
 func (*DataCenterListResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{5}
+	return fileDescriptor_37a452e4549c3bbc, []int{7}
 }
 
 func (m *DataCenterListResponse) XXX_Unmarshal(b []byte) error {
@@ -330,7 +488,7 @@ func (m *NetworkInfoResponse) Reset()         { *m = NetworkInfoResponse{} }
 func (m *NetworkInfoResponse) String() string { return proto.CompactTextString(m) }
 func (*NetworkInfoResponse) ProtoMessage()    {}
 func (*NetworkInfoResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{6}
+	return fileDescriptor_37a452e4549c3bbc, []int{8}
 }
 
 func (m *NetworkInfoResponse) XXX_Unmarshal(b []byte) error {
@@ -446,7 +604,7 @@ func (m *DCOverviewRequest) Reset()         { *m = DCOverviewRequest{} }
 func (m *DCOverviewRequest) String() string { return proto.CompactTextString(m) }
 func (*DCOverviewRequest) ProtoMessage()    {}
 func (*DCOverviewRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{7}
+	return fileDescriptor_37a452e4549c3bbc, []int{9}
 }
 
 func (m *DCOverviewRequest) XXX_Unmarshal(b []byte) error {
@@ -478,8 +636,7 @@ type DCOverviewResponse struct {
 	ClusterId            string                   `protobuf:"bytes,1,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	Status               *common.DataCenterStatus `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
 	Timestamp            string                   `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	RSignature           string                   `protobuf:"bytes,4,opt,name=r_signature,json=rSignature,proto3" json:"r_signature,omitempty"`
-	SSignature           string                   `protobuf:"bytes,5,opt,name=s_signature,json=sSignature,proto3" json:"s_signature,omitempty"`
+	Signature            string                   `protobuf:"bytes,4,opt,name=signature,proto3" json:"signature,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
 	XXX_unrecognized     []byte                   `json:"-"`
 	XXX_sizecache        int32                    `json:"-"`
@@ -489,7 +646,7 @@ func (m *DCOverviewResponse) Reset()         { *m = DCOverviewResponse{} }
 func (m *DCOverviewResponse) String() string { return proto.CompactTextString(m) }
 func (*DCOverviewResponse) ProtoMessage()    {}
 func (*DCOverviewResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{8}
+	return fileDescriptor_37a452e4549c3bbc, []int{10}
 }
 
 func (m *DCOverviewResponse) XXX_Unmarshal(b []byte) error {
@@ -531,267 +688,18 @@ func (m *DCOverviewResponse) GetTimestamp() string {
 	return ""
 }
 
-func (m *DCOverviewResponse) GetRSignature() string {
+func (m *DCOverviewResponse) GetSignature() string {
 	if m != nil {
-		return m.RSignature
+		return m.Signature
 	}
 	return ""
-}
-
-func (m *DCOverviewResponse) GetSSignature() string {
-	if m != nil {
-		return m.SSignature
-	}
-	return ""
-}
-
-type DashBoardRequest struct {
-	Uid                  string   `protobuf:"bytes,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *DashBoardRequest) Reset()         { *m = DashBoardRequest{} }
-func (m *DashBoardRequest) String() string { return proto.CompactTextString(m) }
-func (*DashBoardRequest) ProtoMessage()    {}
-func (*DashBoardRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{9}
-}
-
-func (m *DashBoardRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DashBoardRequest.Unmarshal(m, b)
-}
-func (m *DashBoardRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DashBoardRequest.Marshal(b, m, deterministic)
-}
-func (m *DashBoardRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DashBoardRequest.Merge(m, src)
-}
-func (m *DashBoardRequest) XXX_Size() int {
-	return xxx_messageInfo_DashBoardRequest.Size(m)
-}
-func (m *DashBoardRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_DashBoardRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DashBoardRequest proto.InternalMessageInfo
-
-func (m *DashBoardRequest) GetUid() string {
-	if m != nil {
-		return m.Uid
-	}
-	return ""
-}
-
-type DashBoardResponse struct {
-	TotalIncome          int32     `protobuf:"varint,1,opt,name=total_income,json=totalIncome,proto3" json:"total_income,omitempty"`
-	CurrentUsage         *Usage    `protobuf:"bytes,2,opt,name=current_usage,json=currentUsage,proto3" json:"current_usage,omitempty"`
-	Week                 []*Income `protobuf:"bytes,3,rep,name=week,proto3" json:"week,omitempty"`
-	Month                []*Income `protobuf:"bytes,4,rep,name=month,proto3" json:"month,omitempty"`
-	Year                 []*Income `protobuf:"bytes,5,rep,name=year,proto3" json:"year,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
-	XXX_unrecognized     []byte    `json:"-"`
-	XXX_sizecache        int32     `json:"-"`
-}
-
-func (m *DashBoardResponse) Reset()         { *m = DashBoardResponse{} }
-func (m *DashBoardResponse) String() string { return proto.CompactTextString(m) }
-func (*DashBoardResponse) ProtoMessage()    {}
-func (*DashBoardResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{10}
-}
-
-func (m *DashBoardResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_DashBoardResponse.Unmarshal(m, b)
-}
-func (m *DashBoardResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_DashBoardResponse.Marshal(b, m, deterministic)
-}
-func (m *DashBoardResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_DashBoardResponse.Merge(m, src)
-}
-func (m *DashBoardResponse) XXX_Size() int {
-	return xxx_messageInfo_DashBoardResponse.Size(m)
-}
-func (m *DashBoardResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_DashBoardResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_DashBoardResponse proto.InternalMessageInfo
-
-func (m *DashBoardResponse) GetTotalIncome() int32 {
-	if m != nil {
-		return m.TotalIncome
-	}
-	return 0
-}
-
-func (m *DashBoardResponse) GetCurrentUsage() *Usage {
-	if m != nil {
-		return m.CurrentUsage
-	}
-	return nil
-}
-
-func (m *DashBoardResponse) GetWeek() []*Income {
-	if m != nil {
-		return m.Week
-	}
-	return nil
-}
-
-func (m *DashBoardResponse) GetMonth() []*Income {
-	if m != nil {
-		return m.Month
-	}
-	return nil
-}
-
-func (m *DashBoardResponse) GetYear() []*Income {
-	if m != nil {
-		return m.Year
-	}
-	return nil
-}
-
-type Income struct {
-	Income               int32                `protobuf:"varint,1,opt,name=income,proto3" json:"income,omitempty"`
-	Date                 *timestamp.Timestamp `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
-	Usage                *Usage               `protobuf:"bytes,3,opt,name=usage,proto3" json:"usage,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
-	XXX_unrecognized     []byte               `json:"-"`
-	XXX_sizecache        int32                `json:"-"`
-}
-
-func (m *Income) Reset()         { *m = Income{} }
-func (m *Income) String() string { return proto.CompactTextString(m) }
-func (*Income) ProtoMessage()    {}
-func (*Income) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{11}
-}
-
-func (m *Income) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Income.Unmarshal(m, b)
-}
-func (m *Income) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Income.Marshal(b, m, deterministic)
-}
-func (m *Income) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Income.Merge(m, src)
-}
-func (m *Income) XXX_Size() int {
-	return xxx_messageInfo_Income.Size(m)
-}
-func (m *Income) XXX_DiscardUnknown() {
-	xxx_messageInfo_Income.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Income proto.InternalMessageInfo
-
-func (m *Income) GetIncome() int32 {
-	if m != nil {
-		return m.Income
-	}
-	return 0
-}
-
-func (m *Income) GetDate() *timestamp.Timestamp {
-	if m != nil {
-		return m.Date
-	}
-	return nil
-}
-
-func (m *Income) GetUsage() *Usage {
-	if m != nil {
-		return m.Usage
-	}
-	return nil
-}
-
-type Usage struct {
-	CpuTotal             int32    `protobuf:"varint,1,opt,name=cpu_total,json=cpuTotal,proto3" json:"cpu_total,omitempty"`
-	CpuUsed              int32    `protobuf:"varint,2,opt,name=cpu_used,json=cpuUsed,proto3" json:"cpu_used,omitempty"`
-	MemoryTotal          int32    `protobuf:"varint,3,opt,name=memory_total,json=memoryTotal,proto3" json:"memory_total,omitempty"`
-	MemoryUsed           int32    `protobuf:"varint,4,opt,name=memory_used,json=memoryUsed,proto3" json:"memory_used,omitempty"`
-	StorageTotal         int32    `protobuf:"varint,5,opt,name=storage_total,json=storageTotal,proto3" json:"storage_total,omitempty"`
-	StorageUsed          int32    `protobuf:"varint,6,opt,name=storage_used,json=storageUsed,proto3" json:"storage_used,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Usage) Reset()         { *m = Usage{} }
-func (m *Usage) String() string { return proto.CompactTextString(m) }
-func (*Usage) ProtoMessage()    {}
-func (*Usage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_37a452e4549c3bbc, []int{12}
-}
-
-func (m *Usage) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Usage.Unmarshal(m, b)
-}
-func (m *Usage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Usage.Marshal(b, m, deterministic)
-}
-func (m *Usage) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Usage.Merge(m, src)
-}
-func (m *Usage) XXX_Size() int {
-	return xxx_messageInfo_Usage.Size(m)
-}
-func (m *Usage) XXX_DiscardUnknown() {
-	xxx_messageInfo_Usage.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Usage proto.InternalMessageInfo
-
-func (m *Usage) GetCpuTotal() int32 {
-	if m != nil {
-		return m.CpuTotal
-	}
-	return 0
-}
-
-func (m *Usage) GetCpuUsed() int32 {
-	if m != nil {
-		return m.CpuUsed
-	}
-	return 0
-}
-
-func (m *Usage) GetMemoryTotal() int32 {
-	if m != nil {
-		return m.MemoryTotal
-	}
-	return 0
-}
-
-func (m *Usage) GetMemoryUsed() int32 {
-	if m != nil {
-		return m.MemoryUsed
-	}
-	return 0
-}
-
-func (m *Usage) GetStorageTotal() int32 {
-	if m != nil {
-		return m.StorageTotal
-	}
-	return 0
-}
-
-func (m *Usage) GetStorageUsed() int32 {
-	if m != nil {
-		return m.StorageUsed
-	}
-	return 0
 }
 
 func init() {
-	proto.RegisterType((*GetClusterCertificateRequest)(nil), "dcmgr.GetClusterCertificateRequest")
-	proto.RegisterType((*GetClusterCertificateResponse)(nil), "dcmgr.GetClusterCertificateResponse")
+	proto.RegisterType((*DashBoardRequest)(nil), "dcmgr.DashBoardRequest")
+	proto.RegisterType((*DashBoardResponse)(nil), "dcmgr.DashBoardResponse")
+	proto.RegisterType((*Income)(nil), "dcmgr.Income")
+	proto.RegisterType((*Usage)(nil), "dcmgr.Usage")
 	proto.RegisterType((*MyDataCenterRequest)(nil), "dcmgr.MyDataCenterRequest")
 	proto.RegisterType((*RegisterDataCenterRequest)(nil), "dcmgr.RegisterDataCenterRequest")
 	proto.RegisterType((*RegisterDataCenterResponse)(nil), "dcmgr.RegisterDataCenterResponse")
@@ -799,82 +707,74 @@ func init() {
 	proto.RegisterType((*NetworkInfoResponse)(nil), "dcmgr.NetworkInfoResponse")
 	proto.RegisterType((*DCOverviewRequest)(nil), "dcmgr.DCOverviewRequest")
 	proto.RegisterType((*DCOverviewResponse)(nil), "dcmgr.DCOverviewResponse")
-	proto.RegisterType((*DashBoardRequest)(nil), "dcmgr.DashBoardRequest")
-	proto.RegisterType((*DashBoardResponse)(nil), "dcmgr.DashBoardResponse")
-	proto.RegisterType((*Income)(nil), "dcmgr.Income")
-	proto.RegisterType((*Usage)(nil), "dcmgr.Usage")
 }
 
 func init() { proto.RegisterFile("dcmgr/v1/grpc/dcmgr.proto", fileDescriptor_37a452e4549c3bbc) }
 
 var fileDescriptor_37a452e4549c3bbc = []byte{
-	// 1056 bytes of a gzipped FileDescriptorProto
+	// 984 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xcd, 0x6e, 0x1b, 0x37,
-	0x10, 0x96, 0xac, 0x1f, 0x5b, 0x63, 0x39, 0x4e, 0x68, 0x34, 0x5e, 0x6f, 0xec, 0xc6, 0x5e, 0x07,
-	0x4d, 0x4e, 0x12, 0xec, 0x02, 0xbd, 0x14, 0x05, 0xe2, 0x4a, 0xa9, 0x21, 0x34, 0x4d, 0x03, 0xc5,
-	0x46, 0x0b, 0xf4, 0x20, 0x30, 0xd4, 0x48, 0x5e, 0x58, 0xfb, 0xd3, 0x25, 0xd7, 0x86, 0x5e, 0xa5,
-	0xcf, 0xd1, 0xb7, 0xe8, 0xb5, 0xc7, 0x3e, 0x4a, 0x0f, 0x05, 0x39, 0xdc, 0xb5, 0x64, 0xad, 0x94,
-	0x02, 0xf1, 0x49, 0x9a, 0xf9, 0x86, 0x1f, 0xf9, 0x0d, 0x67, 0x38, 0x0b, 0x7b, 0x43, 0x11, 0x8c,
-	0x93, 0xf6, 0xcd, 0x49, 0x7b, 0x9c, 0xc4, 0xa2, 0x6d, 0xac, 0x56, 0x9c, 0x44, 0x2a, 0x62, 0x35,
-	0x63, 0xb8, 0x3b, 0x22, 0x0a, 0x82, 0x28, 0x6c, 0xd3, 0x0f, 0x61, 0xee, 0xf3, 0x71, 0x14, 0x8d,
-	0x27, 0xd8, 0x36, 0xd6, 0xc7, 0x74, 0xd4, 0x56, 0x7e, 0x80, 0x52, 0xf1, 0x20, 0xa6, 0x00, 0xef,
-	0x3b, 0xd8, 0x3f, 0x47, 0xd5, 0x99, 0xa4, 0x52, 0x61, 0xd2, 0xc1, 0x44, 0xf9, 0x23, 0x5f, 0x70,
-	0x85, 0x7d, 0xfc, 0x3d, 0x45, 0xa9, 0xd8, 0x01, 0x80, 0x20, 0x70, 0xe0, 0x0f, 0x9d, 0xf2, 0x61,
-	0xf9, 0x55, 0xa3, 0xdf, 0xb0, 0x9e, 0xde, 0xd0, 0x3b, 0x87, 0x83, 0x25, 0xcb, 0x65, 0x1c, 0x85,
-	0x12, 0xd9, 0x57, 0xb0, 0x2d, 0x26, 0x3e, 0x86, 0x6a, 0x20, 0x64, 0x32, 0x10, 0x98, 0x28, 0x4b,
-	0xb2, 0x45, 0xee, 0x8e, 0x34, 0xcb, 0xbc, 0x97, 0xb0, 0xf3, 0xd3, 0xb4, 0xcb, 0x15, 0xef, 0x60,
-	0xa8, 0x30, 0xc9, 0xb6, 0x7f, 0x0c, 0x95, 0x34, 0xdf, 0x57, 0xff, 0xf5, 0x7e, 0x81, 0xbd, 0x3e,
-	0x8e, 0x7d, 0xbd, 0xdf, 0x62, 0xf8, 0x2e, 0xac, 0xa7, 0x72, 0xf6, 0xa8, 0x75, 0x6d, 0xf6, 0x86,
-	0xec, 0x08, 0x9a, 0x99, 0x8c, 0x90, 0x07, 0xe8, 0xac, 0x19, 0x74, 0xd3, 0xfa, 0xde, 0xf1, 0x00,
-	0xbd, 0x7f, 0xca, 0xe0, 0x16, 0x31, 0x5b, 0x21, 0x26, 0x11, 0x46, 0xc8, 0x35, 0x4e, 0xef, 0x12,
-	0xa1, 0x3d, 0x3f, 0xe2, 0xb4, 0x48, 0xe7, 0x5a, 0x81, 0x4e, 0x7d, 0x42, 0xc1, 0x09, 0xaf, 0xd0,
-	0x09, 0x05, 0x37, 0xc0, 0x7c, 0xa2, 0xab, 0xf7, 0x12, 0xbd, 0x20, 0xa0, 0xb6, 0x20, 0x80, 0xed,
-	0x43, 0x43, 0x44, 0xe1, 0xc8, 0x1f, 0x07, 0x3c, 0x76, 0xea, 0x96, 0x20, 0x73, 0x78, 0xef, 0xe1,
-	0xe9, 0x9d, 0xaa, 0xb7, 0xbe, 0x54, 0xb9, 0xb2, 0x6f, 0xa0, 0x3e, 0x14, 0xda, 0xe3, 0x94, 0x0f,
-	0x2b, 0xaf, 0x36, 0x4f, 0xbf, 0x6c, 0xcd, 0x96, 0x50, 0xeb, 0x6e, 0xd5, 0x07, 0xc5, 0x55, 0x2a,
-	0xfb, 0x36, 0xda, 0xfb, 0xa3, 0x02, 0x3b, 0xef, 0x50, 0xdd, 0x46, 0xc9, 0x75, 0x2f, 0x1c, 0x45,
-	0xb3, 0x99, 0x32, 0x97, 0x20, 0xa2, 0x34, 0xa4, 0xdb, 0xae, 0xf5, 0x1b, 0xda, 0xd3, 0xd1, 0x0e,
-	0x0d, 0x5f, 0x45, 0x52, 0x59, 0x78, 0x8d, 0x60, 0xed, 0x21, 0x78, 0x0f, 0x36, 0x42, 0x69, 0xc1,
-	0x8a, 0x01, 0xd7, 0x43, 0x49, 0xd0, 0x4b, 0xd8, 0x16, 0x51, 0xa8, 0xb8, 0x1f, 0xe6, 0xec, 0x55,
-	0x13, 0xf1, 0x28, 0x77, 0x53, 0xa0, 0x03, 0xeb, 0x2a, 0xe1, 0xa3, 0x91, 0x2f, 0x4c, 0x9e, 0x6a,
-	0xfd, 0xcc, 0x64, 0xcf, 0xa0, 0x21, 0xe2, 0x74, 0xa0, 0x22, 0xc5, 0x27, 0x36, 0x47, 0x1b, 0x22,
-	0x4e, 0x2f, 0xb4, 0xad, 0xb7, 0xd6, 0x60, 0x2a, 0x71, 0xe8, 0xac, 0x1b, 0x6c, 0x5d, 0xc4, 0xe9,
-	0xa5, 0x44, 0x93, 0xfe, 0x00, 0x83, 0x28, 0x99, 0xda, 0xa5, 0x1b, 0x94, 0x7e, 0xf2, 0xd1, 0xea,
-	0xe7, 0x60, 0x4d, 0x22, 0x68, 0x98, 0x08, 0x20, 0x97, 0xe1, 0x38, 0x86, 0x2d, 0xa9, 0xa2, 0x84,
-	0x8f, 0xd1, 0x92, 0x80, 0x09, 0x69, 0x5a, 0x27, 0xb1, 0x1c, 0x41, 0x66, 0x13, 0xcd, 0x26, 0x6d,
-	0x64, 0x7d, 0x19, 0x4f, 0x48, 0x69, 0xb7, 0x49, 0x68, 0x1a, 0x8d, 0x4d, 0xeb, 0x34, 0x29, 0xf0,
-	0x4e, 0xe0, 0x49, 0xb7, 0xf3, 0xf3, 0x0d, 0x26, 0x37, 0x3e, 0xde, 0x66, 0xed, 0xb1, 0x0f, 0x8d,
-	0xbc, 0xff, 0xb3, 0x12, 0xce, 0x1d, 0xde, 0x5f, 0x65, 0x60, 0xb3, 0x6b, 0x66, 0x0b, 0x7f, 0xe9,
-	0x0b, 0xa0, 0xab, 0x47, 0x9a, 0xba, 0x30, 0x57, 0xf9, 0x3f, 0xaa, 0x87, 0xa2, 0xe7, 0xcf, 0x52,
-	0xb9, 0x77, 0x16, 0x9d, 0xcc, 0x64, 0x20, 0xfd, 0x71, 0xc8, 0x55, 0x9a, 0xa0, 0x6d, 0x07, 0x48,
-	0x3e, 0x64, 0x1e, 0x1d, 0x20, 0x67, 0x02, 0xa8, 0x1d, 0x40, 0xe6, 0x01, 0xde, 0x0b, 0x78, 0xdc,
-	0xe5, 0xf2, 0xea, 0xfb, 0x88, 0x27, 0xc3, 0xe5, 0xaf, 0xc9, 0xdf, 0x65, 0x78, 0x32, 0x13, 0x66,
-	0x25, 0x1f, 0x41, 0xd3, 0xdc, 0xd0, 0xc0, 0x0f, 0x45, 0x14, 0xa0, 0xad, 0xe1, 0x4d, 0xe3, 0xeb,
-	0x19, 0x17, 0x3b, 0x81, 0x2d, 0x91, 0x26, 0x89, 0x6e, 0xf8, 0x54, 0xf2, 0x31, 0x5a, 0xf5, 0xcd,
-	0x16, 0xbd, 0xcc, 0x97, 0xda, 0xd7, 0x6f, 0xda, 0x10, 0x63, 0xb1, 0x23, 0xa8, 0xde, 0x22, 0x5e,
-	0x3b, 0x15, 0xd3, 0x65, 0x5b, 0x36, 0x92, 0xf8, 0xfa, 0x06, 0x62, 0xc7, 0x50, 0x0b, 0xa2, 0x50,
-	0x5d, 0x39, 0xd5, 0xa2, 0x18, 0xc2, 0x34, 0xcf, 0x14, 0x79, 0xe2, 0xd4, 0x0a, 0x79, 0x34, 0xe4,
-	0x29, 0xa8, 0xdb, 0x73, 0x3e, 0x85, 0xfa, 0x9c, 0x08, 0x6b, 0xb1, 0x16, 0x54, 0x87, 0x5c, 0x65,
-	0xc7, 0x76, 0x5b, 0x34, 0x27, 0x5a, 0xd9, 0x9c, 0x68, 0x5d, 0x64, 0x57, 0xd1, 0x37, 0x71, 0xcc,
-	0x83, 0x1a, 0xe9, 0xac, 0x14, 0xe8, 0x24, 0x48, 0x17, 0x50, 0x8d, 0xa4, 0xce, 0xb5, 0x19, 0x6d,
-	0x5c, 0xdc, 0x66, 0xd4, 0xfe, 0x4b, 0xdb, 0x8c, 0x1e, 0x80, 0x55, 0x6d, 0x46, 0x0f, 0xc0, 0xca,
-	0x36, 0xa3, 0x27, 0x60, 0x75, 0x9b, 0xd5, 0x69, 0xa3, 0x99, 0x36, 0x3b, 0xfd, 0xb3, 0x0a, 0x6b,
-	0xdd, 0x0e, 0x7b, 0x03, 0x8d, 0x4e, 0x82, 0x5c, 0xe1, 0x59, 0x1c, 0xb3, 0x67, 0xf3, 0xc5, 0x7d,
-	0x16, 0xc7, 0x5d, 0x8c, 0x27, 0xd1, 0x34, 0xc0, 0x50, 0xb9, 0x7b, 0x0b, 0x20, 0x15, 0x94, 0x40,
-	0xaf, 0xa4, 0x69, 0x2e, 0xe3, 0xe1, 0x43, 0xd0, 0x74, 0x71, 0x82, 0x9f, 0x4b, 0x73, 0x0e, 0xdb,
-	0x24, 0x4a, 0x0f, 0x0e, 0x19, 0x73, 0x81, 0x6c, 0x77, 0x3e, 0x3e, 0x07, 0x3e, 0x49, 0x44, 0xb2,
-	0x1e, 0x80, 0x88, 0x84, 0x7d, 0x2e, 0xd1, 0xb7, 0x50, 0xa7, 0x97, 0x86, 0xed, 0x2c, 0x84, 0xf5,
-	0xba, 0xae, 0xbb, 0xb8, 0x36, 0x0d, 0x69, 0x81, 0x57, 0x62, 0x67, 0xb0, 0x91, 0xbd, 0x7f, 0xcc,
-	0xb1, 0x25, 0xbe, 0xf0, 0x8c, 0xba, 0x7b, 0x05, 0x08, 0xbd, 0x1c, 0x5e, 0xe9, 0xf4, 0xdf, 0x0a,
-	0xd4, 0xba, 0x9d, 0xb3, 0xf7, 0x3d, 0xf6, 0x03, 0x3c, 0x9a, 0x9f, 0xb8, 0xf7, 0x4f, 0xf4, 0x26,
-	0x88, 0xd5, 0xd4, 0x3d, 0xc8, 0xd8, 0x0a, 0xa7, 0xb3, 0x57, 0x62, 0xaf, 0x61, 0x73, 0x66, 0xcc,
-	0x16, 0x93, 0xb8, 0x96, 0xa4, 0x60, 0x1e, 0x7b, 0x25, 0xf6, 0x1b, 0xb0, 0xc5, 0x2f, 0x1b, 0x76,
-	0x68, 0xd7, 0x2c, 0xfd, 0x9c, 0x72, 0x8f, 0x56, 0x44, 0xe4, 0xe4, 0xbf, 0xc2, 0x76, 0x1f, 0x25,
-	0xaa, 0x87, 0x67, 0x7e, 0x0b, 0xcd, 0xd9, 0x6f, 0x42, 0x96, 0x89, 0x2c, 0xf8, 0x50, 0x74, 0x3f,
-	0x31, 0x76, 0xbc, 0x12, 0x1b, 0xc2, 0x17, 0x85, 0x9f, 0xaa, 0xec, 0xd8, 0xd2, 0xae, 0xfa, 0x0e,
-	0x76, 0x5f, 0xac, 0x0e, 0xca, 0xaf, 0xff, 0x02, 0x1e, 0x5b, 0x3c, 0x1f, 0x2b, 0xec, 0x35, 0x34,
-	0xee, 0x8c, 0xdd, 0xfc, 0xba, 0xe7, 0x87, 0x93, 0xeb, 0x2c, 0x02, 0x19, 0xeb, 0xc7, 0xba, 0x51,
-	0xf5, 0xf5, 0x7f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x01, 0x9d, 0x84, 0x2e, 0x06, 0x0c, 0x00, 0x00,
+	0x10, 0x96, 0x22, 0x4b, 0xb6, 0x46, 0x72, 0xec, 0xd0, 0x40, 0x2c, 0x6d, 0x9a, 0xc6, 0xde, 0x14,
+	0x8d, 0x4f, 0x12, 0xec, 0x02, 0xb9, 0xf4, 0x12, 0x57, 0x4a, 0x0b, 0xa1, 0x69, 0x1a, 0x6c, 0x6d,
+	0xb4, 0x40, 0x0f, 0x02, 0x43, 0x8d, 0xe5, 0x85, 0xb5, 0x3f, 0x25, 0xb9, 0x36, 0xf4, 0x22, 0x3d,
+	0xf4, 0x05, 0xfa, 0x02, 0x3d, 0xf7, 0x05, 0x7a, 0xed, 0x03, 0x05, 0xe4, 0x70, 0xd7, 0x92, 0xb5,
+	0xb6, 0x0f, 0xf1, 0x49, 0x9a, 0xf9, 0x66, 0x3e, 0xce, 0x8c, 0xbe, 0x21, 0x05, 0xdd, 0x89, 0x88,
+	0xa6, 0xb2, 0x7f, 0x79, 0xd8, 0x9f, 0xca, 0x54, 0xf4, 0xad, 0xd5, 0x4b, 0x65, 0xa2, 0x13, 0x56,
+	0xb7, 0x86, 0xb7, 0x23, 0x92, 0x28, 0x4a, 0xe2, 0x3e, 0x7d, 0x10, 0xe6, 0xbd, 0x98, 0x26, 0xc9,
+	0x74, 0x86, 0x7d, 0x6b, 0x7d, 0xcc, 0xce, 0xfa, 0x3a, 0x8c, 0x50, 0x69, 0x1e, 0xa5, 0x14, 0xe0,
+	0x7f, 0x05, 0xdb, 0x43, 0xae, 0xce, 0xbf, 0x4b, 0xb8, 0x9c, 0x04, 0xf8, 0x47, 0x86, 0x4a, 0xb3,
+	0x6d, 0xa8, 0x65, 0xe1, 0xa4, 0x53, 0xdd, 0xab, 0x1e, 0x34, 0x03, 0xf3, 0xd5, 0xff, 0xbf, 0x0a,
+	0x4f, 0x16, 0xc2, 0x54, 0x9a, 0xc4, 0x0a, 0xd9, 0x3e, 0xb4, 0x75, 0xa2, 0xf9, 0x6c, 0x1c, 0xc6,
+	0x22, 0x89, 0xd0, 0x26, 0xd4, 0x83, 0x96, 0xf5, 0x8d, 0xac, 0x8b, 0x1d, 0xc2, 0xa6, 0xc8, 0xa4,
+	0xc4, 0x58, 0x8f, 0x33, 0xc5, 0xa7, 0xd8, 0x79, 0xb4, 0x57, 0x3d, 0x68, 0x1d, 0xb5, 0x7b, 0xd4,
+	0xc0, 0xa9, 0xf1, 0x05, 0x6d, 0x17, 0x62, 0x2d, 0xb6, 0x0f, 0x6b, 0x57, 0x88, 0x17, 0x9d, 0xda,
+	0x5e, 0xed, 0xa0, 0x75, 0xb4, 0xe9, 0x22, 0x89, 0x2f, 0xb0, 0x10, 0x7b, 0x09, 0xf5, 0x28, 0x89,
+	0xf5, 0x79, 0x67, 0xad, 0x2c, 0x86, 0x30, 0xc3, 0x33, 0x47, 0x2e, 0x3b, 0xf5, 0x52, 0x1e, 0x03,
+	0xf9, 0x1a, 0x1a, 0xae, 0xce, 0xa7, 0xd0, 0x58, 0x6a, 0xc2, 0x59, 0xac, 0x07, 0x6b, 0x13, 0xae,
+	0xf3, 0xb2, 0xbd, 0x1e, 0x8d, 0xb3, 0x97, 0x8f, 0xb3, 0x77, 0x92, 0x8f, 0x33, 0xb0, 0x71, 0xcc,
+	0x87, 0x3a, 0xf5, 0x59, 0x2b, 0xe9, 0x93, 0x20, 0xff, 0xbf, 0x2a, 0xd4, 0xa9, 0xd5, 0x67, 0xd0,
+	0x14, 0x69, 0x36, 0xb6, 0x03, 0x73, 0x07, 0x6f, 0x88, 0x34, 0x3b, 0x31, 0x36, 0xeb, 0x82, 0xf9,
+	0x3e, 0xce, 0x14, 0x4e, 0xec, 0xf1, 0xf5, 0x60, 0x5d, 0xa4, 0xd9, 0xa9, 0xc2, 0x89, 0x19, 0x7c,
+	0x84, 0x51, 0x22, 0xe7, 0x2e, 0xb5, 0x46, 0x83, 0x27, 0x1f, 0x65, 0xbf, 0x00, 0x67, 0x12, 0xc1,
+	0x9a, 0x8d, 0x00, 0x72, 0x59, 0x8e, 0x97, 0xb0, 0xa9, 0x74, 0x22, 0xf9, 0x14, 0x1d, 0x49, 0xdd,
+	0x86, 0xb4, 0x9d, 0x93, 0x58, 0xf6, 0x21, 0xb7, 0x89, 0xa6, 0x41, 0x07, 0x39, 0x9f, 0xe1, 0xf1,
+	0x5f, 0xc1, 0xce, 0x4f, 0xf3, 0x21, 0xd7, 0x7c, 0x80, 0xb1, 0x46, 0x79, 0xbb, 0x86, 0x7e, 0x85,
+	0x6e, 0x80, 0xd3, 0x50, 0x69, 0x94, 0xab, 0xe1, 0xbb, 0xb0, 0x9e, 0x29, 0x94, 0xe3, 0x22, 0xa5,
+	0x61, 0xcc, 0x91, 0x6d, 0x55, 0xcc, 0x32, 0x93, 0x34, 0x8e, 0x79, 0x44, 0x3f, 0x44, 0x33, 0x68,
+	0x39, 0xdf, 0x7b, 0x1e, 0xa1, 0xff, 0x6f, 0x15, 0xbc, 0x32, 0x66, 0xa7, 0xd2, 0xe7, 0x00, 0x62,
+	0x16, 0x1a, 0x05, 0x5e, 0xe0, 0xdc, 0xb1, 0x37, 0xc9, 0xf3, 0x23, 0xce, 0xd9, 0xd7, 0xb0, 0xe5,
+	0x60, 0xa1, 0xe4, 0x58, 0xa0, 0xd4, 0xee, 0x8c, 0x4d, 0x72, 0x0f, 0x94, 0x1c, 0xa0, 0xb4, 0x15,
+	0x0a, 0x4e, 0x78, 0x8d, 0x2a, 0x14, 0xdc, 0x02, 0x96, 0x9f, 0x2a, 0x0c, 0x69, 0xd0, 0x96, 0xdf,
+	0x7a, 0x4a, 0x1a, 0xa8, 0xaf, 0x36, 0xf0, 0x01, 0x9e, 0x5e, 0xd7, 0xfd, 0x2e, 0x54, 0xba, 0xa8,
+	0xfd, 0x35, 0x34, 0x26, 0xc2, 0x78, 0x3a, 0x55, 0xab, 0xe2, 0x2f, 0x7b, 0x8b, 0xdb, 0xdd, 0xbb,
+	0xce, 0xfa, 0x45, 0x73, 0x9d, 0xa9, 0xc0, 0x45, 0xfb, 0x7f, 0xd5, 0x60, 0xe7, 0x3d, 0xea, 0xab,
+	0x44, 0x5e, 0x8c, 0xe2, 0xb3, 0x64, 0x71, 0x16, 0x76, 0xcc, 0x22, 0xc9, 0x62, 0xed, 0x14, 0xd7,
+	0x34, 0x9e, 0x81, 0x71, 0x18, 0xf8, 0x3c, 0x51, 0xda, 0xc1, 0x24, 0xba, 0xa6, 0xf1, 0x10, 0xdc,
+	0x85, 0x8d, 0x58, 0x39, 0x90, 0x24, 0xb7, 0x1e, 0x2b, 0x82, 0x5e, 0xc1, 0x96, 0x48, 0x62, 0xcd,
+	0xc3, 0xb8, 0x60, 0x27, 0xc9, 0x3d, 0x2e, 0xdc, 0x14, 0xd8, 0x81, 0x75, 0x2d, 0xf9, 0xd9, 0x59,
+	0x28, 0x9c, 0xe0, 0x72, 0x73, 0x79, 0x19, 0x1a, 0x76, 0x4a, 0xe5, 0xcb, 0xb0, 0x6e, 0xb1, 0x5b,
+	0x97, 0x61, 0x83, 0x06, 0x7c, 0xc7, 0x32, 0x34, 0x6d, 0xc4, 0x9d, 0xcb, 0x00, 0x36, 0xe4, 0xee,
+	0x65, 0x68, 0xd1, 0x41, 0x0b, 0xcb, 0x60, 0x78, 0x62, 0x1a, 0xbb, 0x1b, 0x42, 0x9b, 0x96, 0xca,
+	0x39, 0xed, 0x08, 0xfc, 0x43, 0x78, 0x32, 0x1c, 0xfc, 0x7c, 0x89, 0xf2, 0x32, 0xc4, 0xab, 0x7c,
+	0x01, 0xbe, 0x80, 0x66, 0x71, 0x35, 0xe7, 0x22, 0x2d, 0x1c, 0xfe, 0xdf, 0x55, 0x60, 0x8b, 0x39,
+	0x8b, 0xd2, 0x2e, 0xa4, 0x57, 0xbd, 0x29, 0xbd, 0xd7, 0xd0, 0x50, 0x56, 0x17, 0xee, 0xfa, 0xba,
+	0x57, 0x3d, 0x14, 0xbd, 0x5c, 0x4b, 0xed, 0x46, 0x2d, 0x06, 0x55, 0xe1, 0x34, 0xe6, 0x3a, 0x93,
+	0x98, 0xcb, 0xbd, 0x70, 0x1c, 0xfd, 0xb3, 0x06, 0x8f, 0x86, 0x03, 0xf6, 0x16, 0x9a, 0x03, 0x89,
+	0x5c, 0xe3, 0x71, 0x9a, 0xb2, 0x67, 0xcb, 0xe7, 0x1e, 0xa7, 0xe9, 0x10, 0xd3, 0x59, 0x32, 0x8f,
+	0x30, 0xd6, 0x5e, 0x77, 0x05, 0xa4, 0xf6, 0x04, 0xfa, 0x15, 0x43, 0x73, 0x9a, 0x4e, 0x1e, 0x82,
+	0x66, 0x88, 0x33, 0xfc, 0x5c, 0x9a, 0x1f, 0x60, 0x8b, 0x9a, 0x32, 0x5b, 0xab, 0x52, 0x2e, 0x90,
+	0xed, 0x2e, 0xc7, 0x17, 0xc0, 0xbd, 0x44, 0xd4, 0xd6, 0x03, 0x10, 0x51, 0x63, 0x9f, 0x4b, 0xf4,
+	0x2d, 0x34, 0x48, 0x04, 0x6c, 0x67, 0x25, 0x6c, 0x34, 0xf4, 0xbc, 0xd5, 0xdc, 0x2c, 0xa6, 0x04,
+	0xbf, 0xc2, 0x8e, 0x61, 0x23, 0x97, 0x26, 0xeb, 0xb8, 0x17, 0x6f, 0x45, 0xe1, 0x5e, 0xb7, 0x04,
+	0x21, 0x1d, 0xfb, 0x95, 0xa3, 0x3f, 0x6b, 0x50, 0x1f, 0x0e, 0x8e, 0x3f, 0x8c, 0xd8, 0xf7, 0xf0,
+	0x78, 0xf9, 0x32, 0xbc, 0x59, 0xd1, 0xdb, 0x28, 0xd5, 0x73, 0xef, 0x79, 0xce, 0x56, 0x7a, 0x71,
+	0xfa, 0x15, 0xf6, 0x06, 0x5a, 0x0b, 0x37, 0x60, 0x39, 0x89, 0xe7, 0x48, 0x4a, 0xae, 0x4a, 0xbf,
+	0xc2, 0x7e, 0x07, 0xb6, 0xfa, 0xac, 0xb0, 0x3d, 0x97, 0x73, 0xeb, 0x5b, 0xe6, 0xed, 0xdf, 0x11,
+	0x51, 0x90, 0xff, 0x06, 0x5b, 0x01, 0x2a, 0xd4, 0x0f, 0xcf, 0xfc, 0x0e, 0xda, 0x8b, 0x0f, 0x32,
+	0xcb, 0x9b, 0x2c, 0x79, 0xa5, 0xbd, 0x7b, 0x6e, 0x04, 0xbf, 0x72, 0x74, 0x02, 0xdb, 0x03, 0xba,
+	0x50, 0x8a, 0xff, 0x7f, 0xec, 0x0d, 0x34, 0xaf, 0x8d, 0xdd, 0xe2, 0x87, 0x58, 0xfe, 0x17, 0xe9,
+	0x75, 0x56, 0x81, 0xbc, 0xc6, 0x8f, 0x0d, 0x7b, 0xde, 0x37, 0x9f, 0x02, 0x00, 0x00, 0xff, 0xff,
+	0x89, 0x9b, 0xe2, 0xda, 0xd6, 0x0a, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1218,7 +1118,6 @@ type DCAPIClient interface {
 	RegisterDataCenter(ctx context.Context, in *RegisterDataCenterRequest, opts ...grpc.CallOption) (*RegisterDataCenterResponse, error)
 	ResetDataCenter(ctx context.Context, in *RegisterDataCenterRequest, opts ...grpc.CallOption) (*RegisterDataCenterResponse, error)
 	MyDataCenter(ctx context.Context, in *MyDataCenterRequest, opts ...grpc.CallOption) (*common.DataCenterStatus, error)
-	GetClusterCertificate(ctx context.Context, in *GetClusterCertificateRequest, opts ...grpc.CallOption) (*GetClusterCertificateResponse, error)
 }
 
 type dCAPIClient struct {
@@ -1274,15 +1173,6 @@ func (c *dCAPIClient) MyDataCenter(ctx context.Context, in *MyDataCenterRequest,
 	return out, nil
 }
 
-func (c *dCAPIClient) GetClusterCertificate(ctx context.Context, in *GetClusterCertificateRequest, opts ...grpc.CallOption) (*GetClusterCertificateResponse, error) {
-	out := new(GetClusterCertificateResponse)
-	err := c.cc.Invoke(ctx, "/dcmgr.DCAPI/GetClusterCertificate", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // DCAPIServer is the server API for DCAPI service.
 type DCAPIServer interface {
 	DataCenterList(context.Context, *common.Empty) (*DataCenterListResponse, error)
@@ -1290,7 +1180,6 @@ type DCAPIServer interface {
 	RegisterDataCenter(context.Context, *RegisterDataCenterRequest) (*RegisterDataCenterResponse, error)
 	ResetDataCenter(context.Context, *RegisterDataCenterRequest) (*RegisterDataCenterResponse, error)
 	MyDataCenter(context.Context, *MyDataCenterRequest) (*common.DataCenterStatus, error)
-	GetClusterCertificate(context.Context, *GetClusterCertificateRequest) (*GetClusterCertificateResponse, error)
 }
 
 // UnimplementedDCAPIServer can be embedded to have forward compatible implementations.
@@ -1311,9 +1200,6 @@ func (*UnimplementedDCAPIServer) ResetDataCenter(ctx context.Context, req *Regis
 }
 func (*UnimplementedDCAPIServer) MyDataCenter(ctx context.Context, req *MyDataCenterRequest) (*common.DataCenterStatus, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MyDataCenter not implemented")
-}
-func (*UnimplementedDCAPIServer) GetClusterCertificate(ctx context.Context, req *GetClusterCertificateRequest) (*GetClusterCertificateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetClusterCertificate not implemented")
 }
 
 func RegisterDCAPIServer(s *grpc.Server, srv DCAPIServer) {
@@ -1410,24 +1296,6 @@ func _DCAPI_MyDataCenter_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DCAPI_GetClusterCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetClusterCertificateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DCAPIServer).GetClusterCertificate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/dcmgr.DCAPI/GetClusterCertificate",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DCAPIServer).GetClusterCertificate(ctx, req.(*GetClusterCertificateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _DCAPI_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "dcmgr.DCAPI",
 	HandlerType: (*DCAPIServer)(nil),
@@ -1451,10 +1319,6 @@ var _DCAPI_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MyDataCenter",
 			Handler:    _DCAPI_MyDataCenter_Handler,
-		},
-		{
-			MethodName: "GetClusterCertificate",
-			Handler:    _DCAPI_GetClusterCertificate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
