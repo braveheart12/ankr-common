@@ -22,7 +22,7 @@ func GetUserID(ctx context.Context) string{
 	// Note this is now uppercase (not entirely sure why this is...)
 	var token string
 	if ok {
-		token = meta["token"]
+		token = meta["authorization"][0][7:],
 	}
 	parts := strings.Split(token, ".")
 
