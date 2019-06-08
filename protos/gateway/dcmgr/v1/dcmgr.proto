@@ -33,6 +33,13 @@ service DCAPI {
         option (google.api.http).get = "/dc/mydc";
       }
 
+        rpc DashBoard (DashBoardRequest) returns (DashBoardResponse) {
+                 option (google.api.http) = {
+                     post: "/dc/cluster_dashboard"
+                     body: "*"
+             };
+        }
+
 }
 
 
