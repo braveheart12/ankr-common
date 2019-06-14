@@ -73,7 +73,7 @@ message DataCenterLeaderBoardDetail {
 }
 
 message RegisterDataCenterRequest {
-  string cluster_name = 2;
+  string cluster_name = 1;
 }
 
 
