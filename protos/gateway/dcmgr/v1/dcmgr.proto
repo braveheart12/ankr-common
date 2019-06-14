@@ -30,7 +30,7 @@ service DCAPI {
             body: "*"
     };
       }
-      rpc MyDataCenter(MyDataCenterRequest) returns (common.proto.DataCenterStatus){
+      rpc MyDataCenter(common.proto.Empty) returns (common.proto.DataCenterStatus){
         option (google.api.http).get = "/dc/mydc";
       }
 
@@ -72,14 +72,8 @@ message DataCenterLeaderBoardDetail {
   double number = 2;
 }
 
-
-message MyDataCenterRequest {
-  string user_id = 1;
-}
-
 message RegisterDataCenterRequest {
-  string user_id = 1;
-  string cluster_name = 2;
+  string cluster_name = 1;
 }
 
 
@@ -126,9 +120,8 @@ message Usage {
 }
 
 message HistoryFeesRequest {
-  string uid = 1;
-  string start = 2;
-  string end = 3;
+  string start = 1;
+  string end = 2;
 }
 
 
@@ -145,8 +138,7 @@ message HistoryFeesResponse {
 }
 
 message FeesDetailRequest {
-  string uid = 1;
-  string month = 2;
+  string month = 1;
 }
 
 message NamespaceFees {

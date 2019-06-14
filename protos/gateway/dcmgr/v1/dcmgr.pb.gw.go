@@ -81,17 +81,9 @@ func request_DCAPI_ResetDataCenter_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-var (
-	filter_DCAPI_MyDataCenter_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
 func request_DCAPI_MyDataCenter_0(ctx context.Context, marshaler runtime.Marshaler, client DCAPIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MyDataCenterRequest
+	var protoReq common_proto.Empty
 	var metadata runtime.ServerMetadata
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_DCAPI_MyDataCenter_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 
 	msg, err := client.MyDataCenter(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
