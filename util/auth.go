@@ -25,6 +25,7 @@ func GetUserID(ctx context.Context) string{
 	var token string
 	if ok {
 		tokenArray := meta["authorization"]
+		log.Printf("GetUserID: Authorization is : ", tokenArray)
 		if tokenArray != nil {
 			token = tokenArray[0]
 		} else {
