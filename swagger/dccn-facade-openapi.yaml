@@ -719,6 +719,186 @@ paths:
                 $ref: "#/components/schemas/EmptyResponse"
       tags:
         - Appmgr
+  /log/count/appid:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Sends a  GetLogCountByAppId request
+      operationId: GetLogCountByAppId
+      parameters:
+        - in: query
+          name: app_id
+          schema:
+            type: string
+        - in: query
+          name: keywords
+          schema:
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: start_time
+          schema:
+            type: integer
+        - in: query
+          name: end_time
+          schema:
+            type: integer
+        - in: query
+          name: is_test
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogAppCountResponse"
+      tags:
+        - Logmgr
+  /log/count/podname:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Send a GetLogCountByPodName request
+      operationId: GetLogCountByPodName
+      parameters:
+        - in: query
+          name: pod_name
+          schema:
+            type: string
+        - in: query
+          name: keywords
+          schema:
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: start_time
+          schema:
+            type: integer
+        - in: query
+          name: end_time
+          schema:
+            type: integer
+        - in: query
+          name: is_test
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogPodCountResponse"
+      tags:
+        - Logmgr
+  /log/list/appid:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Send a ListLogByAppId request
+      operationId: ListLogByAppId
+      parameters:
+        - in: query
+          name: app_id
+          schema:
+            type: string
+        - in: query
+          name: keywords
+          schema:
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: search_after
+          schema:
+            type: integer
+        - in: query
+          name: start_time
+          schema:
+            type: integer
+        - in: query
+          name: end_time
+          schema:
+            type: integer
+        - in: query
+          name: size
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          schema:
+            type: string
+        - in: query
+          name: is_test
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogAppResponse"
+      tags:
+        - Logmgr
+  /log/list/podname:
+    get:
+      security:
+        - Bearer:
+            []
+      summary: Send a ListLogByPodName request
+      operationId: ListLogByPodnName
+      parameters:
+        - in: query
+          name: pod_name
+          schema:
+            type: string
+        - in: query
+          name: keywords
+          schema:
+            type: array
+            items: 
+              type: string
+        - in: query
+          name: search_after
+          schema:
+            type: integer
+        - in: query
+          name: start_time
+          schema:
+            type: integer
+        - in: query
+          name: end_time
+          schema:
+            type: integer
+        - in: query
+          name: size
+          schema:
+            type: integer
+        - in: query
+          name: sort
+          schema:
+            type: string
+        - in: query
+          name: is_test
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogPodResponse"
+      tags:
+        - Logmgr
 components:
   securitySchemes:
     Bearer:
@@ -726,6 +906,13 @@ components:
       name: Authorization
       in: header
   schemas:
+    LogItem:
+      type: object
+      properties:
+        time_stamp:
+          type: string
+        msg:
+          type: string
     chart:
       type: object
       properties:
@@ -742,6 +929,80 @@ components:
         latest_app_version:
           type: string
       description: This component serve as chart.
+    LogEntry:
+      type: object
+      properties:
+        meta_data:
+          type: object
+          properties:
+            pod_name:
+              type: string
+            pod_id:
+              type: string
+            namespace_name:
+              type: string
+            namespace_id:
+              type: string
+        log_items:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/LogItem'
+    LogPodResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        msg:
+          type: string
+        total_count:
+          type: integer
+        last_search_end:
+          type: integer
+        log_details:
+          type: array
+          items:
+            type: object 
+            $ref: '#/components/schemas/LogEntry'            
+ 
+    LogAppResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        msg:
+          type: string
+        total_count:
+          type: integer
+        last_search_end:
+          type: integer
+        log_details:
+          type: array
+          items:
+            type: object 
+            $ref: '#/components/schemas/LogEntry'
+    LogPodCountResponse:
+      type: object
+      properties:
+        req_id:
+          type: string
+        code:
+          type: integer
+        msg:
+          type: string
+        count:
+          type: integer
+    LogAppCountResponse:
+      type: object
+      properties:
+        req_id:
+          type: string
+        code:
+          type: integer
+        msg:
+          type: string
+        count:
+          type: integer
     chartdetail:
       type: object
       properties:
