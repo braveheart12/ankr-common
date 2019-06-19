@@ -287,7 +287,7 @@ func SendCoins(ip, port, priv_key, from_address, to_address, amount, public_key 
     //fmt.Printf("%s=%s:%s:%s:%s:%s:%s\n", string("trx_send"), from_address, to_address, amount, nonce, public_key, sig)
     btr, err := cl.BroadcastTxCommit(types.Tx(
         fmt.Sprintf("%s=%s:%s:%s:%s:%s:%s", string("trx_send"), from_address, to_address, amount, nonce, public_key, sig)))
-
+    hash =btr.Hash.String()
     if err != nil {
         return err, hash
     } else if btr.CheckTx.Code != 0 {
