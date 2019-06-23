@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"math/big"
-	"crypto/rand"
+	_ "crypto/rand"
 
 	_ "github.com/tendermint/tendermint/crypto"
 	"github.com/tendermint/tendermint/crypto/ed25519"
@@ -395,6 +395,142 @@ func SetStake(ip, port, priv_key, amount, public_key string) error {
 }
 
 /*
+format: set_crt=dc_name:pem_base64:nonce:sig
+*/
+func SetMeteringCert(ip, port, op_priv_key, dc_name, cert_pem string) error {
+	var nonce string = "0"
+	cl := getHTTPClient(ip, port)
+	_, err := cl.Status()
+	if err != nil {
+		return err
+	}
+
+	pemB64 := base64.StdEncoding.EncodeToString([]byte(cert_pem))
+
+	res, err := cl.ABCIQuery("/websocket", cmn.HexBytes(fmt.Sprintf("%s", "set_crt_nonce")))
+        qres := res.Response
+        if !qres.IsOK() {
+                return errors.New("Query nonce failure, connect error.")
+        } else {
+                if string(qres.Value) != "" {
+                        nonce = string(qres.Value)
+                } else {
+			nonce = "0"
+                }
+        }
+
+	nonceInt, err := strconv.ParseInt(string(nonce), 10, 64)
+        if err != nil {
+                return err
+        }
+
+        nonceInt++
+        nonce = fmt.Sprintf("%d", nonceInt)
+
+	sig, err := Sign(fmt.Sprintf("%s%s%s", dc_name, pemB64, nonce), op_priv_key)
+        if err != nil {
+                return err
+        }
+
+	fmt.Println(pemB64)
+	fmt.Println(fmt.Sprintf("%s=%s:%s:%s:%s", string("set_crt"), dc_name, pemB64, nonce, sig))
+	btr, err := cl.BroadcastTxCommit(types.Tx(
+		fmt.Sprintf("%s=%s:%s:%s:%s", string("set_crt"), dc_name, pemB64, nonce, sig)))
+
+        if err != nil {
+                return err
+        } else if btr.CheckTx.Code != 0 {
+                return errors.New(btr.CheckTx.Log)
+        } else if btr.DeliverTx.Code != 0{
+                return errors.New(btr.DeliverTx.Log)
+        }
+
+        client.WaitForHeight(cl, btr.Height+1, nil)
+
+	return nil
+}
+
+/*
+format: cert:dc_name:nonce:sig
+*/
+func RemoveMeteringCert(ip, port, op_priv_key, dc_name string) error {
+	var nonce string = "0"
+        cl := getHTTPClient(ip, port)
+        _, err := cl.Status()
+        if err != nil {
+                return err
+        }
+
+        res, err := cl.ABCIQuery("/websocket", cmn.HexBytes(fmt.Sprintf("%s", "rmv_crt_nonce")))
+        qres := res.Response
+        if !qres.IsOK() {
+                return errors.New("Query nonce failure, connect error.")
+        } else {
+                if string(qres.Value) != "" {
+                        nonce = string(qres.Value)
+                } else {
+                        nonce = "0"
+                }
+        }
+
+        nonceInt, err := strconv.ParseInt(string(nonce), 10, 64)
+        if err != nil {
+                return err
+        }
+
+        nonceInt++
+        nonce = fmt.Sprintf("%d", nonceInt)
+
+        sig, err := Sign(fmt.Sprintf("%s%s", dc_name, nonce), op_priv_key)
+        if err != nil {
+                return err
+        }
+
+        btr, err := cl.BroadcastTxCommit(types.Tx(
+                fmt.Sprintf("%s=%s:%s:%s", string("rmv_crt"), dc_name, nonce, sig)))
+
+        if err != nil {
+                return err
+        } else if btr.CheckTx.Code != 0 {
+                return errors.New(btr.CheckTx.Log)
+        } else if btr.DeliverTx.Code != 0{
+                return errors.New(btr.DeliverTx.Log)
+        }
+
+        client.WaitForHeight(cl, btr.Height+1, nil)
+
+	return nil
+}
+
+/*
+format: cert:dc_name
+*/
+func GetMeteringCert(ip, port, dc_name string) (pem string, err error) {
+        cl := getHTTPClient(ip, port)
+
+        _, err = cl.Status()
+        if err != nil {
+                return "", err
+        }
+
+        res, err := cl.ABCIQuery("/websocket", cmn.HexBytes(fmt.Sprintf("%s:%s", "crt", dc_name)))
+        qres := res.Response
+	var pemB64 string = ""
+        if !qres.IsOK() {
+                return "", errors.New("Query cert failure, connect error.")
+        } else {
+		pemB64 = string(qres.Value)
+        }
+
+	pemByte, err := base64.StdEncoding.DecodeString(pemB64)
+        if err != nil {
+                return "", err
+        }
+
+        return string(pemByte), nil
+}
+
+/*
 ADMIN API:
 set balance based on (ip, port, priv_key, address, amount, public_key)
 priv_key: admin priv_key
@@ -524,7 +660,7 @@ func GetHistoryReceive(ip, port, address string, prove bool, page, perPage int) 
 	btr, err := cl.TxSearch(query, prove, page, perPage)
 	if err != nil {
 		return nil, err
-	} 
+	}
 
 	return btr, err
 }
@@ -536,34 +672,48 @@ ns: name space
 value: metering value, marshled json file.
 */
 func SetMetering(ip, port, priv_key_pem, dc, ns, value string) error {
-	randbyte := make([]byte, 4)
-        _, err := rand.Read(randbyte)
-        if err != nil {
-                fmt.Println(err)
-		return err
-        }
-        randstring := fmt.Sprintf("%X", randbyte)
-
-	sigX, sigY, err := signmanager.EcdsaSign(priv_key_pem, dc + ns + value)
+        cl := getHTTPClient(ip, port)
+        _, err := cl.Status()
         if err != nil {
                 return err
         }
 
-	cl := getHTTPClient(ip, port)
+	res, err := cl.ABCIQuery("/websocket", cmn.HexBytes(fmt.Sprintf("%s:%s:%s", "mtr", dc, ns)))
+        qres := res.Response
+	nonce := "0"
+        if !qres.IsOK() {
+                return errors.New("Query nonce failure, connect error.")
+        } else {
+                balanceNonceSlices := strings.Split(string(qres.Value), ":")
+                if len(balanceNonceSlices) == 6 {
+                        nonce = balanceNonceSlices[5]
+                }
+        }
 
-	_, err = cl.Status()
-	if err != nil {
-		return err
-	}
+	nonceInt, err := strconv.ParseInt(string(nonce), 10, 64)
+        if err != nil {
+                return err
+        }
+        nonceInt++
+	nonce = fmt.Sprintf("%d", nonceInt)
+
+	sigX, sigY, err := signmanager.EcdsaSign(priv_key_pem, dc + ns + value + nonce)
+        if err != nil {
+                return err
+        }
 
 	//fmt.Printf("%s=%s:%s:%s:%s:%s:%s\n", string("set_mtr"), dc, ns, value, sigX, sigY, randstring)
 	btr, err := cl.BroadcastTxCommit(types.Tx(
-		fmt.Sprintf("%s=%s:%s:%s:%s:%s:%s", string("set_mtr"), dc, ns, sigX, sigY, randstring, value)))
+		fmt.Sprintf("%s=%s:%s:%s:%s:%s:%s", string("set_mtr"),
+			dc, ns, sigX, sigY, nonce, value)))
 
 	if err != nil {
-		return err
-	}
-	client.WaitForHeight(cl, btr.Height+1, nil)
+                return err
+        } else if btr.CheckTx.Code != 0 {
+                return errors.New(btr.CheckTx.Log)
+        } else if btr.DeliverTx.Code != 0{
+                return errors.New(btr.DeliverTx.Log)
+        }
 
 	return nil
 }
