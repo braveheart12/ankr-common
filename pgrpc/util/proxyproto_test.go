@@ -1,4 +1,4 @@
-package pgrpc
+package util
 
 import (
 	"io/ioutil"
@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-func Test_parseProxyProto1(t *testing.T) {
+func Test_ParseProxyProto1(t *testing.T) {
 	c1, c2 := net.Pipe()
 	go func() {
 		c1.Write([]byte("PROXY TCP4 192.168.1.2 192.168.1.3 10086 10010\r\n123"))
 		c1.Close()
 	}()
 
-	c2, addr, err := parseProxyProto(c2)
+	c2, addr, err := ParseProxyProto(c2)
 	if err != nil {
 		t.Error(err)
 	}
@@ -30,7 +30,7 @@ func Test_parseProxyProto1(t *testing.T) {
 	}
 }
 
-func Test_parseProxyProto2(t *testing.T) {
+func Test_ParseProxyProto2(t *testing.T) {
 	c1, c2 := net.Pipe()
 	go func() {
 		c1.Write(signatureV2)
@@ -39,7 +39,7 @@ func Test_parseProxyProto2(t *testing.T) {
 		c1.Close()
 	}()
 
-	c2, addr, err := parseProxyProto(c2)
+	c2, addr, err := ParseProxyProto(c2)
 	if err != nil {
 		t.Error(err)
 	}
@@ -56,7 +56,7 @@ func Test_parseProxyProto2(t *testing.T) {
 	}
 }
 
-func Test_parseProxyProto3(t *testing.T) {
+func Test_ParseProxyProto3(t *testing.T) {
 	str := `1234567890987623456789o54324567890-098765434567890-09875434567890765
 	434567890ewetyuioiuytrertyuijhvcxsertyhbvcxder6ujbvcder5678ijhgfre4567yhgdse
 	4567ujhvde478ujhfder4578ijhfdre45678ijhfde45678ujbvcdrtyujvcdertyuijbvfr567u
@@ -73,7 +73,7 @@ func Test_parseProxyProto3(t *testing.T) {
 		c1.Close()
 	}()
 
-	c2, addr, err := parseProxyProto(c2)
+	c2, addr, err := ParseProxyProto(c2)
 	if err != nil {
 		t.Error(err)
 	}

@@ -1,4 +1,4 @@
-package pgrpc
+package util
 
 import (
 	"bytes"
@@ -7,24 +7,6 @@ import (
 
 	"github.com/pkg/errors"
 )
-
-type ProxyProtoHook struct{}
-
-func (*ProxyProtoHook) OnAccept(key *string, conn *net.Conn) error {
-	c, addr, err := parseProxyProto(*conn)
-	if err != nil {
-		return err
-	}
-
-	*conn = c
-	if addr != "" {
-		*key = addr
-	}
-	return nil
-}
-
-func (*ProxyProtoHook) OnBuild(key *string, conn *Session) error { return nil }
-func (*ProxyProtoHook) OnClose(key string, conn *Session)        {}
 
 /************************************************************************/
 var signatureV1 = []byte("PROXY ")
@@ -41,7 +23,7 @@ const maximumLenV2 = 232
 // V1 "PROXY UNKNOW" or V2 signature
 const signatureLen = 12
 
-func parseProxyProto(c net.Conn) (net.Conn, string, error) {
+func ParseProxyProto(c net.Conn) (net.Conn, string, error) {
 	buf := make([]byte, maximumLenV2)
 	if n, err := io.ReadFull(c, buf[:signatureLen]); err != nil {
 		if err == io.ErrUnexpectedEOF {

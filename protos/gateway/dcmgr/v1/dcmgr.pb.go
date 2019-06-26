@@ -8,6 +8,7 @@ import (
 	fmt "fmt"
 	common "github.com/Ankr-network/dccn-common/protos/common"
 	proto "github.com/golang/protobuf/proto"
+	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -239,48 +240,8 @@ func (m *DataCenterLeaderBoardDetail) GetNumber() float64 {
 	return 0
 }
 
-type MyDataCenterRequest struct {
-	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *MyDataCenterRequest) Reset()         { *m = MyDataCenterRequest{} }
-func (m *MyDataCenterRequest) String() string { return proto.CompactTextString(m) }
-func (*MyDataCenterRequest) ProtoMessage()    {}
-func (*MyDataCenterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_5063cc471a821220, []int{3}
-}
-
-func (m *MyDataCenterRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_MyDataCenterRequest.Unmarshal(m, b)
-}
-func (m *MyDataCenterRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_MyDataCenterRequest.Marshal(b, m, deterministic)
-}
-func (m *MyDataCenterRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MyDataCenterRequest.Merge(m, src)
-}
-func (m *MyDataCenterRequest) XXX_Size() int {
-	return xxx_messageInfo_MyDataCenterRequest.Size(m)
-}
-func (m *MyDataCenterRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_MyDataCenterRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MyDataCenterRequest proto.InternalMessageInfo
-
-func (m *MyDataCenterRequest) GetUserId() string {
-	if m != nil {
-		return m.UserId
-	}
-	return ""
-}
-
 type RegisterDataCenterRequest struct {
-	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	ClusterName          string   `protobuf:"bytes,2,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	ClusterName          string   `protobuf:"bytes,1,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -290,7 +251,7 @@ func (m *RegisterDataCenterRequest) Reset()         { *m = RegisterDataCenterReq
 func (m *RegisterDataCenterRequest) String() string { return proto.CompactTextString(m) }
 func (*RegisterDataCenterRequest) ProtoMessage()    {}
 func (*RegisterDataCenterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_5063cc471a821220, []int{4}
+	return fileDescriptor_5063cc471a821220, []int{3}
 }
 
 func (m *RegisterDataCenterRequest) XXX_Unmarshal(b []byte) error {
@@ -311,13 +272,6 @@ func (m *RegisterDataCenterRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RegisterDataCenterRequest proto.InternalMessageInfo
 
-func (m *RegisterDataCenterRequest) GetUserId() string {
-	if m != nil {
-		return m.UserId
-	}
-	return ""
-}
-
 func (m *RegisterDataCenterRequest) GetClusterName() string {
 	if m != nil {
 		return m.ClusterName
@@ -329,6 +283,9 @@ type RegisterDataCenterResponse struct {
 	ClientKey            string   `protobuf:"bytes,1,opt,name=client_key,json=clientKey,proto3" json:"client_key,omitempty"`
 	ClientCsrCert        string   `protobuf:"bytes,2,opt,name=client_csr_cert,json=clientCsrCert,proto3" json:"client_csr_cert,omitempty"`
 	CaCert               string   `protobuf:"bytes,3,opt,name=ca_cert,json=caCert,proto3" json:"ca_cert,omitempty"`
+	ClusterId            string   `protobuf:"bytes,4,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
+	ClusterName          string   `protobuf:"bytes,5,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
+	Configmap            string   `protobuf:"bytes,6,opt,name=configmap,proto3" json:"configmap,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -338,7 +295,7 @@ func (m *RegisterDataCenterResponse) Reset()         { *m = RegisterDataCenterRe
 func (m *RegisterDataCenterResponse) String() string { return proto.CompactTextString(m) }
 func (*RegisterDataCenterResponse) ProtoMessage()    {}
 func (*RegisterDataCenterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_5063cc471a821220, []int{5}
+	return fileDescriptor_5063cc471a821220, []int{4}
 }
 
 func (m *RegisterDataCenterResponse) XXX_Unmarshal(b []byte) error {
@@ -380,63 +337,787 @@ func (m *RegisterDataCenterResponse) GetCaCert() string {
 	return ""
 }
 
+func (m *RegisterDataCenterResponse) GetClusterId() string {
+	if m != nil {
+		return m.ClusterId
+	}
+	return ""
+}
+
+func (m *RegisterDataCenterResponse) GetClusterName() string {
+	if m != nil {
+		return m.ClusterName
+	}
+	return ""
+}
+
+func (m *RegisterDataCenterResponse) GetConfigmap() string {
+	if m != nil {
+		return m.Configmap
+	}
+	return ""
+}
+
+type DashBoardRequest struct {
+	Uid                  string   `protobuf:"bytes,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DashBoardRequest) Reset()         { *m = DashBoardRequest{} }
+func (m *DashBoardRequest) String() string { return proto.CompactTextString(m) }
+func (*DashBoardRequest) ProtoMessage()    {}
+func (*DashBoardRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{5}
+}
+
+func (m *DashBoardRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DashBoardRequest.Unmarshal(m, b)
+}
+func (m *DashBoardRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DashBoardRequest.Marshal(b, m, deterministic)
+}
+func (m *DashBoardRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DashBoardRequest.Merge(m, src)
+}
+func (m *DashBoardRequest) XXX_Size() int {
+	return xxx_messageInfo_DashBoardRequest.Size(m)
+}
+func (m *DashBoardRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DashBoardRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DashBoardRequest proto.InternalMessageInfo
+
+func (m *DashBoardRequest) GetUid() string {
+	if m != nil {
+		return m.Uid
+	}
+	return ""
+}
+
+type DashBoardResponse struct {
+	TotalIncome          int32     `protobuf:"varint,1,opt,name=total_income,json=totalIncome,proto3" json:"total_income,omitempty"`
+	CurrentUsage         *Usage    `protobuf:"bytes,2,opt,name=current_usage,json=currentUsage,proto3" json:"current_usage,omitempty"`
+	Week                 []*Income `protobuf:"bytes,3,rep,name=week,proto3" json:"week,omitempty"`
+	Month                []*Income `protobuf:"bytes,4,rep,name=month,proto3" json:"month,omitempty"`
+	Year                 []*Income `protobuf:"bytes,5,rep,name=year,proto3" json:"year,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *DashBoardResponse) Reset()         { *m = DashBoardResponse{} }
+func (m *DashBoardResponse) String() string { return proto.CompactTextString(m) }
+func (*DashBoardResponse) ProtoMessage()    {}
+func (*DashBoardResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{6}
+}
+
+func (m *DashBoardResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DashBoardResponse.Unmarshal(m, b)
+}
+func (m *DashBoardResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DashBoardResponse.Marshal(b, m, deterministic)
+}
+func (m *DashBoardResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DashBoardResponse.Merge(m, src)
+}
+func (m *DashBoardResponse) XXX_Size() int {
+	return xxx_messageInfo_DashBoardResponse.Size(m)
+}
+func (m *DashBoardResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DashBoardResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DashBoardResponse proto.InternalMessageInfo
+
+func (m *DashBoardResponse) GetTotalIncome() int32 {
+	if m != nil {
+		return m.TotalIncome
+	}
+	return 0
+}
+
+func (m *DashBoardResponse) GetCurrentUsage() *Usage {
+	if m != nil {
+		return m.CurrentUsage
+	}
+	return nil
+}
+
+func (m *DashBoardResponse) GetWeek() []*Income {
+	if m != nil {
+		return m.Week
+	}
+	return nil
+}
+
+func (m *DashBoardResponse) GetMonth() []*Income {
+	if m != nil {
+		return m.Month
+	}
+	return nil
+}
+
+func (m *DashBoardResponse) GetYear() []*Income {
+	if m != nil {
+		return m.Year
+	}
+	return nil
+}
+
+type Income struct {
+	Income               int32                `protobuf:"varint,1,opt,name=income,proto3" json:"income,omitempty"`
+	Date                 *timestamp.Timestamp `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	Usage                *Usage               `protobuf:"bytes,3,opt,name=usage,proto3" json:"usage,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *Income) Reset()         { *m = Income{} }
+func (m *Income) String() string { return proto.CompactTextString(m) }
+func (*Income) ProtoMessage()    {}
+func (*Income) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{7}
+}
+
+func (m *Income) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Income.Unmarshal(m, b)
+}
+func (m *Income) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Income.Marshal(b, m, deterministic)
+}
+func (m *Income) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Income.Merge(m, src)
+}
+func (m *Income) XXX_Size() int {
+	return xxx_messageInfo_Income.Size(m)
+}
+func (m *Income) XXX_DiscardUnknown() {
+	xxx_messageInfo_Income.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Income proto.InternalMessageInfo
+
+func (m *Income) GetIncome() int32 {
+	if m != nil {
+		return m.Income
+	}
+	return 0
+}
+
+func (m *Income) GetDate() *timestamp.Timestamp {
+	if m != nil {
+		return m.Date
+	}
+	return nil
+}
+
+func (m *Income) GetUsage() *Usage {
+	if m != nil {
+		return m.Usage
+	}
+	return nil
+}
+
+type Usage struct {
+	CpuTotal             int32    `protobuf:"varint,1,opt,name=cpu_total,json=cpuTotal,proto3" json:"cpu_total,omitempty"`
+	CpuUsed              int32    `protobuf:"varint,2,opt,name=cpu_used,json=cpuUsed,proto3" json:"cpu_used,omitempty"`
+	MemoryTotal          int32    `protobuf:"varint,3,opt,name=memory_total,json=memoryTotal,proto3" json:"memory_total,omitempty"`
+	MemoryUsed           int32    `protobuf:"varint,4,opt,name=memory_used,json=memoryUsed,proto3" json:"memory_used,omitempty"`
+	StorageTotal         int32    `protobuf:"varint,5,opt,name=storage_total,json=storageTotal,proto3" json:"storage_total,omitempty"`
+	StorageUsed          int32    `protobuf:"varint,6,opt,name=storage_used,json=storageUsed,proto3" json:"storage_used,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Usage) Reset()         { *m = Usage{} }
+func (m *Usage) String() string { return proto.CompactTextString(m) }
+func (*Usage) ProtoMessage()    {}
+func (*Usage) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{8}
+}
+
+func (m *Usage) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Usage.Unmarshal(m, b)
+}
+func (m *Usage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Usage.Marshal(b, m, deterministic)
+}
+func (m *Usage) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Usage.Merge(m, src)
+}
+func (m *Usage) XXX_Size() int {
+	return xxx_messageInfo_Usage.Size(m)
+}
+func (m *Usage) XXX_DiscardUnknown() {
+	xxx_messageInfo_Usage.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Usage proto.InternalMessageInfo
+
+func (m *Usage) GetCpuTotal() int32 {
+	if m != nil {
+		return m.CpuTotal
+	}
+	return 0
+}
+
+func (m *Usage) GetCpuUsed() int32 {
+	if m != nil {
+		return m.CpuUsed
+	}
+	return 0
+}
+
+func (m *Usage) GetMemoryTotal() int32 {
+	if m != nil {
+		return m.MemoryTotal
+	}
+	return 0
+}
+
+func (m *Usage) GetMemoryUsed() int32 {
+	if m != nil {
+		return m.MemoryUsed
+	}
+	return 0
+}
+
+func (m *Usage) GetStorageTotal() int32 {
+	if m != nil {
+		return m.StorageTotal
+	}
+	return 0
+}
+
+func (m *Usage) GetStorageUsed() int32 {
+	if m != nil {
+		return m.StorageUsed
+	}
+	return 0
+}
+
+type HistoryFeesRequest struct {
+	Start                string   `protobuf:"bytes,1,opt,name=start,proto3" json:"start,omitempty"`
+	End                  string   `protobuf:"bytes,2,opt,name=end,proto3" json:"end,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *HistoryFeesRequest) Reset()         { *m = HistoryFeesRequest{} }
+func (m *HistoryFeesRequest) String() string { return proto.CompactTextString(m) }
+func (*HistoryFeesRequest) ProtoMessage()    {}
+func (*HistoryFeesRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{9}
+}
+
+func (m *HistoryFeesRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HistoryFeesRequest.Unmarshal(m, b)
+}
+func (m *HistoryFeesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HistoryFeesRequest.Marshal(b, m, deterministic)
+}
+func (m *HistoryFeesRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HistoryFeesRequest.Merge(m, src)
+}
+func (m *HistoryFeesRequest) XXX_Size() int {
+	return xxx_messageInfo_HistoryFeesRequest.Size(m)
+}
+func (m *HistoryFeesRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_HistoryFeesRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_HistoryFeesRequest proto.InternalMessageInfo
+
+func (m *HistoryFeesRequest) GetStart() string {
+	if m != nil {
+		return m.Start
+	}
+	return ""
+}
+
+func (m *HistoryFeesRequest) GetEnd() string {
+	if m != nil {
+		return m.End
+	}
+	return ""
+}
+
+type MonthRecord struct {
+	PaymentDate          string   `protobuf:"bytes,1,opt,name=payment_date,json=paymentDate,proto3" json:"payment_date,omitempty"`
+	PaymentStatus        string   `protobuf:"bytes,2,opt,name=payment_status,json=paymentStatus,proto3" json:"payment_status,omitempty"`
+	Method               string   `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
+	Amount               int32    `protobuf:"varint,4,opt,name=amount,proto3" json:"amount,omitempty"`
+	Invoice              string   `protobuf:"bytes,5,opt,name=invoice,proto3" json:"invoice,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *MonthRecord) Reset()         { *m = MonthRecord{} }
+func (m *MonthRecord) String() string { return proto.CompactTextString(m) }
+func (*MonthRecord) ProtoMessage()    {}
+func (*MonthRecord) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{10}
+}
+
+func (m *MonthRecord) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_MonthRecord.Unmarshal(m, b)
+}
+func (m *MonthRecord) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_MonthRecord.Marshal(b, m, deterministic)
+}
+func (m *MonthRecord) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MonthRecord.Merge(m, src)
+}
+func (m *MonthRecord) XXX_Size() int {
+	return xxx_messageInfo_MonthRecord.Size(m)
+}
+func (m *MonthRecord) XXX_DiscardUnknown() {
+	xxx_messageInfo_MonthRecord.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MonthRecord proto.InternalMessageInfo
+
+func (m *MonthRecord) GetPaymentDate() string {
+	if m != nil {
+		return m.PaymentDate
+	}
+	return ""
+}
+
+func (m *MonthRecord) GetPaymentStatus() string {
+	if m != nil {
+		return m.PaymentStatus
+	}
+	return ""
+}
+
+func (m *MonthRecord) GetMethod() string {
+	if m != nil {
+		return m.Method
+	}
+	return ""
+}
+
+func (m *MonthRecord) GetAmount() int32 {
+	if m != nil {
+		return m.Amount
+	}
+	return 0
+}
+
+func (m *MonthRecord) GetInvoice() string {
+	if m != nil {
+		return m.Invoice
+	}
+	return ""
+}
+
+type HistoryFeesResponse struct {
+	Records              []*MonthRecord `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *HistoryFeesResponse) Reset()         { *m = HistoryFeesResponse{} }
+func (m *HistoryFeesResponse) String() string { return proto.CompactTextString(m) }
+func (*HistoryFeesResponse) ProtoMessage()    {}
+func (*HistoryFeesResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{11}
+}
+
+func (m *HistoryFeesResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HistoryFeesResponse.Unmarshal(m, b)
+}
+func (m *HistoryFeesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HistoryFeesResponse.Marshal(b, m, deterministic)
+}
+func (m *HistoryFeesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HistoryFeesResponse.Merge(m, src)
+}
+func (m *HistoryFeesResponse) XXX_Size() int {
+	return xxx_messageInfo_HistoryFeesResponse.Size(m)
+}
+func (m *HistoryFeesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_HistoryFeesResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_HistoryFeesResponse proto.InternalMessageInfo
+
+func (m *HistoryFeesResponse) GetRecords() []*MonthRecord {
+	if m != nil {
+		return m.Records
+	}
+	return nil
+}
+
+type FeesDetailRequest struct {
+	Month                string   `protobuf:"bytes,1,opt,name=month,proto3" json:"month,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *FeesDetailRequest) Reset()         { *m = FeesDetailRequest{} }
+func (m *FeesDetailRequest) String() string { return proto.CompactTextString(m) }
+func (*FeesDetailRequest) ProtoMessage()    {}
+func (*FeesDetailRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{12}
+}
+
+func (m *FeesDetailRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FeesDetailRequest.Unmarshal(m, b)
+}
+func (m *FeesDetailRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FeesDetailRequest.Marshal(b, m, deterministic)
+}
+func (m *FeesDetailRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FeesDetailRequest.Merge(m, src)
+}
+func (m *FeesDetailRequest) XXX_Size() int {
+	return xxx_messageInfo_FeesDetailRequest.Size(m)
+}
+func (m *FeesDetailRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_FeesDetailRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FeesDetailRequest proto.InternalMessageInfo
+
+func (m *FeesDetailRequest) GetMonth() string {
+	if m != nil {
+		return m.Month
+	}
+	return ""
+}
+
+type NamespaceFees struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Charge               int32    `protobuf:"varint,2,opt,name=charge,proto3" json:"charge,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NamespaceFees) Reset()         { *m = NamespaceFees{} }
+func (m *NamespaceFees) String() string { return proto.CompactTextString(m) }
+func (*NamespaceFees) ProtoMessage()    {}
+func (*NamespaceFees) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{13}
+}
+
+func (m *NamespaceFees) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NamespaceFees.Unmarshal(m, b)
+}
+func (m *NamespaceFees) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NamespaceFees.Marshal(b, m, deterministic)
+}
+func (m *NamespaceFees) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NamespaceFees.Merge(m, src)
+}
+func (m *NamespaceFees) XXX_Size() int {
+	return xxx_messageInfo_NamespaceFees.Size(m)
+}
+func (m *NamespaceFees) XXX_DiscardUnknown() {
+	xxx_messageInfo_NamespaceFees.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NamespaceFees proto.InternalMessageInfo
+
+func (m *NamespaceFees) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *NamespaceFees) GetCharge() int32 {
+	if m != nil {
+		return m.Charge
+	}
+	return 0
+}
+
+type FeesDetailResponse struct {
+	Account              string           `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Attn                 string           `protobuf:"bytes,2,opt,name=attn,proto3" json:"attn,omitempty"`
+	InvoiceNumber        string           `protobuf:"bytes,3,opt,name=invoice_number,json=invoiceNumber,proto3" json:"invoice_number,omitempty"`
+	Total                int32            `protobuf:"varint,4,opt,name=total,proto3" json:"total,omitempty"`
+	IssueDate            string           `protobuf:"bytes,5,opt,name=issue_date,json=issueDate,proto3" json:"issue_date,omitempty"`
+	Start                string           `protobuf:"bytes,6,opt,name=start,proto3" json:"start,omitempty"`
+	End                  string           `protobuf:"bytes,7,opt,name=end,proto3" json:"end,omitempty"`
+	Charges              int32            `protobuf:"varint,8,opt,name=charges,proto3" json:"charges,omitempty"`
+	Credits              int32            `protobuf:"varint,9,opt,name=credits,proto3" json:"credits,omitempty"`
+	Tax                  int32            `protobuf:"varint,10,opt,name=tax,proto3" json:"tax,omitempty"`
+	NsFees               []*NamespaceFees `protobuf:"bytes,11,rep,name=ns_fees,json=nsFees,proto3" json:"ns_fees,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *FeesDetailResponse) Reset()         { *m = FeesDetailResponse{} }
+func (m *FeesDetailResponse) String() string { return proto.CompactTextString(m) }
+func (*FeesDetailResponse) ProtoMessage()    {}
+func (*FeesDetailResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{14}
+}
+
+func (m *FeesDetailResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_FeesDetailResponse.Unmarshal(m, b)
+}
+func (m *FeesDetailResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_FeesDetailResponse.Marshal(b, m, deterministic)
+}
+func (m *FeesDetailResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_FeesDetailResponse.Merge(m, src)
+}
+func (m *FeesDetailResponse) XXX_Size() int {
+	return xxx_messageInfo_FeesDetailResponse.Size(m)
+}
+func (m *FeesDetailResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_FeesDetailResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_FeesDetailResponse proto.InternalMessageInfo
+
+func (m *FeesDetailResponse) GetAccount() string {
+	if m != nil {
+		return m.Account
+	}
+	return ""
+}
+
+func (m *FeesDetailResponse) GetAttn() string {
+	if m != nil {
+		return m.Attn
+	}
+	return ""
+}
+
+func (m *FeesDetailResponse) GetInvoiceNumber() string {
+	if m != nil {
+		return m.InvoiceNumber
+	}
+	return ""
+}
+
+func (m *FeesDetailResponse) GetTotal() int32 {
+	if m != nil {
+		return m.Total
+	}
+	return 0
+}
+
+func (m *FeesDetailResponse) GetIssueDate() string {
+	if m != nil {
+		return m.IssueDate
+	}
+	return ""
+}
+
+func (m *FeesDetailResponse) GetStart() string {
+	if m != nil {
+		return m.Start
+	}
+	return ""
+}
+
+func (m *FeesDetailResponse) GetEnd() string {
+	if m != nil {
+		return m.End
+	}
+	return ""
+}
+
+func (m *FeesDetailResponse) GetCharges() int32 {
+	if m != nil {
+		return m.Charges
+	}
+	return 0
+}
+
+func (m *FeesDetailResponse) GetCredits() int32 {
+	if m != nil {
+		return m.Credits
+	}
+	return 0
+}
+
+func (m *FeesDetailResponse) GetTax() int32 {
+	if m != nil {
+		return m.Tax
+	}
+	return 0
+}
+
+func (m *FeesDetailResponse) GetNsFees() []*NamespaceFees {
+	if m != nil {
+		return m.NsFees
+	}
+	return nil
+}
+
+type InvoiceDetailRequest struct {
+	Uid                  string   `protobuf:"bytes,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	InvoiceId            string   `protobuf:"bytes,2,opt,name=invoice_id,json=invoiceId,proto3" json:"invoice_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *InvoiceDetailRequest) Reset()         { *m = InvoiceDetailRequest{} }
+func (m *InvoiceDetailRequest) String() string { return proto.CompactTextString(m) }
+func (*InvoiceDetailRequest) ProtoMessage()    {}
+func (*InvoiceDetailRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5063cc471a821220, []int{15}
+}
+
+func (m *InvoiceDetailRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_InvoiceDetailRequest.Unmarshal(m, b)
+}
+func (m *InvoiceDetailRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_InvoiceDetailRequest.Marshal(b, m, deterministic)
+}
+func (m *InvoiceDetailRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InvoiceDetailRequest.Merge(m, src)
+}
+func (m *InvoiceDetailRequest) XXX_Size() int {
+	return xxx_messageInfo_InvoiceDetailRequest.Size(m)
+}
+func (m *InvoiceDetailRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_InvoiceDetailRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_InvoiceDetailRequest proto.InternalMessageInfo
+
+func (m *InvoiceDetailRequest) GetUid() string {
+	if m != nil {
+		return m.Uid
+	}
+	return ""
+}
+
+func (m *InvoiceDetailRequest) GetInvoiceId() string {
+	if m != nil {
+		return m.InvoiceId
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*DataCenterListResponse)(nil), "gwexdcmgr.DataCenterListResponse")
 	proto.RegisterType((*NetworkInfoResponse)(nil), "gwexdcmgr.NetworkInfoResponse")
 	proto.RegisterType((*DataCenterLeaderBoardDetail)(nil), "gwexdcmgr.DataCenterLeaderBoardDetail")
-	proto.RegisterType((*MyDataCenterRequest)(nil), "gwexdcmgr.MyDataCenterRequest")
 	proto.RegisterType((*RegisterDataCenterRequest)(nil), "gwexdcmgr.RegisterDataCenterRequest")
 	proto.RegisterType((*RegisterDataCenterResponse)(nil), "gwexdcmgr.RegisterDataCenterResponse")
+	proto.RegisterType((*DashBoardRequest)(nil), "gwexdcmgr.DashBoardRequest")
+	proto.RegisterType((*DashBoardResponse)(nil), "gwexdcmgr.DashBoardResponse")
+	proto.RegisterType((*Income)(nil), "gwexdcmgr.Income")
+	proto.RegisterType((*Usage)(nil), "gwexdcmgr.Usage")
+	proto.RegisterType((*HistoryFeesRequest)(nil), "gwexdcmgr.HistoryFeesRequest")
+	proto.RegisterType((*MonthRecord)(nil), "gwexdcmgr.MonthRecord")
+	proto.RegisterType((*HistoryFeesResponse)(nil), "gwexdcmgr.HistoryFeesResponse")
+	proto.RegisterType((*FeesDetailRequest)(nil), "gwexdcmgr.FeesDetailRequest")
+	proto.RegisterType((*NamespaceFees)(nil), "gwexdcmgr.NamespaceFees")
+	proto.RegisterType((*FeesDetailResponse)(nil), "gwexdcmgr.FeesDetailResponse")
+	proto.RegisterType((*InvoiceDetailRequest)(nil), "gwexdcmgr.InvoiceDetailRequest")
 }
 
 func init() { proto.RegisterFile("dcmgr/v1/dcmgr.proto", fileDescriptor_5063cc471a821220) }
 
 var fileDescriptor_5063cc471a821220 = []byte{
-	// 689 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x94, 0xcf, 0x72, 0x12, 0x4f,
-	0x10, 0xc7, 0x7f, 0x84, 0x04, 0xd8, 0x86, 0x84, 0x9f, 0x43, 0x2a, 0x21, 0x44, 0x63, 0xb2, 0xfe,
-	0xa3, 0x3c, 0x80, 0xc6, 0x2a, 0x0f, 0xde, 0x14, 0x3c, 0x50, 0x6a, 0x2a, 0xb5, 0xd1, 0xb2, 0x4a,
-	0x0f, 0x38, 0x99, 0xed, 0xe0, 0x56, 0xd8, 0x19, 0x9c, 0x99, 0x4d, 0xc4, 0xf2, 0xe4, 0x2b, 0xe8,
-	0xc9, 0xd7, 0xf2, 0x15, 0x7c, 0x10, 0x6b, 0xfe, 0x84, 0x80, 0x92, 0x8a, 0x17, 0x4f, 0xd0, 0xdf,
-	0x6f, 0xf7, 0xa7, 0x77, 0xa7, 0xa7, 0x17, 0x56, 0x63, 0x96, 0x0e, 0x64, 0xfb, 0xe4, 0x7e, 0xdb,
-	0xfe, 0x69, 0x8d, 0xa4, 0xd0, 0x82, 0x04, 0x83, 0x53, 0xfc, 0x68, 0x85, 0xc6, 0xd5, 0x81, 0x10,
-	0x83, 0x21, 0xb6, 0xe9, 0x28, 0x69, 0x53, 0xce, 0x85, 0xa6, 0x3a, 0x11, 0x5c, 0xb9, 0xc4, 0x46,
-	0x8d, 0x89, 0x34, 0x15, 0xbc, 0xed, 0x7e, 0x9c, 0x18, 0xee, 0xc3, 0x5a, 0x97, 0x6a, 0xda, 0x41,
-	0xae, 0x51, 0x3e, 0x4f, 0x94, 0x8e, 0x50, 0x8d, 0x04, 0x57, 0x48, 0x1e, 0x42, 0x21, 0x66, 0x46,
-	0xa9, 0xe7, 0xb6, 0xf3, 0xcd, 0xf2, 0xee, 0x56, 0x6b, 0xba, 0xb0, 0x75, 0x5e, 0x75, 0xa0, 0xa9,
-	0xce, 0x54, 0xe4, 0xb3, 0xc3, 0xef, 0x79, 0xa8, 0xed, 0xa1, 0x3e, 0x15, 0xf2, 0xb8, 0xc7, 0x8f,
-	0xc4, 0x84, 0x77, 0x0d, 0x20, 0x53, 0x28, 0xfb, 0x4c, 0x64, 0xdc, 0x30, 0x73, 0xcd, 0xa5, 0x28,
-	0x30, 0x4a, 0xc7, 0x08, 0xc6, 0x7e, 0x2f, 0x94, 0xf6, 0xf6, 0x82, 0xb3, 0x8d, 0xe2, 0xec, 0x0d,
-	0x28, 0x71, 0xe5, 0xcd, 0xbc, 0x35, 0x8b, 0x5c, 0x39, 0xeb, 0x0e, 0x54, 0x99, 0xe0, 0x9a, 0x26,
-	0x7c, 0x42, 0x5f, 0xb4, 0x19, 0x2b, 0x13, 0xd9, 0x25, 0xd6, 0xa1, 0xa8, 0x25, 0x3d, 0x3a, 0x4a,
-	0x58, 0x7d, 0xc9, 0x21, 0x7c, 0x48, 0x36, 0x21, 0x60, 0xa3, 0xac, 0xaf, 0x85, 0xa6, 0xc3, 0x7a,
-	0x61, 0x3b, 0xd7, 0x0c, 0xa2, 0x12, 0x1b, 0x65, 0x2f, 0x4d, 0x6c, 0x5a, 0x1b, 0x33, 0x53, 0x18,
-	0xd7, 0x8b, 0xd6, 0x2b, 0xb2, 0x51, 0xf6, 0x4a, 0x61, 0x4c, 0x76, 0xa0, 0x92, 0x62, 0x2a, 0xe4,
-	0xd8, 0x97, 0x96, 0xac, 0x5d, 0x76, 0x9a, 0xab, 0xbe, 0x0e, 0x3e, 0x74, 0x80, 0xc0, 0x66, 0x80,
-	0x93, 0x2c, 0xe3, 0x06, 0x2c, 0x2b, 0x2d, 0x24, 0x1d, 0xa0, 0x87, 0x80, 0x4d, 0xa9, 0x78, 0xd1,
-	0x51, 0x76, 0xe0, 0x2c, 0x76, 0x98, 0xb2, 0x6b, 0xe4, 0xb5, 0x33, 0x0e, 0x77, 0xc7, 0xee, 0x0f,
-	0xa1, 0x62, 0xdf, 0xb1, 0xe2, 0x45, 0x7b, 0x04, 0x61, 0x0f, 0x36, 0xa7, 0xc6, 0x8d, 0x34, 0x46,
-	0xf9, 0x44, 0x50, 0x19, 0x77, 0x51, 0xd3, 0x64, 0x48, 0x08, 0x2c, 0x72, 0x9a, 0xa2, 0x9d, 0x4e,
-	0x10, 0xd9, 0xff, 0x64, 0x0d, 0x0a, 0x3c, 0x4b, 0x0f, 0x51, 0xda, 0xa1, 0xe4, 0x22, 0x1f, 0x85,
-	0x2d, 0xa8, 0xbd, 0x18, 0x9f, 0xc3, 0x22, 0xfc, 0x90, 0xa1, 0xd2, 0x64, 0x1d, 0x8a, 0x76, 0xcc,
-	0x49, 0xec, 0x29, 0x05, 0x13, 0xf6, 0xe2, 0xf0, 0x35, 0x6c, 0x44, 0x38, 0x48, 0x94, 0x46, 0xf9,
-	0xf7, 0x55, 0xe6, 0xc5, 0xd9, 0x30, 0x33, 0x45, 0x7d, 0xfb, 0x64, 0x0b, 0xee, 0xc5, 0xbd, 0xb6,
-	0x47, 0x53, 0x0c, 0x3f, 0x43, 0x63, 0x1e, 0xf8, 0xfc, 0xda, 0xb1, 0x61, 0x82, 0x5c, 0xf7, 0x8f,
-	0x71, 0xec, 0xe1, 0x81, 0x53, 0x9e, 0xe1, 0x98, 0xdc, 0x86, 0xaa, 0xb7, 0x99, 0x92, 0x7d, 0x86,
-	0x52, 0xfb, 0x16, 0xcb, 0x4e, 0xee, 0x28, 0xd9, 0x41, 0x69, 0x1f, 0x90, 0x51, 0xe7, 0xe7, 0xdd,
-	0x03, 0x32, 0x6a, 0x8c, 0xdd, 0x08, 0xa0, 0xdb, 0x39, 0xd0, 0x12, 0x69, 0x8a, 0x92, 0x74, 0xa1,
-	0x72, 0x80, 0xf2, 0xc4, 0x2c, 0x85, 0x51, 0xc8, 0xda, 0x6f, 0x4b, 0xe3, 0x33, 0x1b, 0x17, 0xe8,
-	0xe1, 0x7f, 0xcd, 0xdc, 0xbd, 0xdc, 0xee, 0xb7, 0x45, 0x58, 0xea, 0x76, 0x1e, 0xef, 0xf7, 0xc8,
-	0x1b, 0x58, 0x99, 0x5d, 0x4f, 0x52, 0x9b, 0xad, 0x7c, 0x9a, 0x8e, 0xf4, 0xb8, 0xb1, 0xd3, 0x9a,
-	0x7c, 0x04, 0x5a, 0xf3, 0xd7, 0x39, 0xfc, 0xff, 0xcb, 0x8f, 0x9f, 0x5f, 0x17, 0x80, 0x94, 0xda,
-	0x31, 0x6b, 0x0f, 0x0d, 0xe9, 0x2d, 0x94, 0xa7, 0xf6, 0x74, 0x3e, 0x78, 0x6b, 0x0a, 0x3c, 0x67,
-	0xa9, 0xc3, 0x75, 0x4b, 0xbd, 0x42, 0xaa, 0x86, 0xea, 0x6f, 0x5a, 0x62, 0x68, 0x9f, 0x80, 0xfc,
-	0x39, 0x14, 0x72, 0x73, 0x0a, 0x77, 0xe1, 0x65, 0x68, 0xdc, 0xba, 0x24, 0x6b, 0xb6, 0x77, 0x58,
-	0x31, 0xbd, 0xa5, 0xcf, 0x7b, 0x94, 0xbb, 0x4b, 0x34, 0x54, 0x23, 0x54, 0xa8, 0xff, 0x55, 0xe3,
-	0x55, 0xdb, 0x78, 0x25, 0x0c, 0x5c, 0x63, 0x85, 0xda, 0x74, 0x7d, 0x07, 0x95, 0xe9, 0x7d, 0x20,
-	0xd3, 0x47, 0x37, 0x67, 0x51, 0x1a, 0x97, 0x7c, 0x4f, 0x67, 0x07, 0x96, 0x8e, 0x63, 0x76, 0x58,
-	0xb0, 0x99, 0x0f, 0x7e, 0x05, 0x00, 0x00, 0xff, 0xff, 0xa9, 0x0c, 0x88, 0x2c, 0x08, 0x06, 0x00,
-	0x00,
+	// 1341 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0xcd, 0x72, 0x1b, 0x45,
+	0x10, 0x46, 0xb1, 0x25, 0x79, 0x5b, 0x92, 0x7f, 0xc6, 0xc6, 0x51, 0x14, 0xe7, 0xc7, 0x4b, 0x7e,
+	0x0c, 0x07, 0x29, 0x31, 0x05, 0x07, 0xa0, 0xa8, 0x02, 0x09, 0x82, 0x0a, 0x92, 0x4a, 0x6d, 0xe2,
+	0x0b, 0x1c, 0x54, 0xe3, 0xd9, 0xb1, 0xb4, 0xc4, 0xbb, 0x2b, 0x66, 0x66, 0x93, 0x88, 0x23, 0xaf,
+	0xc0, 0x8d, 0x1b, 0xef, 0x41, 0x15, 0x0f, 0xc0, 0x91, 0x2b, 0xc7, 0x3c, 0x08, 0x35, 0xdd, 0xb3,
+	0xf2, 0x2e, 0x92, 0x9c, 0x13, 0xa7, 0xdd, 0xfe, 0xba, 0xe7, 0xeb, 0xe9, 0x9e, 0xee, 0x9e, 0x81,
+	0xbd, 0x50, 0xc4, 0x63, 0xd5, 0x7b, 0xf9, 0xb0, 0x87, 0x3f, 0xdd, 0xa9, 0x4a, 0x4d, 0xca, 0xbc,
+	0xf1, 0x2b, 0xf9, 0x1a, 0x81, 0xce, 0xc1, 0x38, 0x4d, 0xc7, 0xe7, 0xb2, 0xc7, 0xa7, 0x51, 0x8f,
+	0x27, 0x49, 0x6a, 0xb8, 0x89, 0xd2, 0x44, 0x93, 0x61, 0x67, 0x57, 0xa4, 0x71, 0x9c, 0x26, 0x3d,
+	0xfa, 0x38, 0xf0, 0x96, 0x5b, 0x82, 0xd2, 0x69, 0x76, 0xd6, 0x33, 0x51, 0x2c, 0xb5, 0xe1, 0xf1,
+	0x94, 0x0c, 0xfc, 0xa7, 0xb0, 0x3f, 0xe0, 0x86, 0xf7, 0x65, 0x62, 0xa4, 0xfa, 0x2e, 0xd2, 0x26,
+	0x90, 0x7a, 0x9a, 0x26, 0x5a, 0xb2, 0x8f, 0xa1, 0x16, 0x0a, 0x8b, 0xb4, 0x2b, 0xb7, 0xd7, 0x8e,
+	0x1a, 0xc7, 0x37, 0xbb, 0x45, 0xe6, 0xee, 0xc5, 0xaa, 0x67, 0x86, 0x9b, 0x4c, 0x07, 0xce, 0xda,
+	0xff, 0x6d, 0x0d, 0x76, 0x9f, 0x48, 0xf3, 0x2a, 0x55, 0x2f, 0x86, 0xc9, 0x59, 0x3a, 0xe7, 0xbb,
+	0x01, 0x90, 0x69, 0xa9, 0x46, 0x22, 0xcd, 0x12, 0xcb, 0x59, 0x39, 0xaa, 0x06, 0x9e, 0x45, 0xfa,
+	0x16, 0xb0, 0xea, 0x49, 0xaa, 0x8d, 0x53, 0x5f, 0x21, 0xb5, 0x45, 0x48, 0x7d, 0x0d, 0x36, 0x12,
+	0xed, 0x94, 0x6b, 0xa8, 0xac, 0x27, 0x9a, 0x54, 0xf7, 0x61, 0x4b, 0xa4, 0x89, 0xe1, 0x51, 0x32,
+	0x67, 0x5f, 0x47, 0x8b, 0xcd, 0x39, 0x4c, 0x86, 0x6d, 0xa8, 0x1b, 0xc5, 0xcf, 0xce, 0x22, 0xd1,
+	0xae, 0x12, 0x85, 0x13, 0xd9, 0x75, 0xf0, 0xc4, 0x34, 0x1b, 0x99, 0xd4, 0xf0, 0xf3, 0x76, 0xed,
+	0x76, 0xe5, 0xc8, 0x0b, 0x36, 0xc4, 0x34, 0x7b, 0x6e, 0x65, 0xeb, 0xda, 0x2a, 0x33, 0x2d, 0xc3,
+	0x76, 0x1d, 0x75, 0x75, 0x31, 0xcd, 0x4e, 0xb4, 0x0c, 0xd9, 0x21, 0x34, 0x63, 0x19, 0xa7, 0x6a,
+	0xe6, 0x96, 0x6e, 0xa0, 0xba, 0x41, 0x18, 0xad, 0xbe, 0x05, 0x4e, 0x24, 0x02, 0x0f, 0x2d, 0x80,
+	0x20, 0xe4, 0x78, 0x0f, 0x5a, 0xda, 0xa4, 0x8a, 0x8f, 0xa5, 0x23, 0x01, 0x34, 0x69, 0x3a, 0x90,
+	0x58, 0x0e, 0x21, 0x97, 0x89, 0xa6, 0x41, 0x8e, 0x1c, 0x96, 0xf3, 0x24, 0x94, 0x76, 0x97, 0x84,
+	0x26, 0xc6, 0xd8, 0x74, 0x20, 0xa6, 0xc0, 0x1f, 0xc2, 0xf5, 0xc2, 0x71, 0x4b, 0x1e, 0x4a, 0xf5,
+	0x65, 0xca, 0x55, 0x38, 0x90, 0x86, 0x47, 0xe7, 0x8c, 0xc1, 0x7a, 0xc2, 0x63, 0x89, 0xa7, 0xe3,
+	0x05, 0xf8, 0xcf, 0xf6, 0xa1, 0x96, 0x64, 0xf1, 0xa9, 0x54, 0x78, 0x28, 0x95, 0xc0, 0x49, 0xfe,
+	0xe7, 0x70, 0x2d, 0x90, 0xe3, 0x48, 0x1b, 0xa9, 0x2e, 0x28, 0x03, 0xf9, 0x53, 0x26, 0xb5, 0xb1,
+	0xfb, 0x15, 0xe7, 0x99, 0xd5, 0x8d, 0x0a, 0x84, 0x0d, 0x87, 0x3d, 0xe1, 0xb1, 0xf4, 0xff, 0xa9,
+	0x40, 0x67, 0x19, 0xc1, 0x45, 0xb9, 0x88, 0xf3, 0x48, 0x26, 0x66, 0xf4, 0x42, 0xce, 0xdc, 0x7a,
+	0x8f, 0x90, 0x6f, 0xe5, 0x8c, 0xdd, 0x83, 0x2d, 0xa7, 0x16, 0x5a, 0x8d, 0x84, 0x54, 0x54, 0x33,
+	0x5e, 0xd0, 0x22, 0xb8, 0xaf, 0x55, 0x5f, 0x2a, 0xc3, 0xae, 0x42, 0x5d, 0x70, 0xd2, 0xaf, 0xa1,
+	0xbe, 0x26, 0x38, 0x2a, 0x90, 0x9f, 0x76, 0x18, 0x85, 0x58, 0x30, 0xc8, 0x8f, 0xc8, 0x30, 0x5c,
+	0x08, 0xa0, 0xba, 0x10, 0x00, 0x3b, 0x00, 0x4f, 0xa4, 0xc9, 0x59, 0x34, 0x8e, 0xf9, 0xd4, 0x15,
+	0xcd, 0x05, 0xe0, 0xdf, 0x81, 0xed, 0x01, 0xd7, 0x13, 0xcc, 0x6e, 0x9e, 0x95, 0x6d, 0x58, 0xcb,
+	0xa2, 0xd0, 0x05, 0x63, 0x7f, 0xfd, 0x37, 0x15, 0xd8, 0x29, 0x98, 0xb9, 0xd8, 0x0f, 0xa1, 0x89,
+	0xa5, 0x30, 0x8a, 0x12, 0x91, 0xba, 0xec, 0x55, 0x83, 0x06, 0x62, 0x43, 0x84, 0xd8, 0x47, 0xd0,
+	0x12, 0x99, 0x52, 0x36, 0x01, 0x99, 0xe6, 0x63, 0x89, 0xd1, 0x37, 0x8e, 0xb7, 0xbb, 0xf3, 0x71,
+	0xd1, 0x3d, 0xb1, 0x78, 0xd0, 0x74, 0x66, 0x28, 0xb1, 0xbb, 0xb0, 0xfe, 0x4a, 0xca, 0x17, 0xed,
+	0x35, 0x6c, 0xe9, 0x9d, 0x82, 0x35, 0xf1, 0x06, 0xa8, 0x66, 0xf7, 0xa1, 0x1a, 0xa7, 0x89, 0x99,
+	0xb4, 0xd7, 0x57, 0xd9, 0x91, 0xde, 0xf2, 0xcd, 0x24, 0x57, 0xed, 0xea, 0x4a, 0x3e, 0xab, 0xf6,
+	0x5f, 0x43, 0xcd, 0xed, 0x7b, 0x1f, 0x6a, 0xa5, 0xa0, 0x9c, 0xc4, 0xba, 0xb0, 0x1e, 0x72, 0x93,
+	0x87, 0xd1, 0xe9, 0xd2, 0xdc, 0xea, 0xe6, 0x73, 0xab, 0xfb, 0x3c, 0x9f, 0x5b, 0x01, 0xda, 0xb1,
+	0x7b, 0x50, 0xa5, 0xb8, 0xd7, 0x56, 0xc4, 0x4d, 0x6a, 0xff, 0xaf, 0x0a, 0x54, 0x29, 0xf4, 0x52,
+	0x8f, 0x93, 0xf3, 0xe5, 0x3d, 0x4e, 0xb3, 0x67, 0x65, 0x8f, 0xd3, 0xf4, 0xb9, 0xac, 0xc7, 0x69,
+	0xfa, 0x5c, 0xda, 0xe3, 0x34, 0x7f, 0x2e, 0xef, 0xf1, 0x1a, 0x39, 0x2a, 0xf4, 0xb8, 0xff, 0x19,
+	0xb0, 0x6f, 0x22, 0x0b, 0xcc, 0xbe, 0x96, 0x52, 0xe7, 0x65, 0xb5, 0x07, 0x55, 0x6d, 0xb8, 0x32,
+	0xae, 0xb0, 0x48, 0xb0, 0xc5, 0x26, 0x93, 0xd0, 0x75, 0x85, 0xfd, 0xf5, 0x7f, 0xaf, 0x40, 0xe3,
+	0xb1, 0x3d, 0xb6, 0x40, 0x8a, 0x54, 0x61, 0x64, 0x53, 0x3e, 0x8b, 0x6d, 0x0d, 0x61, 0xee, 0x5d,
+	0x93, 0x3a, 0x6c, 0x60, 0xd3, 0x7c, 0x17, 0x36, 0x73, 0x13, 0x8d, 0x63, 0x3e, 0xef, 0x32, 0x87,
+	0xd2, 0xec, 0xb7, 0xa7, 0x1a, 0x4b, 0x33, 0x49, 0xc3, 0xbc, 0xc9, 0x48, 0xb2, 0x38, 0x8f, 0x0b,
+	0x13, 0xd9, 0x49, 0x76, 0x12, 0x47, 0xc9, 0xcb, 0x34, 0x12, 0x79, 0x63, 0xe5, 0xa2, 0xff, 0x08,
+	0x76, 0x4b, 0x11, 0xba, 0x8e, 0x78, 0x00, 0x75, 0x85, 0x9b, 0xd6, 0xee, 0x36, 0xda, 0x2f, 0x1c,
+	0x78, 0x21, 0xa6, 0x20, 0x37, 0xf3, 0xdf, 0x87, 0x1d, 0xcb, 0x40, 0x83, 0xad, 0x90, 0x29, 0xaa,
+	0x6b, 0x97, 0x29, 0x14, 0xfc, 0x4f, 0xa1, 0x65, 0x1b, 0x5a, 0x4f, 0xb9, 0x90, 0x76, 0xcd, 0xaa,
+	0x31, 0x28, 0x26, 0x5c, 0xb9, 0x4e, 0xab, 0x06, 0x4e, 0xf2, 0xff, 0xbc, 0x02, 0xac, 0xe8, 0xc8,
+	0x6d, 0xb8, 0x0d, 0x75, 0x2e, 0x2e, 0xae, 0x3a, 0x2f, 0xc8, 0x45, 0x4b, 0xce, 0x8d, 0x49, 0x5c,
+	0x22, 0xf1, 0xdf, 0xa6, 0xd9, 0x25, 0x60, 0xe4, 0x66, 0x2d, 0xe5, 0xb1, 0xe5, 0xd0, 0x27, 0x08,
+	0xda, 0xed, 0x53, 0xf9, 0x50, 0x36, 0x49, 0xb0, 0x93, 0x2c, 0xd2, 0x3a, 0x93, 0x74, 0x88, 0x94,
+	0x4f, 0x0f, 0x11, 0x3c, 0xc2, 0x79, 0x75, 0xd4, 0x96, 0x54, 0x47, 0x7d, 0x5e, 0x1d, 0x76, 0xc7,
+	0x14, 0x92, 0xc6, 0x6b, 0xcc, 0x76, 0x00, 0x89, 0xa8, 0x51, 0x32, 0x8c, 0x8c, 0xc6, 0xeb, 0xcb,
+	0x6a, 0x48, 0xb4, 0x2c, 0x86, 0xbf, 0xc6, 0x1b, 0xab, 0x1a, 0xd8, 0x5f, 0xf6, 0x10, 0xea, 0x89,
+	0x1e, 0x9d, 0x49, 0xa9, 0xdb, 0x0d, 0x3c, 0xa8, 0x76, 0xe1, 0xa0, 0x4a, 0x59, 0x0e, 0x6a, 0x89,
+	0xb6, 0x5f, 0xff, 0x11, 0xec, 0x0d, 0x29, 0xcc, 0xf2, 0x61, 0x2d, 0x4c, 0x4b, 0x8c, 0xd4, 0xa5,
+	0x29, 0xca, 0x2b, 0xdb, 0x73, 0xc8, 0x30, 0x3c, 0x0e, 0x00, 0x06, 0xfd, 0x67, 0x46, 0x49, 0x1e,
+	0x4b, 0xc5, 0x06, 0xd0, 0x7c, 0x26, 0xd5, 0x4b, 0xfb, 0x3e, 0xb1, 0x08, 0xdb, 0xff, 0xcf, 0xfb,
+	0xc5, 0x59, 0x76, 0x56, 0xe0, 0xfe, 0x3b, 0x47, 0x95, 0x07, 0x95, 0xe3, 0x3f, 0xea, 0x50, 0x1d,
+	0xf4, 0xbf, 0x78, 0x3a, 0x64, 0xdf, 0xc3, 0x66, 0xf9, 0xa5, 0xc4, 0x76, 0xcb, 0x2b, 0xbf, 0x8a,
+	0xa7, 0x66, 0xd6, 0x39, 0x2c, 0xc4, 0xbb, 0xfc, 0x65, 0xe5, 0x6f, 0xff, 0xf2, 0xf7, 0x9b, 0x5f,
+	0xaf, 0x00, 0xdb, 0xe8, 0x85, 0xa2, 0x77, 0x6e, 0x99, 0x7e, 0x80, 0x46, 0xe1, 0xc9, 0xb4, 0x9c,
+	0xf8, 0x66, 0x31, 0x91, 0x8b, 0xef, 0x2b, 0xff, 0x2a, 0xb2, 0xee, 0xb0, 0x2d, 0xcb, 0xea, 0x2e,
+	0xfd, 0xc8, 0xb2, 0xfd, 0x0c, 0x6c, 0xf1, 0x9e, 0x65, 0x77, 0x0a, 0x74, 0x2b, 0xef, 0xf1, 0xce,
+	0xdd, 0xb7, 0x58, 0x95, 0x7d, 0xfb, 0x4d, 0xeb, 0x5b, 0x39, 0xbb, 0x4f, 0x2a, 0x1f, 0x30, 0x03,
+	0x5b, 0x81, 0xd4, 0xd2, 0xfc, 0x5f, 0x8e, 0xf7, 0xd0, 0xf1, 0xa6, 0xef, 0x91, 0x63, 0x2d, 0x8d,
+	0xf5, 0x7a, 0x02, 0xcd, 0xc7, 0xb3, 0x82, 0xcb, 0x15, 0xf9, 0xbc, 0xf4, 0x3d, 0x5b, 0x3e, 0xa5,
+	0x78, 0x16, 0x0a, 0x16, 0xc2, 0x76, 0x9f, 0xee, 0xff, 0xf9, 0x95, 0xcd, 0xae, 0x97, 0x8e, 0xbb,
+	0x7c, 0xdf, 0x77, 0x0e, 0x96, 0x2b, 0xdd, 0xde, 0xdf, 0x45, 0x07, 0x5b, 0xac, 0x65, 0x1d, 0x84,
+	0x5c, 0x4f, 0x4e, 0x91, 0x71, 0x0a, 0xbb, 0x27, 0x5a, 0xaa, 0xc2, 0x14, 0xc4, 0x62, 0xbb, 0x51,
+	0xe0, 0x5a, 0xbc, 0x03, 0x4a, 0xd5, 0xb1, 0x64, 0x80, 0xfa, 0x1d, 0x74, 0xb6, 0xc7, 0x58, 0xcf,
+	0xf6, 0x66, 0x6f, 0x42, 0x26, 0x23, 0xac, 0xbe, 0x1f, 0x61, 0x0b, 0x47, 0xe8, 0xc5, 0x18, 0x63,
+	0xc5, 0x9d, 0x2f, 0x8c, 0xd1, 0xce, 0x8d, 0x15, 0xda, 0xe5, 0xbe, 0x70, 0xc8, 0x8e, 0x42, 0x22,
+	0x8e, 0xa1, 0x55, 0x6a, 0x76, 0x76, 0xab, 0xf4, 0x66, 0x58, 0x1c, 0x03, 0x6f, 0x73, 0x76, 0x80,
+	0xce, 0xf6, 0xd9, 0x1e, 0x39, 0xcb, 0xe7, 0x03, 0xb9, 0x3b, 0xad, 0xe1, 0xe1, 0x7e, 0xf8, 0x6f,
+	0x00, 0x00, 0x00, 0xff, 0xff, 0x28, 0x77, 0xa3, 0x84, 0x5c, 0x0d, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -559,7 +1240,11 @@ type DCAPIClient interface {
 	NetworkInfo(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*NetworkInfoResponse, error)
 	RegisterDataCenter(ctx context.Context, in *RegisterDataCenterRequest, opts ...grpc.CallOption) (*RegisterDataCenterResponse, error)
 	ResetDataCenter(ctx context.Context, in *RegisterDataCenterRequest, opts ...grpc.CallOption) (*RegisterDataCenterResponse, error)
-	MyDataCenter(ctx context.Context, in *MyDataCenterRequest, opts ...grpc.CallOption) (*common.DataCenterStatus, error)
+	MyDataCenter(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.DataCenterStatus, error)
+	ClusterDashBoard(ctx context.Context, in *DashBoardRequest, opts ...grpc.CallOption) (*DashBoardResponse, error)
+	UserHistoryFeesList(ctx context.Context, in *HistoryFeesRequest, opts ...grpc.CallOption) (*HistoryFeesResponse, error)
+	MonthFeesDetail(ctx context.Context, in *FeesDetailRequest, opts ...grpc.CallOption) (*FeesDetailResponse, error)
+	InvoiceDetail(ctx context.Context, in *InvoiceDetailRequest, opts ...grpc.CallOption) (*FeesDetailResponse, error)
 }
 
 type dCAPIClient struct {
@@ -606,9 +1291,45 @@ func (c *dCAPIClient) ResetDataCenter(ctx context.Context, in *RegisterDataCente
 	return out, nil
 }
 
-func (c *dCAPIClient) MyDataCenter(ctx context.Context, in *MyDataCenterRequest, opts ...grpc.CallOption) (*common.DataCenterStatus, error) {
+func (c *dCAPIClient) MyDataCenter(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.DataCenterStatus, error) {
 	out := new(common.DataCenterStatus)
 	err := c.cc.Invoke(ctx, "/gwexdcmgr.DCAPI/MyDataCenter", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dCAPIClient) ClusterDashBoard(ctx context.Context, in *DashBoardRequest, opts ...grpc.CallOption) (*DashBoardResponse, error) {
+	out := new(DashBoardResponse)
+	err := c.cc.Invoke(ctx, "/gwexdcmgr.DCAPI/ClusterDashBoard", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dCAPIClient) UserHistoryFeesList(ctx context.Context, in *HistoryFeesRequest, opts ...grpc.CallOption) (*HistoryFeesResponse, error) {
+	out := new(HistoryFeesResponse)
+	err := c.cc.Invoke(ctx, "/gwexdcmgr.DCAPI/UserHistoryFeesList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dCAPIClient) MonthFeesDetail(ctx context.Context, in *FeesDetailRequest, opts ...grpc.CallOption) (*FeesDetailResponse, error) {
+	out := new(FeesDetailResponse)
+	err := c.cc.Invoke(ctx, "/gwexdcmgr.DCAPI/MonthFeesDetail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dCAPIClient) InvoiceDetail(ctx context.Context, in *InvoiceDetailRequest, opts ...grpc.CallOption) (*FeesDetailResponse, error) {
+	out := new(FeesDetailResponse)
+	err := c.cc.Invoke(ctx, "/gwexdcmgr.DCAPI/InvoiceDetail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -621,7 +1342,11 @@ type DCAPIServer interface {
 	NetworkInfo(context.Context, *common.Empty) (*NetworkInfoResponse, error)
 	RegisterDataCenter(context.Context, *RegisterDataCenterRequest) (*RegisterDataCenterResponse, error)
 	ResetDataCenter(context.Context, *RegisterDataCenterRequest) (*RegisterDataCenterResponse, error)
-	MyDataCenter(context.Context, *MyDataCenterRequest) (*common.DataCenterStatus, error)
+	MyDataCenter(context.Context, *common.Empty) (*common.DataCenterStatus, error)
+	ClusterDashBoard(context.Context, *DashBoardRequest) (*DashBoardResponse, error)
+	UserHistoryFeesList(context.Context, *HistoryFeesRequest) (*HistoryFeesResponse, error)
+	MonthFeesDetail(context.Context, *FeesDetailRequest) (*FeesDetailResponse, error)
+	InvoiceDetail(context.Context, *InvoiceDetailRequest) (*FeesDetailResponse, error)
 }
 
 // UnimplementedDCAPIServer can be embedded to have forward compatible implementations.
@@ -640,8 +1365,20 @@ func (*UnimplementedDCAPIServer) RegisterDataCenter(ctx context.Context, req *Re
 func (*UnimplementedDCAPIServer) ResetDataCenter(ctx context.Context, req *RegisterDataCenterRequest) (*RegisterDataCenterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetDataCenter not implemented")
 }
-func (*UnimplementedDCAPIServer) MyDataCenter(ctx context.Context, req *MyDataCenterRequest) (*common.DataCenterStatus, error) {
+func (*UnimplementedDCAPIServer) MyDataCenter(ctx context.Context, req *common.Empty) (*common.DataCenterStatus, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MyDataCenter not implemented")
+}
+func (*UnimplementedDCAPIServer) ClusterDashBoard(ctx context.Context, req *DashBoardRequest) (*DashBoardResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClusterDashBoard not implemented")
+}
+func (*UnimplementedDCAPIServer) UserHistoryFeesList(ctx context.Context, req *HistoryFeesRequest) (*HistoryFeesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserHistoryFeesList not implemented")
+}
+func (*UnimplementedDCAPIServer) MonthFeesDetail(ctx context.Context, req *FeesDetailRequest) (*FeesDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MonthFeesDetail not implemented")
+}
+func (*UnimplementedDCAPIServer) InvoiceDetail(ctx context.Context, req *InvoiceDetailRequest) (*FeesDetailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InvoiceDetail not implemented")
 }
 
 func RegisterDCAPIServer(s *grpc.Server, srv DCAPIServer) {
@@ -721,7 +1458,7 @@ func _DCAPI_ResetDataCenter_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _DCAPI_MyDataCenter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MyDataCenterRequest)
+	in := new(common.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -733,7 +1470,79 @@ func _DCAPI_MyDataCenter_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/gwexdcmgr.DCAPI/MyDataCenter",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DCAPIServer).MyDataCenter(ctx, req.(*MyDataCenterRequest))
+		return srv.(DCAPIServer).MyDataCenter(ctx, req.(*common.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DCAPI_ClusterDashBoard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DashBoardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DCAPIServer).ClusterDashBoard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gwexdcmgr.DCAPI/ClusterDashBoard",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DCAPIServer).ClusterDashBoard(ctx, req.(*DashBoardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DCAPI_UserHistoryFeesList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HistoryFeesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DCAPIServer).UserHistoryFeesList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gwexdcmgr.DCAPI/UserHistoryFeesList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DCAPIServer).UserHistoryFeesList(ctx, req.(*HistoryFeesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DCAPI_MonthFeesDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FeesDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DCAPIServer).MonthFeesDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gwexdcmgr.DCAPI/MonthFeesDetail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DCAPIServer).MonthFeesDetail(ctx, req.(*FeesDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DCAPI_InvoiceDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InvoiceDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DCAPIServer).InvoiceDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gwexdcmgr.DCAPI/InvoiceDetail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DCAPIServer).InvoiceDetail(ctx, req.(*InvoiceDetailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -761,6 +1570,22 @@ var _DCAPI_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MyDataCenter",
 			Handler:    _DCAPI_MyDataCenter_Handler,
+		},
+		{
+			MethodName: "ClusterDashBoard",
+			Handler:    _DCAPI_ClusterDashBoard_Handler,
+		},
+		{
+			MethodName: "UserHistoryFeesList",
+			Handler:    _DCAPI_UserHistoryFeesList_Handler,
+		},
+		{
+			MethodName: "MonthFeesDetail",
+			Handler:    _DCAPI_MonthFeesDetail_Handler,
+		},
+		{
+			MethodName: "InvoiceDetail",
+			Handler:    _DCAPI_InvoiceDetail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

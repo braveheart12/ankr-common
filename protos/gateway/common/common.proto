@@ -190,6 +190,9 @@ message AppReport {
     AppDeployment app_deployment = 1; //json string for Metrics structure which defined in constants
     string report = 2;
     AppStatus app_status = 3;
+    AppEvent app_event = 4;
+    string detail = 5; //string for app resource detail
+    string endpoint = 6;
 }
 
 enum TransactionState {
@@ -209,4 +212,5 @@ message Deposit {
     string amount = 7;
     string confirmedBlockHeight = 8;
     TransactionState txState = 9;
+    string toTxHash = 10;
 }

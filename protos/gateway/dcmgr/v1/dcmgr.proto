@@ -1,6 +1,7 @@
 syntax = "proto3";
 import "google/api/annotations.proto";
 import "common/common.proto";
+import "google/protobuf/timestamp.proto";
 
 package gwexdcmgr;
 
@@ -29,11 +30,26 @@ service DCAPI {
             body: "*"
     };
       }
-      rpc MyDataCenter(MyDataCenterRequest) returns (common.proto.DataCenterStatus){
+      rpc MyDataCenter(common.proto.Empty) returns (common.proto.DataCenterStatus){
         option (google.api.http).get = "/dc/mydc";
       }
 
+
+    rpc ClusterDashBoard (DashBoardRequest) returns (DashBoardResponse) {
+       option (google.api.http).get = "/dc/dashboard";
+    }
+    rpc UserHistoryFeesList (HistoryFeesRequest) returns (HistoryFeesResponse) {
+        option (google.api.http).get = "/fees/history_list";
+    }
+    rpc MonthFeesDetail (FeesDetailRequest) returns (FeesDetailResponse) {
+         option (google.api.http).get = "/fees/month_detail";
+    }
+
+    rpc InvoiceDetail (InvoiceDetailRequest) returns (FeesDetailResponse) {
+         option (google.api.http).get = "/fees/invoice_detail";
+    }
 }
+
 
 message DataCenterListResponse {
   repeated common.proto.DataCenterStatus dcList= 1; // repeated groups of DataCenterInfo list
@@ -60,14 +76,8 @@ message DataCenterLeaderBoardDetail {
   double number = 2;
 }
 
-
-message MyDataCenterRequest {
-  string user_id = 1;
-}
-
 message RegisterDataCenterRequest {
-  string user_id = 1;
-  string cluster_name = 2;
+  string cluster_name = 1;
 }
 
 
@@ -75,4 +85,85 @@ message RegisterDataCenterResponse {
   string client_key = 1;
   string client_csr_cert = 2;
   string ca_cert = 3;
+  string cluster_id = 4;
+  string cluster_name = 5;
+  string configmap = 6;
+}
+
+
+
+
+message DashBoardRequest {
+  string uid = 1;
+}
+message DashBoardResponse{
+   int32 total_income = 1;
+   Usage current_usage = 2;
+   repeated Income week = 3;
+   repeated Income month = 4;
+   repeated Income year = 5;
+}
+
+
+message Income {
+   int32 income = 1;
+   google.protobuf.Timestamp date = 2;
+   Usage usage = 3;
+}
+
+message Usage {
+    int32 cpu_total = 1;
+    int32 cpu_used = 2;
+    int32 memory_total = 3;
+    int32 memory_used = 4;
+    int32 storage_total = 5;
+    int32 storage_used = 6;
+}
+
+message HistoryFeesRequest {
+  string start = 1;
+  string end = 2;
+}
+
+
+message MonthRecord{
+  string payment_date = 1;
+  string payment_status = 2;
+  string method = 3;
+  int32 amount = 4;
+  string invoice = 5;
+}
+
+message HistoryFeesResponse {
+  repeated MonthRecord records= 1;
+}
+
+message FeesDetailRequest {
+  string month = 1;
+}
+
+message NamespaceFees {
+  string name = 1;
+  int32 charge = 2;
+
+}
+
+message FeesDetailResponse {
+  string account = 1;
+  string attn = 2;
+  string invoice_number = 3;
+  int32 total = 4;
+  string issue_date = 5;
+  string start = 6;
+  string end = 7;
+  int32 charges = 8;
+  int32 credits = 9;
+  int32 tax = 10;
+  repeated NamespaceFees ns_fees = 11;
+}
+
+
+message InvoiceDetailRequest{
+   string uid = 1;
+   string invoice_id = 2;
 }
