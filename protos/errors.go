@@ -25,7 +25,7 @@ const (
 )
 
 var (
-	ErrPasswordForbiddenChar     = errors.New(PasswordCharError + "There are not allowed characters in the password. Please only use the combination of letters, numbers and symbols.")
+	ErrPasswordForbiddenChar     = errors.New(PasswordCharError + "Your password contains characters that are not permitted.  Passwords should be 7-20 characters in length and comprise of letters, numbers and symbols (including '@, %, *...........') including at least two of either numbers, letters or symbols.")
 	ErrTimeoutorDuplicate        = errors.New(ReCaptchaError + "There is duplcate or time-out recaptha code. Please refresh the page and try again.")
 	ErrNoChartReadme             = errors.New(NotFoundError + "Cannot find readme in chart tarball")
 	ErrCreateRequest             = errors.New(DialError + "Cannot create request")
