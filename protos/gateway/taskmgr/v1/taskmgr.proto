@@ -103,30 +103,10 @@ service AppMgr {
             get: "/price/history/{history_request}"
     };
     }
-    rpc BlockHeight (common.proto.Empty) returns (BlockHeightResponse) {
-        option (google.api.http) = {
-            get: "/blockchain/status"
-    };
-    }
-    rpc BlockList (BlockListRequest) returns (BlockListResponse) {
-        option (google.api.http) = {
-            get: "/blockchain/list/{min_height}/{max_height}"
-    };
-    }
     
 }
-message BlockListRequest {
-    string min_height = 1;
-    string max_height = 2;
-}
-message BlockListResult {
-    BlockListResponse Response = 1;
-}
-message BlockListResponse {
-    string error = 1;
-    BlockListResult result = 2;
-    string id = 3;
-}
+
+
 message ProtocolVersion{
     string p2p = 1;
     string block = 2;
