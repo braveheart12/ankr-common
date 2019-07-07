@@ -82,7 +82,7 @@ service UserMgr {
 
     rpc ConfirmEmail(ConfirmEmailRequest) returns (common.proto.Empty){
         option (google.api.http) = {
-            post: "/forgot_password"
+            post: "/confirm_email"
             body: "*"
     };
     }
@@ -217,6 +217,7 @@ message ConfirmRegistrationRequest {
 
 message ForgotPasswordRequest {
     string email = 1;
+    string token = 2;
 }
 
 message ConfirmPasswordRequest {

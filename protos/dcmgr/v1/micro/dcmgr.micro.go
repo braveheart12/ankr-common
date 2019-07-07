@@ -215,6 +215,7 @@ func (h *dCHandler) Overview(ctx context.Context, in *DCOverviewRequest, out *DC
 
 type DCAPIService interface {
 	DataCenterList(ctx context.Context, in *common.Empty, opts ...client.CallOption) (*DataCenterListResponse, error)
+	DataCenterListWithCertification(ctx context.Context, in *common.Empty, opts ...client.CallOption) (*DataCenterListWithCertificationResponse, error)
 	NetworkInfo(ctx context.Context, in *common.Empty, opts ...client.CallOption) (*NetworkInfoResponse, error)
 	RegisterDataCenter(ctx context.Context, in *RegisterDataCenterRequest, opts ...client.CallOption) (*RegisterDataCenterResponse, error)
 	ResetDataCenter(ctx context.Context, in *RegisterDataCenterRequest, opts ...client.CallOption) (*RegisterDataCenterResponse, error)
@@ -243,6 +244,16 @@ func NewDCAPIService(name string, c client.Client) DCAPIService {
 func (c *dCAPIService) DataCenterList(ctx context.Context, in *common.Empty, opts ...client.CallOption) (*DataCenterListResponse, error) {
 	req := c.c.NewRequest(c.name, "DCAPI.DataCenterList", in)
 	out := new(DataCenterListResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dCAPIService) DataCenterListWithCertification(ctx context.Context, in *common.Empty, opts ...client.CallOption) (*DataCenterListWithCertificationResponse, error) {
+	req := c.c.NewRequest(c.name, "DCAPI.DataCenterListWithCertification", in)
+	out := new(DataCenterListWithCertificationResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -304,6 +315,7 @@ func (c *dCAPIService) GetClusterCertificate(ctx context.Context, in *GetCluster
 
 type DCAPIHandler interface {
 	DataCenterList(context.Context, *common.Empty, *DataCenterListResponse) error
+	DataCenterListWithCertification(context.Context, *common.Empty, *DataCenterListWithCertificationResponse) error
 	NetworkInfo(context.Context, *common.Empty, *NetworkInfoResponse) error
 	RegisterDataCenter(context.Context, *RegisterDataCenterRequest, *RegisterDataCenterResponse) error
 	ResetDataCenter(context.Context, *RegisterDataCenterRequest, *RegisterDataCenterResponse) error
@@ -314,6 +326,7 @@ type DCAPIHandler interface {
 func RegisterDCAPIHandler(s server.Server, hdlr DCAPIHandler, opts ...server.HandlerOption) error {
 	type dCAPI interface {
 		DataCenterList(ctx context.Context, in *common.Empty, out *DataCenterListResponse) error
+		DataCenterListWithCertification(ctx context.Context, in *common.Empty, out *DataCenterListWithCertificationResponse) error
 		NetworkInfo(ctx context.Context, in *common.Empty, out *NetworkInfoResponse) error
 		RegisterDataCenter(ctx context.Context, in *RegisterDataCenterRequest, out *RegisterDataCenterResponse) error
 		ResetDataCenter(ctx context.Context, in *RegisterDataCenterRequest, out *RegisterDataCenterResponse) error
@@ -333,6 +346,10 @@ type dCAPIHandler struct {
 
 func (h *dCAPIHandler) DataCenterList(ctx context.Context, in *common.Empty, out *DataCenterListResponse) error {
 	return h.DCAPIHandler.DataCenterList(ctx, in, out)
+}
+
+func (h *dCAPIHandler) DataCenterListWithCertification(ctx context.Context, in *common.Empty, out *DataCenterListWithCertificationResponse) error {
+	return h.DCAPIHandler.DataCenterListWithCertification(ctx, in, out)
 }
 
 func (h *dCAPIHandler) NetworkInfo(ctx context.Context, in *common.Empty, out *NetworkInfoResponse) error {
@@ -355,32 +372,35 @@ func (h *dCAPIHandler) GetClusterCertificate(ctx context.Context, in *GetCluster
 	return h.DCAPIHandler.GetClusterCertificate(ctx, in, out)
 }
 
-// Client API for ClusterDashBoard service
+// Client API for FeesService service
 
-type ClusterDashBoardService interface {
-	DashBoard(ctx context.Context, in *DashBoardRequest, opts ...client.CallOption) (*DashBoardResponse, error)
+type FeesService interface {
+	ClusterDashBoard(ctx context.Context, in *DashBoardRequest, opts ...client.CallOption) (*DashBoardResponse, error)
+	UserHistoryFeesList(ctx context.Context, in *HistoryFeesRequest, opts ...client.CallOption) (*HistoryFeesResponse, error)
+	MonthFeesDetail(ctx context.Context, in *FeesDetailRequest, opts ...client.CallOption) (*FeesDetailResponse, error)
+	InvoiceDetail(ctx context.Context, in *InvoiceDetailRequest, opts ...client.CallOption) (*FeesDetailResponse, error)
 }
 
-type clusterDashBoardService struct {
+type feesService struct {
 	c    client.Client
 	name string
 }
 
-func NewClusterDashBoardService(name string, c client.Client) ClusterDashBoardService {
+func NewFeesService(name string, c client.Client) FeesService {
 	if c == nil {
 		c = client.NewClient()
 	}
 	if len(name) == 0 {
 		name = "dcmgr"
 	}
-	return &clusterDashBoardService{
+	return &feesService{
 		c:    c,
 		name: name,
 	}
 }
 
-func (c *clusterDashBoardService) DashBoard(ctx context.Context, in *DashBoardRequest, opts ...client.CallOption) (*DashBoardResponse, error) {
-	req := c.c.NewRequest(c.name, "ClusterDashBoard.DashBoard", in)
+func (c *feesService) ClusterDashBoard(ctx context.Context, in *DashBoardRequest, opts ...client.CallOption) (*DashBoardResponse, error) {
+	req := c.c.NewRequest(c.name, "FeesService.ClusterDashBoard", in)
 	out := new(DashBoardResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -389,27 +409,75 @@ func (c *clusterDashBoardService) DashBoard(ctx context.Context, in *DashBoardRe
 	return out, nil
 }
 
-// Server API for ClusterDashBoard service
-
-type ClusterDashBoardHandler interface {
-	DashBoard(context.Context, *DashBoardRequest, *DashBoardResponse) error
-}
-
-func RegisterClusterDashBoardHandler(s server.Server, hdlr ClusterDashBoardHandler, opts ...server.HandlerOption) error {
-	type clusterDashBoard interface {
-		DashBoard(ctx context.Context, in *DashBoardRequest, out *DashBoardResponse) error
+func (c *feesService) UserHistoryFeesList(ctx context.Context, in *HistoryFeesRequest, opts ...client.CallOption) (*HistoryFeesResponse, error) {
+	req := c.c.NewRequest(c.name, "FeesService.UserHistoryFeesList", in)
+	out := new(HistoryFeesResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
 	}
-	type ClusterDashBoard struct {
-		clusterDashBoard
+	return out, nil
+}
+
+func (c *feesService) MonthFeesDetail(ctx context.Context, in *FeesDetailRequest, opts ...client.CallOption) (*FeesDetailResponse, error) {
+	req := c.c.NewRequest(c.name, "FeesService.MonthFeesDetail", in)
+	out := new(FeesDetailResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
 	}
-	h := &clusterDashBoardHandler{hdlr}
-	return s.Handle(s.NewHandler(&ClusterDashBoard{h}, opts...))
+	return out, nil
 }
 
-type clusterDashBoardHandler struct {
-	ClusterDashBoardHandler
+func (c *feesService) InvoiceDetail(ctx context.Context, in *InvoiceDetailRequest, opts ...client.CallOption) (*FeesDetailResponse, error) {
+	req := c.c.NewRequest(c.name, "FeesService.InvoiceDetail", in)
+	out := new(FeesDetailResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func (h *clusterDashBoardHandler) DashBoard(ctx context.Context, in *DashBoardRequest, out *DashBoardResponse) error {
-	return h.ClusterDashBoardHandler.DashBoard(ctx, in, out)
+// Server API for FeesService service
+
+type FeesServiceHandler interface {
+	ClusterDashBoard(context.Context, *DashBoardRequest, *DashBoardResponse) error
+	UserHistoryFeesList(context.Context, *HistoryFeesRequest, *HistoryFeesResponse) error
+	MonthFeesDetail(context.Context, *FeesDetailRequest, *FeesDetailResponse) error
+	InvoiceDetail(context.Context, *InvoiceDetailRequest, *FeesDetailResponse) error
+}
+
+func RegisterFeesServiceHandler(s server.Server, hdlr FeesServiceHandler, opts ...server.HandlerOption) error {
+	type feesService interface {
+		ClusterDashBoard(ctx context.Context, in *DashBoardRequest, out *DashBoardResponse) error
+		UserHistoryFeesList(ctx context.Context, in *HistoryFeesRequest, out *HistoryFeesResponse) error
+		MonthFeesDetail(ctx context.Context, in *FeesDetailRequest, out *FeesDetailResponse) error
+		InvoiceDetail(ctx context.Context, in *InvoiceDetailRequest, out *FeesDetailResponse) error
+	}
+	type FeesService struct {
+		feesService
+	}
+	h := &feesServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&FeesService{h}, opts...))
+}
+
+type feesServiceHandler struct {
+	FeesServiceHandler
+}
+
+func (h *feesServiceHandler) ClusterDashBoard(ctx context.Context, in *DashBoardRequest, out *DashBoardResponse) error {
+	return h.FeesServiceHandler.ClusterDashBoard(ctx, in, out)
+}
+
+func (h *feesServiceHandler) UserHistoryFeesList(ctx context.Context, in *HistoryFeesRequest, out *HistoryFeesResponse) error {
+	return h.FeesServiceHandler.UserHistoryFeesList(ctx, in, out)
+}
+
+func (h *feesServiceHandler) MonthFeesDetail(ctx context.Context, in *FeesDetailRequest, out *FeesDetailResponse) error {
+	return h.FeesServiceHandler.MonthFeesDetail(ctx, in, out)
+}
+
+func (h *feesServiceHandler) InvoiceDetail(ctx context.Context, in *InvoiceDetailRequest, out *FeesDetailResponse) error {
+	return h.FeesServiceHandler.InvoiceDetail(ctx, in, out)
 }

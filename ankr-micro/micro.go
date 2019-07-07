@@ -6,8 +6,8 @@ type Publisher struct {
 }
 
 // Publish pushes data to a broker
-func (p *Publisher) Publish(data interface{}) {
-	Send(p.topic, data)
+func (p *Publisher) Publish(data interface{}) error {
+	return Send(p.topic, data)
 }
 
 func (p *Publisher)GetTopic() string {
