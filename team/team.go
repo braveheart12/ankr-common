@@ -36,5 +36,5 @@ func CheckUserAccessWritePrivilege(path string, uid string)bool{
 }
 
 func GetTeamUser(uid string) string { // return team uid
-
+     return "22222"
 }
