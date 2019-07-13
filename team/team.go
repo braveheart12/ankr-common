@@ -21,17 +21,17 @@ func init() {
 	defer db.Close()
 }
 
-func CheckUserAccessPrivilege(uid string, path string) (bool bool) { // read and write
+func CheckUserAccessPrivilege(path string, uid string) (bool bool) { // read and write
     record, _ := db.GetRole(uid)
 
 
 }
 
-func CheckUserAccessReadPrivilege(uid string, path string)bool{
+func CheckUserAccessReadPrivilege(path string, uid string)bool{
      return true
 }
 
-func CheckUserAccessWritePrivilege(uid string, path string)bool{
+func CheckUserAccessWritePrivilege(path string, uid string)bool{
       return true
 }
 
