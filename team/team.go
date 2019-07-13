@@ -21,18 +21,18 @@ func init() {
 	defer db.Close()
 }
 
-func CheckUserAccessPrivilege(uid string) (bool bool) { // read and write
-  record, _ := db.GetRole(uid)
+func CheckUserAccessPrivilege(uid string, path string) (bool bool) { // read and write
+    record, _ := db.GetRole(uid)
 
 
 }
 
-func CheckUserAccessReadPrivilege(commondbservice.){
-
+func CheckUserAccessReadPrivilege(uid string, path string)bool{
+     return true
 }
 
-func CheckUserAccessWritePrivilege(commondbservice.){
-
+func CheckUserAccessWritePrivilege(uid string, path string)bool{
+      return true
 }
 
 func GetTeamUser(uid string) string { // return team uid
